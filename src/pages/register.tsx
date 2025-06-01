@@ -1,0 +1,102 @@
+import React from "react";
+import { Button, Input, Card, CardBody } from "@heroui/react";
+import { Icon } from "@iconify/react";
+import { useNavigate } from "react-router-dom";
+
+export default function Register() {
+  const navigate = useNavigate();
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
+  const [name, setName] = React.useState("");
+  
+  const handleRegister = () => {
+    navigate("/donde");
+  };
+
+  return (
+    <div className="flex h-screen w-full items-center justify-center bg-black">
+      <Card className="mx-auto w-full max-w-md bg-zinc-900 text-white">
+        <CardBody className="flex flex-col gap-4 p-6">
+          <div className="mb-2 flex items-center justify-center">
+            <Icon icon="lucide:eye" className="mr-3 h-6 w-6 text-white" />
+            <h1 className="text-2xl font-bold text-white">Mawi</h1>
+          </div>
+          
+          <h2 className="text-center text-xl font-semibold">Crear una cuenta</h2>
+          
+          <Input
+            label="Nombre completo"
+            placeholder=""
+            value={name}
+            onValueChange={setName}
+            variant="bordered"
+            classNames={{
+              inputWrapper: "bg-zinc-800 border-zinc-700",
+              input: "text-white",
+              label: "text-gray-400"
+            }}
+          />
+          
+          <Input
+            label="Correo electrónico"
+            placeholder=""
+            type="email"
+            value={email}
+            onValueChange={setEmail}
+            variant="bordered"
+            classNames={{
+              inputWrapper: "bg-zinc-800 border-zinc-700",
+              input: "text-white",
+              label: "text-gray-400"
+            }}
+          />
+          
+          <Input
+            label="Ingresa tu contraseña"
+            placeholder=""
+            type="password"
+            value={password}
+            onValueChange={setPassword}
+            variant="bordered"
+            classNames={{
+              inputWrapper: "bg-zinc-800 border-zinc-700",
+              input: "text-white",
+              label: "text-gray-400"
+            }}
+          />
+
+           <Input
+            label="Confirmar Contraseña"
+            placeholder=""
+            type="confirmpassword"
+            value={password}
+            onValueChange={setPassword}
+            variant="bordered"
+            classNames={{
+              inputWrapper: "bg-zinc-800 border-zinc-700",
+              input: "text-white",
+              label: "text-gray-400"
+            }}
+          />
+          
+          <Button 
+            color="success" 
+            className="mt-2 w-full"
+            onPress={handleRegister}
+          >
+            Registrarse
+          </Button>
+          
+          <p className="mt-2 text-center text-sm text-gray-500">
+            <span 
+              className="cursor-pointer hover:text-success-500"
+              onClick={() => navigate("/login")}
+            >
+              ¿Ya tienes cuenta? Inicia sesión
+            </span>
+          </p>
+        </CardBody>
+      </Card>
+    </div>
+  );
+}
