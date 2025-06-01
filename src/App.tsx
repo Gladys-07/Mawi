@@ -13,6 +13,7 @@ import RecuperarContrasenia from "./pages/recuperar_contrasenia";
 import CambioContrasenia from "./pages/cambio_contrasenia";
 import Donde from "./pages/donde";
 import Trabajo from "./pages/trabajo";
+import Cards from "./pages/cards";
 
 export default function App() {
   return (
@@ -28,6 +29,7 @@ export default function App() {
       <Route path="/cambio_contrasenia" element={<CambioContrasenia />} />
       <Route path="/donde" element={<Donde/>} />
       <Route path="/trabajo" element={<Trabajo/>} />
+      <Route path="/cards" element={<Cards/>} />
       <Route path="/" element={<Navigate to="/login" replace />} />
     </Routes>
   );

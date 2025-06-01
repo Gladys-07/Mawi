@@ -10,7 +10,7 @@ export default function Register() {
   const [name, setName] = React.useState("");
   
   const handleRegister = () => {
-    navigate("/success");
+    navigate("/cards");
   };
 
   return (
@@ -69,7 +69,7 @@ export default function Register() {
             className="mt-2 w-full"
             onPress={handleRegister}
           >
-            Registrarse
+            Iniciar sesión
           </Button>
           
           <p className="mt-2 text-center text-sm text-gray-500">

@@ -87,7 +87,7 @@ export default function Login() {
           <span 
             className="cursor-pointer hover:text-success-500"
              onClick={() => navigate("/register")}
-           // onClick={() => navigate("/iniciar_sesion")} //Cambiar a iniciar sesión
+           
           >
             ¿No tienes cuenta? Regístrate
           </span>

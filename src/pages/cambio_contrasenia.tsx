@@ -29,7 +29,7 @@ export default function RecuperarContrasenia() {
 
           <Input
             label="Código de verificación"
-            placeholder="Ingresa tu código "
+            placeholder=" "
             type="text "
             value={codigo}
             onValueChange={setCodigo}
@@ -43,7 +43,7 @@ export default function RecuperarContrasenia() {
 
            <Input
             label="Nueva contraseña"
-            placeholder="Ingresa tu nueva contraseña "
+            placeholder=" "
             type="password"
             value={newPassword}
             onValueChange={setNewPassword}
@@ -57,7 +57,7 @@ export default function RecuperarContrasenia() {
 
            <Input
             label="Confirmar nueva contraseña"
-            placeholder="Confirma tu nueva contraseña "
+            placeholder=" "
             type="password"
             value={confirmPassword}
             onValueChange={setConfirmPassword}
