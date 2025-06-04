@@ -25,7 +25,7 @@ export default function App() {
           size="sm"
           variant="ghost"
           className="text-white"
-        > <Icon icon="lucide:user" className="text-zinc-900 w-4 h-4" />
+        > <Icon icon="lucide:user" className="text-white w-4 h-4" />
           EcoRanger
         </Button>
       </header>

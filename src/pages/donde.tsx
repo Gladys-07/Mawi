@@ -6,9 +6,9 @@ import { useNavigate } from "react-router-dom";
 export default function Register() {
   const navigate = useNavigate();
   const [telefono, setTelefono] = React.useState("");
-const [pais, setPais] = React.useState("");
-const [provincia, setProvincia] = React.useState("");
-const [ciudad, setCiudad] = React.useState("");
+  const [pais, setPais] = React.useState("");
+  const [provincia, setProvincia] = React.useState("");
+  const [ciudad, setCiudad] = React.useState("");
 
   const handleRegister = () => {
     navigate("/trabajo");
