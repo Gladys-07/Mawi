@@ -1,15 +1,20 @@
 import React from "react";
 import { Card, Button } from "@heroui/react";
 import { Icon } from "@iconify/react";
+import { useNavigate } from "react-router-dom";
 
 export default function App() {
-    
-  const handleRegister = () => {
-   // navigator("/trabajo");
-  };
-    function handleCardClick(arg0: string): void {
-        throw new Error("Function not implemented.");
+  const navigate = useNavigate();
+
+  const handleCardClick = (ruta: string): void => {
+    if (ruta === "Convocatorias") {
+      navigate("/AsNewConv");
+    } else if (ruta === "Biomo") {
+      navigate("/AsMiBiomo"); // ajusta si tienes esta ruta
+    } else if (ruta === "Anteproyectos") {
+      navigate("/AsExplorador"); // ajusta si tienes esta ruta
     }
+  };
 
   return (
     <div className="min-h-screen bg-zinc-900 text-white flex flex-col">
@@ -21,11 +26,8 @@ export default function App() {
           </div>
           <span className="font-medium">Mawi</span>
         </div>
-        <Button
-          size="sm"
-          variant="ghost"
-          className="text-white"
-        > <Icon icon="lucide:user" className="text-white w-4 h-4" />
+        <Button size="sm" variant="ghost" className="text-white">
+          <Icon icon="lucide:user" className="text-white w-4 h-4" />
           EcoRanger
         </Button>
       </header>
@@ -38,28 +40,29 @@ export default function App() {
           isPressable
           isHoverable
           onPress={() => handleCardClick("Biomo")}
-          className="mt-8 bg-zinc-700 hover:bg-zinc-600 border-none p-6 flex flex-col items-center text-center transition-colors">
-         <Icon icon="lucide:settings" className="w-12 h-12 text-green-500 mb-4" />
-         <h3 className="text-white font-medium mb-2">Asistente de Mi Biomo</h3>
-         <p className="text-xs text-zinc-400">
-         El asistente te ayudará a conocer todos los datos sobre tu biomonitorización y te guiará en todo aquello que necesites saber, así como subir datos nuevos.
-  </p>
-</Card>
+          className="bg-zinc-800 hover:bg-zinc-600 border-none p-6 flex flex-col items-center text-center transition-colors"
+      >
+        <Icon icon="lucide:settings" className="w-12 h-12 text-green-500 mb-4" />
+        <h3 className="text-white font-medium mb-2">Asistente de Mi Biomo</h3>
+        <p className="text-xs text-zinc-400">
+          El asistente te ayudará a conocer todos los datos sobre tu biomonitorización y te guiará en todo aquello que necesites saber, así como subir datos nuevos.
+      </p>
+  </Card>
 
 
           {/* Card 2 */}
-          <Card 
-           isPressable
-          isHoverable
-          onPress={() => handleCardClick("Convocatorias")}
-          className="bg-zinc-800 border-none p-6 flex flex-col items-center text-center relative">
-            
+          <Card
+            isPressable
+            isHoverable
+            onPress={() => handleCardClick("Convocatorias")}
+            className="bg-zinc-800 border-none p-6 flex flex-col items-center text-center relative"
+        >
             <Icon icon="lucide:file-text" className="w-12 h-12 text-green-500 mb-4" />
             <h3 className="text-white font-medium mb-2">Asistente de Nuevas Convocatorias</h3>
             <p className="text-xs text-zinc-400">
-              Participa en nuevas convocatorias, genera nuevos anteproyectos. Registre todos los datos referentes a la nueva formulación de anteproyecto.
-            </p>
-          </Card>
+            Participa en nuevas convocatorias, genera nuevos anteproyectos. Registre todos los datos referentes a la nueva formulación de anteproyecto.
+        </p>
+    </Card>
 
           {/* Card 3 */}
           <Card 
@@ -77,10 +80,7 @@ export default function App() {
         </div>
 
         {/* Contact Button */}
-        <Button 
-          className="mt-8 bg-zinc-700 hover:bg-zinc-600 text-white"
-          variant="flat"
-        >
+        <Button className="mt-8 bg-zinc-700 hover:bg-zinc-600 text-white" variant="flat">
           Contacta con el soporte
         </Button>
       </main>

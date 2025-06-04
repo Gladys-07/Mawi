@@ -11,6 +11,7 @@ import SuccessPage from "./pages/success";
 import IniciarSesion from "./pages/iniciar_sesion";
 import RecuperarContrasenia from "./pages/recuperar_contrasenia";
 import CambioContrasenia from "./pages/cambio_contrasenia";
+import AsistenteNuevasConv from "./pages/asistenteNewConv";
 import Donde from "./pages/donde";
 import Trabajo from "./pages/trabajo";
 import Cards from "./pages/cards";
@@ -27,6 +28,7 @@ export default function App() {
       <Route path="/iniciar_sesion" element={<IniciarSesion />} />
       <Route path="/recuperar_contrasenia" element={<RecuperarContrasenia />} />
       <Route path="/cambio_contrasenia" element={<CambioContrasenia />} />
+      <Route path="/AsNewConv" element={<AsistenteNuevasConv />} />
       <Route path="/donde" element={<Donde/>} />
       <Route path="/trabajo" element={<Trabajo/>} />
       <Route path="/cards" element={<Cards/>} />
