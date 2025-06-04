@@ -12,7 +12,7 @@ export default function Dashboard() {
       <Sidebar />
       
       <div className="flex-1 overflow-auto p-6">
-        <div className="mb-6 flex items-center justify-between">
+        <div className="mb-6 ml-8 pl-2 flex items-center justify-between">
           <h1 className="text-2xl font-bold text-white">Dashboard</h1>
           <Button 
             color="success" 

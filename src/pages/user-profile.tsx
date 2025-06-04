@@ -13,7 +13,7 @@ export default function UserProfile() {
       <Sidebar />
       
       <div className="flex-1 overflow-auto p-6">
-        <h1 className="mb-6 text-2xl font-bold text-white">Perfil de Usuario</h1>
+        <h1 className="mb-6 text-2xl font-bold text-white ml-8 pl-4">Perfil de Usuario</h1>
         
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
           <Card className="bg-zinc-900 text-white lg:col-span-1">
