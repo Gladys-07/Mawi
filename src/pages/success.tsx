@@ -27,7 +27,7 @@ export default function SuccessPage() {
           <Button 
             color="success" 
             className="mt-4 w-full"
-            onPress={() => navigate("/dashboard")}
+            onPress={() => navigate("/login")}
           >
             Continuar
           </Button>

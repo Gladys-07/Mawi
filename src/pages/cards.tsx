@@ -26,10 +26,11 @@ export default function App() {
           </div>
           <span className="font-medium">Mawi</span>
         </div>
-        <Button size="sm" variant="ghost" className="text-white">
+        <Button size="sm" variant="ghost" className="text-white" onPress={() => navigate("/login")}>
           <Icon icon="lucide:user" className="text-white w-4 h-4" />
           EcoRanger
         </Button>
+        
       </header>
 
       {/* Main Content */}

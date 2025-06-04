@@ -3,14 +3,13 @@ import { Button, Input, Tabs, Tab } from "@heroui/react";
 import { Icon } from "@iconify/react";
 import { Link, useLocation } from "react-router-dom";
 
-// Sidebar reutilizable (puedes extraerlo a un componente si lo deseas)
 const Sidebar = ({ isOpen }: { isOpen: boolean }) => {
   const location = useLocation();
   const menuItems = [
     { title: "Inicio", icon: "lucide:home", path: "/" },
     { title: "Asistente de Mi Biomo", icon: "lucide:activity", path: "/asistentebiomo" },
-    { title: "Asistente de Nuevas Convocatorias", icon: "lucide:bell", path: "/convocatorias" },
-    { title: "Asistente Explorador de Anteproyectos", icon: "lucide:search", path: "/anteproyectos", active: true },
+    { title: "Nuevas Convocatorias", icon: "lucide:bell", path: "/convocatorias" },
+    { title: "Explorador de Anteproyectos", icon: "lucide:search", path: "/anteproyectos", active: true },
     { title: "Informes, Métricas y Análisis", icon: "lucide:bar-chart-2", path: "/informes" },
   ];
   return (

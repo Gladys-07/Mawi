@@ -13,8 +13,8 @@ const SidebarBiomo: React.FC<SidebarProps> = ({ isOpen }) => {
   const menuItems = [
     { title: "Inicio", icon: "lucide:home", path: "/" },
     { title: "Asistente de Mi Biomo", icon: "lucide:activity", path: "/asistentebiomo" },
-    { title: "Asistente de Nuevas Convocatorias", icon: "lucide:bell", path: "/convocatorias" },
-    { title: "Asistente Explorador de Anteproyectos", icon: "lucide:search", path: "/anteproyectos" },
+    { title: "Nuevas Convocatorias", icon: "lucide:bell", path: "/convocatorias" },
+    { title: "Explorador de Anteproyectos", icon: "lucide:search", path: "/anteproyectos" },
     { title: "Informes, Métricas y Análisis", icon: "lucide:bar-chart-2", path: "/informes" },
   ];
 

@@ -9,8 +9,8 @@ const Sidebar = ({ isOpen }: { isOpen: boolean }) => {
   const menuItems = [
     { title: "Inicio", icon: "lucide:home", path: "/" },
     { title: "Asistente de Mi Biomo", icon: "lucide:activity", path: "/asistentebiomo" },
-    { title: "Asistente de Nuevas Convocatorias", icon: "lucide:bell", path: "/AsNewConv" },
-    { title: "Asistente Explorador de Anteproyectos", icon: "lucide:search", path: "/anteproyectos" },
+    { title: "Nuevas Convocatorias", icon: "lucide:bell", path: "/AsNewConv" },
+    { title: "Explorador de Anteproyectos", icon: "lucide:search", path: "/anteproyectos" },
     { title: "Informes, Métricas y Análisis", icon: "lucide:bar-chart-2", path: "/informes" },
   ];
   return (
