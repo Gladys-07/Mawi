@@ -37,7 +37,7 @@ export default function Register() {
       </header>
 
       {/* Formulario */}
-      <div className="flex flex-col gap-4 max-w-md mx-20 mt-9">
+      <div className="flex flex-col gap-4 max-w-md ml-[5vw] mr-[5vw] sm:ml-[10vw] sm:mr-[10vw] md:ml-[15vw] md:mr-[15vw] lg:ml-[20vw] lg:mr-[20vw] mt-6 sm:mt-10 md:mt-16 lg:mt-24">
         <h1 className="text-2xl font-bold">Asistente de Nuevas Convocatorias</h1>
 
         {/* Nombre del anteproyecto */}
@@ -88,10 +88,10 @@ export default function Register() {
         {/* Botones */}
         <div className="flex gap-2 justify-between">
           <Button size="md" className="w-full" color="success" onPress={handleRegister}>
-            Guardar
+            Siguiente
           </Button>
           <Button size="md" className="w-full" color="success" onPress={handleCancel}>
-            Cancelar
+            Subir Datos
           </Button>
         </div>
       </div>
