@@ -2,6 +2,7 @@ import React from "react";
 import { Button, Input, Card, CardBody } from "@heroui/react";
 import { Icon } from "@iconify/react";
 import { useNavigate } from "react-router-dom";
+import MawiOjo from "../assets/MawiOjo.png"; // Ajusta la ruta si tu imagen está en otra carpeta
 
 export default function Register() {
   const navigate = useNavigate();
@@ -18,7 +19,11 @@ export default function Register() {
       <Card className="mx-auto w-full max-w-md bg-zinc-900 text-white">
         <CardBody className="flex flex-col gap-4 p-6">
           <div className="mb-2 flex items-center justify-center">
-            <Icon icon="lucide:eye" className="mr-3 h-6 w-6 text-white" />
+            <img
+              src={MawiOjo}
+              alt="Logo Mawi"
+              className="mr-3 h-10 w-10 object-contain"
+            />
             <h1 className="text-2xl font-bold text-white">Mawi</h1>
           </div>
           

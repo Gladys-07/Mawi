@@ -3,6 +3,7 @@ import { Button } from "@heroui/react";
 import { Icon } from "@iconify/react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import MawiOjo from "../assets/MawiOjo.png";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -67,7 +68,11 @@ export default function Login() {
       {/* Content */}
       <div className="relative z-10 flex w-full max-w-md flex-col items-center justify-center px-4">
         <div className="mb-6 flex items-center">
-          <Icon icon="lucide:eye" className="mr-3 h-8 w-8 text-white" />
+          <img
+            src={MawiOjo}
+            alt="Logo Mawi"
+            className="w-16 h-16 object-contain mr-2"
+          />
           <h1 className="text-4xl font-bold text-white">Mawi</h1>
         </div>
         
