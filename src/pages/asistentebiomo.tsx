@@ -1,6 +1,7 @@
 import React from "react";
 import { Navbar, Button, Input } from "@heroui/react";
 import { Icon } from "@iconify/react";
+import { Link, useLocation } from "react-router-dom";
 
 // Sidebar Component
 interface SidebarProps {
@@ -8,12 +9,13 @@ interface SidebarProps {
 }
 
 const SidebarBiomo: React.FC<SidebarProps> = ({ isOpen }) => {
+  const location = useLocation();
   const menuItems = [
-    { title: "Inicio", icon: "lucide:home" },
-    { title: "Asistente de Mi Biomo", icon: "lucide:activity", active: true },
-    { title: "Asistente de Nuevas Convocatorias", icon: "lucide:bell" },
-    { title: "Asistente Explorador de Anteproyectos", icon: "lucide:search" },
-    { title: "Informes, Métricas y Análisis", icon: "lucide:bar-chart-2" },
+    { title: "Inicio", icon: "lucide:home", path: "/" },
+    { title: "Asistente de Mi Biomo", icon: "lucide:activity", path: "/asistentebiomo" },
+    { title: "Asistente de Nuevas Convocatorias", icon: "lucide:bell", path: "/convocatorias" },
+    { title: "Asistente Explorador de Anteproyectos", icon: "lucide:search", path: "/anteproyectos" },
+    { title: "Informes, Métricas y Análisis", icon: "lucide:bar-chart-2", path: "/informes" },
   ];
 
   return (
@@ -24,27 +26,27 @@ const SidebarBiomo: React.FC<SidebarProps> = ({ isOpen }) => {
     >
       {/* Logo Area */}
       <div className="flex items-center gap-2 p-4 border-b border-zinc-800">
-       
-         <div className="w-6 h-6 rounded-full bg-white flex items-center justify-center">
-                    <Icon icon="lucide:eye" className="text-zinc-900 w-4 h-4" />
-                  </div>
+        <div className="w-6 h-6 rounded-full bg-white flex items-center justify-center">
+          <Icon icon="lucide:eye" className="text-zinc-900 w-4 h-4" />
+        </div>
         <span className="font-medium">Mawi</span>
       </div>
       
       {/* Menu Items */}
       <div className="flex-1 overflow-y-auto py-2">
         {menuItems.map((item, index) => (
-          <Button
-            key={index}
-            variant="flat"
-            color={item.active ? "success" : "default"}
-            className={`justify-start w-full mb-1 ${
-              item.active ? "bg-success-900/20 text-success" : "bg-transparent text-white"
-            }`}
-            startContent={<Icon icon={item.icon} width={18} height={18} />}
-          >
-            {item.title}
-          </Button>
+          <Link to={item.path} key={index}>
+            <Button
+              variant="flat"
+              color={location.pathname === item.path ? "success" : "default"}
+              className={`justify-start w-full mb-1 ${
+                location.pathname === item.path ? "bg-success-900/20 text-success" : "bg-transparent text-white"
+              }`}
+              startContent={<Icon icon={item.icon} width={18} height={18} />}
+            >
+              {item.title}
+            </Button>
+          </Link>
         ))}
       </div>
       

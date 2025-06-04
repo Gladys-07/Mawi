@@ -1,16 +1,16 @@
 import React, { useState } from "react";
-import { Button, Input } from "@heroui/react";
+import { Button, Input, Tabs, Tab } from "@heroui/react";
 import { Icon } from "@iconify/react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
-// Sidebar reutilizable
+// Sidebar reutilizable (puedes extraerlo a un componente si lo deseas)
 const Sidebar = ({ isOpen }: { isOpen: boolean }) => {
   const location = useLocation();
   const menuItems = [
     { title: "Inicio", icon: "lucide:home", path: "/" },
     { title: "Asistente de Mi Biomo", icon: "lucide:activity", path: "/asistentebiomo" },
-    { title: "Asistente de Nuevas Convocatorias", icon: "lucide:bell", path: "/AsNewConv" },
-    { title: "Asistente Explorador de Anteproyectos", icon: "lucide:search", path: "/anteproyectos" },
+    { title: "Asistente de Nuevas Convocatorias", icon: "lucide:bell", path: "/convocatorias" },
+    { title: "Asistente Explorador de Anteproyectos", icon: "lucide:search", path: "/anteproyectos", active: true },
     { title: "Informes, Métricas y Análisis", icon: "lucide:bar-chart-2", path: "/informes" },
   ];
   return (
@@ -52,22 +52,24 @@ const Sidebar = ({ isOpen }: { isOpen: boolean }) => {
   );
 };
 
-export default function AsistenteNuevasConv() {
-  const navigate = useNavigate();
+const AnteproyectoCard = () => (
+  <div className="bg-zinc-700 rounded-lg p-4 flex items-center justify-between mb-4">
+    <div>
+      <div className="font-semibold">Título</div>
+      <div className="text-sm text-zinc-300">Descripción</div>
+      <div className="text-xs text-zinc-400 mt-2">
+        Fecha de creación: 00/00/0000 &nbsp; | &nbsp; Fecha límite: 00/00/0000
+      </div>
+    </div>
+    <Button isIconOnly color="success" className="min-w-12 h-12">
+      <Icon icon="lucide:file" width={24} height={24} />
+    </Button>
+  </div>
+);
+
+export default function Anteproyectos() {
   const [isOpen, setIsOpen] = useState(true);
-  const [nombre, setNombre] = useState("");
-  const [fecha, setFecha] = useState("");
-  const [sitio, setSitio] = useState("");
-
-  const handleRegister = () => {
-    navigate("/cards");
-  };
-
-  const handleCancel = () => {
-    setNombre("");
-    setFecha("");
-    setSitio("");
-  };
+  const [tab, setTab] = useState("abiertos");
 
   return (
     <div className="flex h-screen w-full bg-black text-white">
@@ -86,7 +88,7 @@ export default function AsistenteNuevasConv() {
             )}
           </Button>
           <div>
-            <h1 className="text-lg font-medium">Asistente de Nuevas Convocatorias</h1>
+            <h1 className="text-lg font-medium">Explorador de Anteproyectos</h1>
           </div>
           <div className="ml-auto flex items-center gap-2">
             <span className="text-sm">EcoRanger</span>
@@ -96,66 +98,47 @@ export default function AsistenteNuevasConv() {
           </div>
         </div>
 
-        {/* Formulario */}
-        <div className="flex flex-col gap-4 max-w-md mx-auto mt-8">
-          <h1 className="text-2xl font-bold">Asistente de Nuevas Convocatorias</h1>
-
-          {/* Nombre del anteproyecto */}
-          <p className="text-sm text-gray-100 font-bold">Nombre del anteproyecto</p>
+        {/* Filtros y botón */}
+        <div className="flex items-center gap-2 p-4">
           <Input
-            label="Ej. Desarrollo Sostenible"
-            type="text"
-            value={nombre}
-            onValueChange={setNombre}
+            placeholder="Nombre del Convocatoria"
             variant="bordered"
             classNames={{
-              inputWrapper: "bg-zinc-800 border-zinc-700",
-              input: "text-white",
-              label: "text-gray-400"
+              base: "bg-zinc-800 rounded-md",
+              inputWrapper: "bg-zinc-800 border-zinc-700 hover:border-zinc-600 focus-within:border-zinc-500",
             }}
           />
+          <Button color="success" className="ml-2">
+            Crear Nuevo Anteproyecto
+          </Button>
+        </div>
 
-          {/* Fecha de cierre */}
-          <p className="text-sm text-gray-100 font-bold">Fecha de cierre</p>
-          <Input
-            label="00/00/0000"
-            type="text"
-            value={fecha}
-            onValueChange={setFecha}
-            variant="bordered"
-            classNames={{
-              inputWrapper: "bg-zinc-800 border-zinc-700",
-              input: "text-white",
-              label: "text-gray-400"
-            }}
-          />
+        <div className="px-4">
+          {/* Tabs */}
+          <Tabs
+            selectedKey={tab}
+            onSelectionChange={(key) => setTab(String(key))}
+            variant="underlined"
+            className="mb-4"
+          >
+            <Tab key="abiertos" title="Abiertos" />
+            <Tab key="cerrados" title="Cerrados" />
+          </Tabs>
+        </div>
 
-          {/* Sitio Web */}
-          <p className="text-sm text-gray-100 font-bold">Sitio Web</p>
-          <Input
-            label="www.ejemplo.com"
-            type="text"
-            value={sitio}
-            onValueChange={setSitio}
-            variant="bordered"
-            classNames={{
-              inputWrapper: "bg-zinc-800 border-zinc-700",
-              input: "text-white",
-              label: "text-gray-400"
-            }}
-          />
+        {/* Cards */}
+        <div className="flex-1 overflow-auto px-4">
+          <AnteproyectoCard />
+          <AnteproyectoCard />
+        </div>
 
-          {/* Botones */}
-          <div className="flex gap-2 justify-between">
-            <Button size="md" className="w-full" color="success" onPress={handleRegister}>
-              Siguiente
-            </Button>
-            <Button size="md" className="w-full" color="success" onPress={handleCancel}>
-              Subir Datos
-            </Button>
-          </div>
+        {/* Botón flotante */}
+        <div className="fixed bottom-6 right-6">
+          <Button color="success" className="shadow-lg px-6 py-3 text-base font-semibold">
+            Crear Nuevo Anteproyecto
+          </Button>
         </div>
       </div>
-    </div>
-  );
+    </div>
+  );
 }

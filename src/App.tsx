@@ -15,6 +15,8 @@ import AsistenteNuevasConv from "./pages/asistenteNewConv";
 import Donde from "./pages/donde";
 import Trabajo from "./pages/trabajo";
 import Cards from "./pages/cards";
+import AsistenteBiomo from "./pages/asistentebiomo";
+import Anteproyectos from "./pages/anteproyectos";
 
 export default function App() {
   return (
@@ -29,6 +31,8 @@ export default function App() {
       <Route path="/recuperar_contrasenia" element={<RecuperarContrasenia />} />
       <Route path="/cambio_contrasenia" element={<CambioContrasenia />} />
       <Route path="/AsNewConv" element={<AsistenteNuevasConv />} />
+      <Route path="/asistentebiomo" element={<AsistenteBiomo />} />
+      <Route path="/anteproyectos" element={<Anteproyectos />} />
       <Route path="/donde" element={<Donde/>} />
       <Route path="/trabajo" element={<Trabajo/>} />
       <Route path="/cards" element={<Cards/>} />

@@ -10,9 +10,9 @@ export default function App() {
     if (ruta === "Convocatorias") {
       navigate("/AsNewConv");
     } else if (ruta === "Biomo") {
-      navigate("/AsMiBiomo"); // ajusta si tienes esta ruta
+      navigate("/asistentebiomo"); // <-- CORREGIDO
     } else if (ruta === "Anteproyectos") {
-      navigate("/AsExplorador"); // ajusta si tienes esta ruta
+      navigate("/anteproyectos"); // <-- CORREGIDO
     }
   };
 
