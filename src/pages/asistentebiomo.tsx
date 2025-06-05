@@ -1,7 +1,8 @@
-import React from "react";
+import React, {useState} from "react";
 import { Navbar, Button, Input } from "@heroui/react";
 import { Icon } from "@iconify/react";
 import { Link, useLocation } from "react-router-dom";
+import {getChatCompletion} from "../api/chat.ts"
 
 // Sidebar Component
 interface SidebarProps {
@@ -68,6 +69,27 @@ const SidebarBiomo: React.FC<SidebarProps> = ({ isOpen }) => {
 // Main Application
 export default function AsistenteBiomo() {
   const [isOpen, setIsOpen] = React.useState(true);
+  //<>state type (an array of objects in this case) ([]) initial state value, an empty array.
+  const [chatHistory, setChatHistory] = useState<{sender: "user" | "AI", message: string}[]>([]);
+  const [userInput, setUserInput] = useState("");
+  const [loading, setLoading] = useState(false);
+  
+  //API USE ---------------------------------------
+  async function sendMessage() {
+    if(!userInput.trim()) return;
+    setChatHistory(prev => [...prev, {sender: "user", message: userInput}]);
+    setLoading(true);
+    try {
+      const aiResponse = await getChatCompletion(userInput);
+      //prev => nueva versión, es la función de actualización de un estado
+      //lo que haces en estas lineas es decir, a lo anterior, concatena este nuevo estado.
+      setChatHistory(prev => [...prev, {sender: "AI", message: aiResponse}]);
+    } catch {
+      setChatHistory(prev => [...prev, {sender: "AI", message: "Sorry, I encountered an error."}]);
+    }
+    setUserInput("");
+    setLoading(false);
+  }
   
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
@@ -104,7 +126,22 @@ export default function AsistenteBiomo() {
         
         {/* Chat Area */}
         <div className="flex-1 overflow-auto p-4">
-          {/* Chat messages would go here */}
+          {/* CHAT MESSAGES GO HERE*/}
+          <div className="flex flex-col gap-2" style={{ maxHeight: "100%", overflowY: "auto" }}>
+            {/* Va mapenado cada mensaje en el historial del chat y acomoda el div segun si es de AI o de user */}
+            {chatHistory.map((msg, idx) => (
+              <div
+                key={idx}
+                className={`p-2 rounded-lg max-w-[70%] ${msg.sender === "user" ? "bg-success-900 self-end text-right" : "bg-zinc-800 self-start text-left"}`}
+              >
+                {msg.message}
+              </div>
+            ))}
+            {/* Si aun esta pensando, solo muestra este div de lado de la AI */}
+            {loading && (
+              <div className="p-2 rounded-lg bg-zinc-800 text-zinc-400 max-w-[70%] self-start">Pensando...</div>
+            )}
+          </div>
         </div>
         
         {/* Input Area */}
@@ -117,12 +154,20 @@ export default function AsistenteBiomo() {
                 base: "bg-zinc-800 rounded-md",
                 inputWrapper: "bg-zinc-800 border-zinc-700 hover:border-zinc-600 focus-within:border-zinc-500",
               }}
+              value={userInput}
+              onChange={e => setUserInput(e.target.value)}
+              onKeyDown={e => {
+                if (e.key === "Enter") sendMessage();
+              }}
             />
             <Button 
               isIconOnly 
               color="success" 
               className="min-w-12 h-12"
               aria-label="Send"
+              onPress={sendMessage}
+              // deshablita el uso del boton si loading es true
+              disabled={loading}
             >
               <Icon icon="lucide:arrow-up" width={20} height={20} />
             </Button>
