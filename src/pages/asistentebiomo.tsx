@@ -12,7 +12,7 @@ interface SidebarProps {
 const SidebarBiomo: React.FC<SidebarProps> = ({ isOpen }) => {
   const location = useLocation();
   const menuItems = [
-    { title: "Inicio", icon: "lucide:home", path: "/" },
+    { title: "Inicio", icon: "lucide:home", path: "/cards" },
     { title: "Asistente de Mi Biomo", icon: "lucide:activity", path: "/asistentebiomo" },
     { title: "Nuevas Convocatorias", icon: "lucide:bell", path: "/convocatorias" },
     { title: "Explorador de Anteproyectos", icon: "lucide:search", path: "/anteproyectos" },
@@ -40,8 +40,7 @@ const SidebarBiomo: React.FC<SidebarProps> = ({ isOpen }) => {
             <Button
               variant="flat"
               color={location.pathname === item.path ? "success" : "default"}
-              className={`justify-start w-full mb-1 ${
-                location.pathname === item.path ? "bg-success-900/20 text-success" : "bg-transparent text-white"
+              className={`justify-start w-full mb-1 ${location.pathname === item.path ? "bg-success-900/20 text-success" : "bg-transparent text-white"
               }`}
               startContent={<Icon icon={item.icon} width={18} height={18} />}
             >
