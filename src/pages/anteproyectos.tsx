@@ -9,7 +9,7 @@ const Sidebar = ({ isOpen }: { isOpen: boolean }) => {
   const menuItems = [
     { title: "Inicio", icon: "lucide:home", path: "/cards" },
     { title: "Asistente de Mi Biomo", icon: "lucide:activity", path: "/asistentebiomo" },
-    { title: "Nuevas Convocatorias", icon: "lucide:bell", path: "/convocatorias" },
+    { title: "Nuevas Convocatorias", icon: "lucide:bell", path: "/AsNewConv" },
     { title: "Explorador de Anteproyectos", icon: "lucide:search", path: "/anteproyectos", active: true },
     { title: "Informes, Métricas y Análisis", icon: "lucide:bar-chart-2", path: "/informes" },
   ];  
