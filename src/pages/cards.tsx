@@ -59,7 +59,7 @@ export default function App() {
             className="bg-zinc-800 border-none p-6 flex flex-col items-center text-center relative"
         >
             <Icon icon="lucide:file-text" className="w-12 h-12 text-green-500 mb-4" />
-            <h3 className="text-white font-medium mb-2">Asistente de Nuevas Convocatorias</h3>
+            <h3 className="text-white font-medium mb-2">Nuevas Convocatorias</h3>
             <p className="text-xs text-zinc-400">
             Participa en nuevas convocatorias, genera nuevos anteproyectos. Registre todos los datos referentes a la nueva formulación de anteproyecto.
         </p>
@@ -73,7 +73,7 @@ export default function App() {
           className="bg-zinc-800 border-none p-6 flex flex-col items-center text-center">
             
             <Icon icon="lucide:file-edit" className="w-12 h-12 text-green-500 mb-4" style={{ strokeWidth: 1 }} />
-            <h3 className="text-white font-medium mb-2">Asistente Explorador de Anteproyectos</h3>
+            <h3 className="text-white font-medium mb-2">Explorador de Anteproyectos</h3>
             <p className="text-xs text-zinc-400">
              Interactúa con todas aquellas convocatorias abiertas y formula anteproyectos.
             </p>

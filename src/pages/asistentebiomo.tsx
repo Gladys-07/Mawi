@@ -119,7 +119,7 @@ export default function AsistenteBiomo() {
             </Button>
             <div>
               <h1 className="text-lg font-medium">Asistente de Mi Biomo</h1>
-              <p className="text-xs text-zinc-400">Biomb0.ID: 1234</p>
+              <p className="text-xs text-zinc-400">Biomo.ID: 1234</p>
             </div>
           </div>
         </Navbar>
