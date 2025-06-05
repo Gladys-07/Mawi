@@ -155,12 +155,7 @@ export default function Anteproyectos() {
           ))}
         </div>
 
-        {/* Botón flotante */}
-        <div className="fixed bottom-6 right-6">
-          <Button color="success" className="shadow-lg px-6 py-3 text-base font-semibold" onClick={() => setShowForm(true)}>
-            Crear Nuevo Anteproyecto
-          </Button>
-        </div>
+       
 
         {/* Modal */}
         {showForm && (
