@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import { Navbar, Button, Input } from "@heroui/react";
 import { Icon } from "@iconify/react";
 import { Link, useLocation } from "react-router-dom";
-import {getChatCompletion} from "../api/chat.ts"
+import {getChatCompletion} from "../api/chat"
 
 // Sidebar Component
 interface SidebarProps {
