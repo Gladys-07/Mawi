@@ -14,14 +14,12 @@ const Sidebar = ({ isOpen }: { isOpen: boolean }) => {
   ];
   return (
     <div className={`flex flex-col bg-zinc-900 border-r border-zinc-800 transition-all duration-300 ${isOpen ? "w-64" : "w-0 overflow-hidden"}`}>
-      {/* Logo */}
       <div className="flex items-center gap-2 p-4 border-b border-zinc-800">
         <div className="w-6 h-6 rounded-full bg-white flex items-center justify-center">
           <Icon icon="lucide:eye" className="text-zinc-900 w-4 h-4" />
         </div>
         <span className="font-medium">Mawi</span>
       </div>
-      {/* Menu */}
       <div className="flex-1 overflow-y-auto py-2">
         {menuItems.map((item, idx) => (
           <Link to={item.path} key={idx}>
@@ -36,7 +34,6 @@ const Sidebar = ({ isOpen }: { isOpen: boolean }) => {
           </Link>
         ))}
       </div>
-      {/* Footer */}
       <div className="mt-auto border-t border-zinc-800 p-3">
         <Button
           variant="flat"
@@ -51,13 +48,13 @@ const Sidebar = ({ isOpen }: { isOpen: boolean }) => {
   );
 };
 
-const AnteproyectoCard = () => (
+const AnteproyectoCard = ({ titulo, descripcion, fechaInicio, fechaFin }: any) => (
   <div className="bg-zinc-700 rounded-lg p-4 flex items-center justify-between mb-4">
     <div>
-      <div className="font-semibold">Título</div>
-      <div className="text-sm text-zinc-300">Descripción</div>
+      <div className="font-semibold">{titulo}</div>
+      <div className="text-sm text-zinc-300">{descripcion}</div>
       <div className="text-xs text-zinc-400 mt-2">
-        Fecha de creación: 00/00/0000 &nbsp; | &nbsp; Fecha límite: 00/00/0000
+        Fecha de creación: {fechaInicio} &nbsp; | &nbsp; Fecha límite: {fechaFin}
       </div>
     </div>
     <Button isIconOnly color="success" className="min-w-12 h-12">
@@ -69,6 +66,33 @@ const AnteproyectoCard = () => (
 export default function Anteproyectos() {
   const [isOpen, setIsOpen] = useState(true);
   const [tab, setTab] = useState("abiertos");
+
+  // Estado para el formulario
+  const [showForm, setShowForm] = useState(false);
+  const [titulo, setTitulo] = useState("");
+  const [descripcion, setDescripcion] = useState("");
+  const [fechaInicio, setFechaInicio] = useState("");
+  const [fechaFin, setFechaFin] = useState("");
+
+  // Anteproyectos creados
+  const [anteproyectos, setAnteproyectos] = useState<any[]>([]);
+
+  const handleCrear = () => {
+    const nuevo = {
+      titulo,
+      descripcion,
+      fechaInicio,
+      fechaFin,
+    };
+    setAnteproyectos([...anteproyectos, nuevo]);
+
+    // Limpiar formulario
+    setShowForm(false);
+    setTitulo("");
+    setDescripcion("");
+    setFechaInicio("");
+    setFechaFin("");
+  };
 
   return (
     <div className="flex h-screen w-full bg-black text-white">
@@ -107,13 +131,12 @@ export default function Anteproyectos() {
               inputWrapper: "bg-zinc-800 border-zinc-700 hover:border-zinc-600 focus-within:border-zinc-500",
             }}
           />
-          <Button color="success" className="ml-2">
-            Crear Nuevo Anteproyecto
+          <Button color="success" className="ml-2" onClick={() => setShowForm(true)}>
+            Crear Anteproyecto
           </Button>
         </div>
 
         <div className="px-4">
-          {/* Tabs */}
           <Tabs
             selectedKey={tab}
             onSelectionChange={(key) => setTab(String(key))}
@@ -127,17 +150,74 @@ export default function Anteproyectos() {
 
         {/* Cards */}
         <div className="flex-1 overflow-auto px-4">
-          <AnteproyectoCard />
-          <AnteproyectoCard />
+          {anteproyectos.map((a, idx) => (
+            <AnteproyectoCard key={idx} {...a} />
+          ))}
         </div>
 
         {/* Botón flotante */}
         <div className="fixed bottom-6 right-6">
-          <Button color="success" className="shadow-lg px-6 py-3 text-base font-semibold">
+          <Button color="success" className="shadow-lg px-6 py-3 text-base font-semibold" onClick={() => setShowForm(true)}>
             Crear Nuevo Anteproyecto
           </Button>
         </div>
+
+        {/* Modal */}
+        {showForm && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+            <div className="bg-zinc-800 p-6 rounded-lg w-full max-w-md shadow-xl">
+              <h2 className="text-xl font-semibold mb-4 text-white">Crear Anteproyecto</h2>
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm text-white mb-1">Título</label>
+                  <input
+                    type="text"
+                    value={titulo}
+                    onChange={(e) => setTitulo(e.target.value)}
+                    className="w-full p-2 rounded bg-zinc-700 text-white border border-zinc-600"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm text-white mb-1">Descripción</label>
+                  <textarea
+                    value={descripcion}
+                    onChange={(e) => setDescripcion(e.target.value)}
+                    className="w-full p-2 rounded bg-zinc-700 text-white border border-zinc-600"
+                  />
+                </div>
+                <div className="flex gap-2">
+                  <div className="flex-1">
+                    <label className="block text-sm text-white mb-1">Fecha de Inicio</label>
+                    <input
+                      type="date"
+                      value={fechaInicio}
+                      onChange={(e) => setFechaInicio(e.target.value)}
+                      className="w-full p-2 rounded bg-zinc-700 text-white border border-zinc-600"
+                    />
+                  </div>
+                  <div className="flex-1">
+                    <label className="block text-sm text-white mb-1">Fecha Final</label>
+                    <input
+                      type="date"
+                      value={fechaFin}
+                      onChange={(e) => setFechaFin(e.target.value)}
+                      className="w-full p-2 rounded bg-zinc-700 text-white border border-zinc-600"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className="flex justify-end mt-6 gap-2">
+                <Button color="default" onClick={() => setShowForm(false)}>
+                  Cancelar
+                </Button>
+                <Button color="success" onClick={handleCrear}>
+                  Guardar
+                </Button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
-    </div>
-  );
+    </div>
+  );
 }
