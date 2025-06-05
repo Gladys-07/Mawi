@@ -3,7 +3,6 @@ import { Button, Input } from "@heroui/react";
 import { Icon } from "@iconify/react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
-// Sidebar reutilizable
 const Sidebar = ({ isOpen }: { isOpen: boolean }) => {
   const location = useLocation();
   const menuItems = [
@@ -15,14 +14,12 @@ const Sidebar = ({ isOpen }: { isOpen: boolean }) => {
   ];
   return (
     <div className={`flex flex-col bg-zinc-900 border-r border-zinc-800 transition-all duration-300 ${isOpen ? "w-64" : "w-0 overflow-hidden"}`}>
-      {/* Logo */}
       <div className="flex items-center gap-2 p-4 border-b border-zinc-800">
         <div className="w-6 h-6 rounded-full bg-white flex items-center justify-center">
           <Icon icon="lucide:eye" className="text-zinc-900 w-4 h-4" />
         </div>
         <span className="font-medium">Mawi</span>
       </div>
-      {/* Menu */}
       <div className="flex-1 overflow-y-auto py-2">
         {menuItems.map((item, idx) => (
           <Link to={item.path} key={idx}>
@@ -37,7 +34,6 @@ const Sidebar = ({ isOpen }: { isOpen: boolean }) => {
           </Link>
         ))}
       </div>
-      {/* Footer */}
       <div className="mt-auto border-t border-zinc-800 p-3">
         <Button
           variant="flat"
@@ -55,28 +51,43 @@ const Sidebar = ({ isOpen }: { isOpen: boolean }) => {
 export default function AsistenteNuevasConv() {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(true);
+  const [paso, setPaso] = useState(1);
+  const [mostrarModal, setMostrarModal] = useState(false);
+  const [mostrarPopupGuardar, setMostrarPopupGuardar] = useState(false);
+
   const [nombre, setNombre] = useState("");
   const [fecha, setFecha] = useState("");
   const [sitio, setSitio] = useState("");
 
-  const handleRegister = () => {
-    navigate("/cards");
+  const [region, setRegion] = useState("");
+  const [organizacion, setOrganizacion] = useState("");
+  const [pais, setPais] = useState("");
+  const [descripcion, setDescripcion] = useState("");
+
+  const handleSiguiente = () => setPaso(2);
+  const handleAnterior = () => setPaso(1);
+
+  const handleGuardar = () => {
+    console.log({ nombre, fecha, sitio, region, organizacion, pais, descripcion });
+    setPaso(3); // Para completar la barra
+    setMostrarPopupGuardar(true); // Mostrar pop-up final
   };
 
   const handleCancel = () => {
     setNombre("");
     setFecha("");
     setSitio("");
+    setRegion("");
+    setOrganizacion("");
+    setPais("");
+    setDescripcion("");
+    setPaso(1);
   };
 
   return (
     <div className="flex h-screen w-full bg-black text-white">
-      {/* Sidebar */}
       <Sidebar isOpen={isOpen} />
-
-      {/* Main Content */}
       <div className="flex flex-1 flex-col">
-        {/* Header */}
         <div className="flex items-center border-b border-zinc-800 bg-zinc-900 px-4 py-3 gap-2">
           <Button isIconOnly variant="light" className="text-white" onPress={() => setIsOpen(!isOpen)}>
             {isOpen ? (
@@ -96,65 +107,96 @@ export default function AsistenteNuevasConv() {
           </div>
         </div>
 
-        {/* Formulario */}
-        <div className="flex flex-col gap-4 max-w-md mx-auto mt-8">
-          <h1 className="text-2xl font-bold">Asistente de Nuevas Convocatorias</h1>
-
-          {/* Nombre del anteproyecto */}
-          <p className="text-sm text-gray-100 font-bold">Nombre del anteproyecto</p>
-          <Input
-            label="Ej. Desarrollo Sostenible"
-            type="text"
-            value={nombre}
-            onValueChange={setNombre}
-            variant="bordered"
-            classNames={{
-              inputWrapper: "bg-zinc-800 border-zinc-700",
-              input: "text-white",
-              label: "text-gray-400"
-            }}
-          />
-
-          {/* Fecha de cierre */}
-          <p className="text-sm text-gray-100 font-bold">Fecha de cierre</p>
-          <Input
-            label="00/00/0000"
-            type="text"
-            value={fecha}
-            onValueChange={setFecha}
-            variant="bordered"
-            classNames={{
-              inputWrapper: "bg-zinc-800 border-zinc-700",
-              input: "text-white",
-              label: "text-gray-400"
-            }}
-          />
-
-          {/* Sitio Web */}
-          <p className="text-sm text-gray-100 font-bold">Sitio Web</p>
-          <Input
-            label="www.ejemplo.com"
-            type="text"
-            value={sitio}
-            onValueChange={setSitio}
-            variant="bordered"
-            classNames={{
-              inputWrapper: "bg-zinc-800 border-zinc-700",
-              input: "text-white",
-              label: "text-gray-400"
-            }}
-          />
-
-          {/* Botones */}
-          <div className="flex gap-2 justify-between">
-            <Button size="md" className="w-full" color="success" onPress={handleRegister}>
-              Siguiente
-            </Button>
-            <Button size="md" className="w-full" color="success" onPress={handleCancel}>
-              Subir Datos
-            </Button>
+        <div className="px-8 mt-4">
+          <div className="h-3 w-full rounded-full bg-zinc-700 overflow-hidden">
+            <div
+              className={`h-full transition-all duration-500 rounded-full ${
+                paso === 1
+                  ? "w-0"
+                  : paso === 2
+                  ? "w-1/2 bg-green-500"
+                  : "w-full bg-green-500"
+              }`}
+            ></div>
           </div>
         </div>
+
+        <div className="flex flex-col gap-4 max-w-md mx-auto mt-8">
+          <h1 className="text-2xl font-bold mt-12">Asistente de Nuevas Convocatorias</h1>
+
+          {paso === 1 ? (
+            <>
+              <p className="text-sm text-gray-100 font-bold">Nombre del anteproyecto</p>
+              <Input label="Ej. Desarrollo Sostenible" type="text" value={nombre} onValueChange={setNombre} variant="bordered"
+                classNames={{ inputWrapper: "bg-zinc-800 border-zinc-700", input: "text-white", label: "text-gray-400" }} />
+
+              <p className="text-sm text-gray-100 font-bold">Fecha de cierre</p>
+              <Input label="00/00/0000" type="text" value={fecha} onValueChange={setFecha} variant="bordered"
+                classNames={{ inputWrapper: "bg-zinc-800 border-zinc-700", input: "text-white", label: "text-gray-400" }} />
+
+              <p className="text-sm text-gray-100 font-bold">Sitio Web</p>
+              <Input label="www.ejemplo.com" type="text" value={sitio} onValueChange={setSitio} variant="bordered"
+                classNames={{ inputWrapper: "bg-zinc-800 border-zinc-700", input: "text-white", label: "text-gray-400" }} />
+            </>
+          ) : (
+            <>
+              <p className="text-sm text-gray-100 font-bold">Región</p>
+              <Input label="Escribe..." value={region} onValueChange={setRegion} variant="bordered"
+                classNames={{ inputWrapper: "bg-zinc-800 border-zinc-700", input: "text-white", label: "text-gray-400" }} />
+
+              <p className="text-sm text-gray-100 font-bold">Organización</p>
+              <Input label="Escribe..." value={organizacion} onValueChange={setOrganizacion} variant="bordered"
+                classNames={{ inputWrapper: "bg-zinc-800 border-zinc-700", input: "text-white", label: "text-gray-400" }} />
+
+              <p className="text-sm text-gray-100 font-bold">País</p>
+              <Input label="Escribe..." value={pais} onValueChange={setPais} variant="bordered"
+                classNames={{ inputWrapper: "bg-zinc-800 border-zinc-700", input: "text-white", label: "text-gray-400" }} />
+
+              <p className="text-sm text-gray-100 font-bold">Descripción</p>
+              <Input label="Escribe..." value={descripcion} onValueChange={setDescripcion} variant="bordered"
+                classNames={{ inputWrapper: "bg-zinc-800 border-zinc-700", input: "text-white", label: "text-gray-400" }} />
+            </>
+          )}
+
+          <div className="flex gap-2 justify-between">
+            {paso === 1 ? (
+              <>
+                <Button size="md" className="w-full" color="success" onPress={handleSiguiente}>Siguiente</Button>
+                <Button size="md" className="w-full" color="success" onPress={() => setMostrarModal(true)}>Subir Datos</Button>
+              </>
+            ) : (
+              <>
+                <Button size="md" className="w-full" color="default" onPress={handleAnterior}>Anterior</Button>
+                <Button size="md" className="w-full" color="success" onPress={handleGuardar}>Guardar</Button>
+              </>
+            )}
+          </div>
+        </div>
+
+        {/* Modal emergente: Subir Datos */}
+        {mostrarModal && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70">
+            <div className="bg-zinc-900 p-6 rounded-xl shadow-xl w-full max-w-md text-white">
+              <h2 className="text-xl font-bold mb-4">¿Estás seguro que quieres subir los datos?</h2>
+              <p className="mb-6 text-sm text-gray-300">Esta acción guardará la información ingresada hasta ahora.</p>
+              <div className="flex justify-end gap-2">
+                <Button color="success" onPress={() => setMostrarModal(false)}>Listo</Button>
+                <Button color="default">Arrastra los documentos aquí</Button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Segundo Modal: Confirmación Guardado */}
+        {mostrarPopupGuardar && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70">
+            <div className="bg-zinc-800 p-8 rounded-xl shadow-xl w-full max-w-lg text-white text-center">
+              <h2 className="text-2xl font-bold mb-4">¡Datos guardados exitosamente!</h2>
+              <p className="text-sm text-gray-300 mb-6">Gracias por registrar la convocatoria. Puedes revisar la convocatoria en la siguiente pestaña.</p>
+              <Button color="success" onPress={() => setMostrarPopupGuardar(false)}>VIEW ON DASHBOARD</Button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
