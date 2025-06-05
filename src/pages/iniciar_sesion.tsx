@@ -8,10 +8,43 @@ export default function Register() {
   const navigate = useNavigate();
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
+  const [errorMessage, setErrorMessage] = React.useState("");
   const [name, setName] = React.useState("");
   
-  const handleRegister = () => {
-    navigate("/cards");
+  const handleLogin = async () => {
+    if (!email || !password) {
+      setErrorMessage("Por favor, ingresa correo y contraseña.");
+      return;
+    }
+
+    try {
+      const response = await fetch("http://localhost:3000/CSoftware/api/loginByEmail", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: email,
+          password: password
+        })
+      });
+
+      const res = await response.json();
+
+      if (res.isLogin) {
+        // Login correcto
+        sessionStorage.setItem("userEmail", email);
+        navigate("/cards");
+      } else {
+        // Credenciales incorrectas
+        setErrorMessage("Correo o contraseña incorrectos.");
+      }
+
+    } catch (error) {
+      console.error("Error al conectar con el servidor:", error);
+      setErrorMessage("Error de conexión con el servidor.");
+    }
+
+    // Limpiar mensaje después de 3 segundos
+    //setTimeout(() => setErrorMessage(""), 10000);
   };
 
   return (
@@ -28,51 +61,62 @@ export default function Register() {
           </div>
           
           <h2 className="text-center text-xl font-semibold">Iniciar sesión</h2>
-          
-          
-          
-          <Input
-            label="Correo electrónico"
-            placeholder=""
-            type="email"
-            value={email}
-            onValueChange={setEmail}
-            variant="bordered"
-            classNames={{
-              inputWrapper: "bg-zinc-800 border-zinc-700",
-              input: "text-white",
-              label: "text-gray-400"
-            }}
-          />
-          
-          <Input
-            label="Contraseña"
-            placeholder=""
-            type="password"
-            value={password}
-            onValueChange={setPassword}
-            variant="bordered"
-            classNames={{
-              inputWrapper: "bg-zinc-800 border-zinc-700",
-              input: "text-white",
-              label: "text-gray-400"
-            }}
-          />
 
-           <p className="mt-4 text-sm text-gray-500">
-          <span 
-            className="cursor-pointer hover:text-success-500"
-             onClick={() => navigate("/recuperar_contrasenia")}
-          
-          >
-            ¿Has olvidado tu constraseña?
-          </span>
-           </p>
+          <Input
+  label="Correo electrónico"
+  placeholder=""
+  type="email"
+  value={email}
+  onValueChange={(val) => {
+    setEmail(val);
+    if (errorMessage) setErrorMessage("");
+  }}
+  variant="bordered"
+  classNames={{
+    inputWrapper: "bg-zinc-800 border-zinc-700",
+    input: "text-white",
+    label: "text-gray-400"
+  }}
+/>
+
+<Input
+  label="Contraseña"
+  placeholder=""
+  type="password"
+  value={password}
+  onValueChange={(val) => {
+    setPassword(val);
+    if (errorMessage) setErrorMessage("");
+  }}
+  variant="bordered"
+  classNames={{
+    inputWrapper: "bg-zinc-800 border-zinc-700",
+    input: "text-white",
+    label: "text-gray-400"
+  }}
+/>
+
+
+          {/* Mensaje de error visible y estilizado */}
+          {errorMessage && (
+            <div className="rounded-md bg-red-500/10 border border-red-500 text-red-400 text-sm p-2 text-center">
+              {errorMessage}
+            </div>
+          )}
+
+          <p className="mt-4 text-sm text-gray-500">
+            <span 
+              className="cursor-pointer hover:text-success-500"
+              onClick={() => navigate("/recuperar_contrasenia")}
+            >
+              ¿Has olvidado tu constraseña?
+            </span>
+          </p>
           
           <Button 
             color="success" 
             className="mt-2 w-full"
-            onPress={handleRegister}
+            onPress={handleLogin}
           >
             Iniciar sesión
           </Button>
