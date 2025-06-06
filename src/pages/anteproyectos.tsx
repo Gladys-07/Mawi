@@ -1,17 +1,18 @@
 import React, { useState } from "react";
 import { Button, Input, Tabs, Tab } from "@heroui/react";
 import { Icon } from "@iconify/react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+
 
 const Sidebar = ({ isOpen }: { isOpen: boolean }) => {
   const location = useLocation();
   const menuItems = [
-    { title: "Inicio", icon: "lucide:home", path: "/" },
+    { title: "Inicio", icon: "lucide:home", path: "/cards" },
     { title: "Asistente de Mi Biomo", icon: "lucide:activity", path: "/asistentebiomo" },
-    { title: "Nuevas Convocatorias", icon: "lucide:bell", path: "/convocatorias" },
+    { title: "Nuevas Convocatorias", icon: "lucide:bell", path: "/AsNewConv" },
     { title: "Explorador de Anteproyectos", icon: "lucide:search", path: "/anteproyectos", active: true },
     { title: "Informes, Métricas y Análisis", icon: "lucide:bar-chart-2", path: "/informes" },
-  ];
+  ];  
   return (
     <div className={`flex flex-col bg-zinc-900 border-r border-zinc-800 transition-all duration-300 ${isOpen ? "w-64" : "w-0 overflow-hidden"}`}>
       <div className="flex items-center gap-2 p-4 border-b border-zinc-800">
@@ -155,12 +156,7 @@ export default function Anteproyectos() {
           ))}
         </div>
 
-        {/* Botón flotante */}
-        <div className="fixed bottom-6 right-6">
-          <Button color="success" className="shadow-lg px-6 py-3 text-base font-semibold" onClick={() => setShowForm(true)}>
-            Crear Nuevo Anteproyecto
-          </Button>
-        </div>
+       
 
         {/* Modal */}
         {showForm && (

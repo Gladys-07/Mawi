@@ -6,7 +6,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 const Sidebar = ({ isOpen }: { isOpen: boolean }) => {
   const location = useLocation();
   const menuItems = [
-    { title: "Inicio", icon: "lucide:home", path: "/" },
+    { title: "Inicio", icon: "lucide:home", path: "/cards" },
     { title: "Asistente de Mi Biomo", icon: "lucide:activity", path: "/asistentebiomo" },
     { title: "Nuevas Convocatorias", icon: "lucide:bell", path: "/AsNewConv" },
     { title: "Explorador de Anteproyectos", icon: "lucide:search", path: "/anteproyectos" },
