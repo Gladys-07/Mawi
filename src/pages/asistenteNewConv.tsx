@@ -56,9 +56,9 @@ export default function AsistenteNuevasConv() {
   const [mostrarModal, setMostrarModal] = useState(false);
   const [mostrarPopupGuardar, setMostrarPopupGuardar] = useState(false);
 
-  const [nombre, setNombre] = useState("");
-  const [fecha, setFecha] = useState("");
-  const [sitio, setSitio] = useState("");
+  const [nombreConvocatoria, setNombre] = useState("");
+  const [fechaCierre, setFecha] = useState("");
+  const [sitioWeb, setSitio] = useState("");
   const [region, setRegion] = useState("");
   const [organizacion, setOrganizacion] = useState("");
   const [pais, setPais] = useState("");
@@ -68,10 +68,26 @@ export default function AsistenteNuevasConv() {
   const handleAnterior = () => setPaso(1);
 
   const handleGuardar = () => {
-    console.log({ nombre, fecha, sitio, region, organizacion, pais, descripcion });
-    setPaso(3);
-    setMostrarPopupGuardar(true);
+  const datosConvocatoria = {
+    nombreConvocatoria,
+    fechaCierre,
+    sitioWeb,
+    region,
+    organizacion,
+    pais,
+    descripcion,
+    archivos: archivosSubidos.map((archivo) => ({
+      nombre: archivo.file.name,
+      tipo: archivo.file.type,
+    })),
   };
+
+  console.log(JSON.stringify(datosConvocatoria, null, 2));
+  
+  setPaso(3);
+  setMostrarPopupGuardar(true);
+};
+
 
   const handleArchivos = (files: File[]) => {
     const validFiles = files.filter((file) =>
@@ -124,13 +140,24 @@ export default function AsistenteNuevasConv() {
           {paso === 1 ? (
             <>
               <p className="text-sm text-gray-100 font-bold">Nombre del anteproyecto</p>
-              <Input label="Ej. Desarrollo Sostenible" type="text" value={nombre} onValueChange={setNombre} variant="bordered"
+              <Input label="Ej. Desarrollo Sostenible" type="text" value={nombreConvocatoria} onValueChange={setNombre} variant="bordered"
                 classNames={{ inputWrapper: "bg-zinc-800 border-zinc-700", input: "text-white", label: "text-gray-400" }} />
               <p className="text-sm text-gray-100 font-bold">Fecha de cierre</p>
-              <Input label="00/00/0000" type="text" value={fecha} onValueChange={setFecha} variant="bordered"
-                classNames={{ inputWrapper: "bg-zinc-800 border-zinc-700", input: "text-white", label: "text-gray-400" }} />
+              <Input
+                label="Selecciona una fecha"
+                type="date"
+                value={fechaCierre}
+                onValueChange={setFecha}
+                variant="bordered"
+                classNames={{
+                inputWrapper: "bg-zinc-800 border-zinc-700",
+                input: "text-white",
+                label: "text-gray-400"
+          }}
+        />
+
               <p className="text-sm text-gray-100 font-bold">Sitio Web</p>
-              <Input label="www.ejemplo.com" type="text" value={sitio} onValueChange={setSitio} variant="bordered"
+              <Input label="www.ejemplo.com" type="text" value={sitioWeb} onValueChange={setSitio} variant="bordered"
                 classNames={{ inputWrapper: "bg-zinc-800 border-zinc-700", input: "text-white", label: "text-gray-400" }} />
             </>
           ) : (
