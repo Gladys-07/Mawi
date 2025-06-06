@@ -12,6 +12,7 @@ import IniciarSesion from "./pages/iniciar_sesion";
 import RecuperarContrasenia from "./pages/recuperar_contrasenia";
 import CambioContrasenia from "./pages/cambio_contrasenia";
 import AsistenteNuevasConv from "./pages/asistenteNewConv";
+import ConvocatoriasDashboard from "./pages/convocatoriasDasboard";
 import Donde from "./pages/donde";
 import Trabajo from "./pages/trabajo";
 import Cards from "./pages/cards";
@@ -31,6 +32,7 @@ export default function App() {
       <Route path="/recuperar_contrasenia" element={<RecuperarContrasenia />} />
       <Route path="/cambio_contrasenia" element={<CambioContrasenia />} />
       <Route path="/AsNewConv" element={<AsistenteNuevasConv />} />
+      <Route path="/convoDash" element={<ConvocatoriasDashboard />} />
       <Route path="/asistentebiomo" element={<AsistenteBiomo />} />
       <Route path="/anteproyectos" element={<Anteproyectos />} />
       <Route path="/donde" element={<Donde/>} />
