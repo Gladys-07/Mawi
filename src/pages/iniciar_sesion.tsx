@@ -10,6 +10,7 @@ export default function Register() {
   const [password, setPassword] = React.useState("");
   const [errorMessage, setErrorMessage] = React.useState("");
   const [name, setName] = React.useState("");
+
   
   const handleLogin = async () => {
     if (!email || !password) {
@@ -30,13 +31,14 @@ export default function Register() {
       const res = await response.json();
 
       if (res.isLogin) {
-        // Login correcto
-        sessionStorage.setItem("userEmail", email);
-        navigate("/cards");
+          const user = res.user;
+          sessionStorage.setItem("userEmail", user.email);
+          sessionStorage.setItem("userId", user.id);
+          navigate("/cards");
       } else {
-        // Credenciales incorrectas
-        setErrorMessage("Correo o contraseña incorrectos.");
+          setErrorMessage("Correo o contraseña incorrectos.");
       }
+
 
     } catch (error) {
       console.error("Error al conectar con el servidor:", error);

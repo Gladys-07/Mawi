@@ -5,6 +5,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const Sidebar = ({ isOpen }: { isOpen: boolean }) => {
   const location = useLocation();
+  const userId = sessionStorage.getItem("userId");
   const menuItems = [
     { title: "Inicio", icon: "lucide:home", path: "/cards" },
     { title: "Asistente de Mi Biomo", icon: "lucide:activity", path: "/asistentebiomo" },
@@ -63,11 +64,12 @@ export default function AsistenteNuevasConv() {
   const [organizacion, setOrganizacion] = useState("");
   const [pais, setPais] = useState("");
   const [descripcion, setDescripcion] = useState("");
+  const creadoPor = parseInt(sessionStorage.getItem("userId") || "0", 10);
 
   const handleSiguiente = () => setPaso(2);
   const handleAnterior = () => setPaso(1);
 
-  const handleGuardar = () => {
+  const handleGuardar = async () => {
     const datosConvocatoria = {
       nombreConvocatoria,
       fechaCierre,
@@ -76,6 +78,7 @@ export default function AsistenteNuevasConv() {
       organizacion,
       pais,
       descripcion,
+      creadoPor,
       archivos: archivosSubidos.map((archivo) => ({
         nombre: archivo.file.name,
         tipo: archivo.file.type,
@@ -84,9 +87,29 @@ export default function AsistenteNuevasConv() {
 
     console.log(JSON.stringify(datosConvocatoria, null, 2));
 
-    setPaso(3);
-    setMostrarPopupGuardar(true);
-  };
+    try {
+    const response = await fetch("http://localhost:3000/CSoftware/api/newConvocatoria", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(datosConvocatoria),
+    });
+
+    const resultado = await response.json();
+    console.log("Respuesta del servidor:", resultado);
+
+    if (response.ok) {
+      setPaso(3);
+      setMostrarPopupGuardar(true);
+    } else {
+      alert("Error al guardar la convocatoria.");
+    }
+  } catch (error) {
+    console.error("Error al conectar con el backend:", error);
+    alert("Error de conexión con el servidor.");
+  }
+};
 
   const handleArchivos = (files: File[]) => {
     const validFiles = files.filter((file) =>
@@ -235,6 +258,7 @@ export default function AsistenteNuevasConv() {
           }
         />
       </div>
+
       {archivosSubidos.length > 0 && (
         <div className="mt-6 space-y-4 max-h-64 overflow-y-auto pr-2">
           {archivosSubidos.map((archivo, idx) => (
@@ -295,6 +319,18 @@ export default function AsistenteNuevasConv() {
     </div>
   </div>
 )}
+
+{/* Segundo Modal: Confirmación Guardado */}
+{mostrarPopupGuardar && (
+  <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70">
+    <div className="bg-zinc-800 p-8 rounded-xl shadow-xl w-full max-w-lg text-white text-center">
+      <h2 className="text-2xl font-bold mb-4">¡Datos guardados exitosamente!</h2>
+      <p className="text-sm text-gray-300 mb-6">Gracias por registrar la convocatoria. Puedes revisar la convocatoria en la siguiente pestaña.</p>
+      <Button color="success" onPress={() => navigate("/convoDash")}>VIEW ON DASHBOARD</Button>
+    </div>
+  </div>
+)}
+
 
         </div>
       </div>
