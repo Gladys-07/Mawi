@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react"; 
 import { Button, Input } from "@heroui/react";
 import { Icon } from "@iconify/react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+
 
 const Sidebar = ({ isOpen }: { isOpen: boolean }) => {
   const location = useLocation();
@@ -51,8 +52,15 @@ const Sidebar = ({ isOpen }: { isOpen: boolean }) => {
   );
 };
 
+interface PaisAPI {
+  name: {
+    common: string;
+  };
+}
+
 export default function AsistenteNuevasConv() {
   const navigate = useNavigate();
+  const [listaPaises, setListaPaises] = useState<string[]>([]); // <== MOVER AQUÍ
   const [archivosSubidos, setArchivosSubidos] = useState<{ file: File; url: string | null }[]>([]);
   const [isOpen, setIsOpen] = useState(true);
   const [paso, setPaso] = useState(1);
@@ -70,6 +78,23 @@ export default function AsistenteNuevasConv() {
 
   const handleSiguiente = () => setPaso(2);
   const handleAnterior = () => setPaso(1);
+
+  useEffect(() => {
+    const obtenerPaises = async () => {
+      try {
+        const res = await fetch("https://restcountries.com/v3.1/all?fields=name");
+        const data: PaisAPI[] = await res.json();
+        const nombres = data
+          .map((pais) => pais.name.common)
+          .sort((a, b) => a.localeCompare(b));
+        setListaPaises(nombres);
+      } catch (error) {
+        console.error("Error al cargar países:", error);
+      }
+    };
+
+    obtenerPaises();
+  }, []);
 
   const handleGuardar = async () => {
     const datosConvocatoria = {
@@ -168,7 +193,28 @@ export default function AsistenteNuevasConv() {
             <>
               <Input label="Región" value={region} onValueChange={setRegion} variant="bordered" className="w-full" classNames={{ inputWrapper: "bg-zinc-800 border-zinc-700", input: "text-white" }} />
               <Input label="Organización" value={organizacion} onValueChange={setOrganizacion} variant="bordered" className="w-full" classNames={{ inputWrapper: "bg-zinc-800 border-zinc-700", input: "text-white" }} />
-              <Input label="País" value={pais} onValueChange={setPais} variant="bordered" className="w-full" classNames={{ inputWrapper: "bg-zinc-800 border-zinc-700", input: "text-white" }} />
+              <div className="flex flex-col gap-1 w-full">
+  <label className="text-sm text-gray-400 font-medium">País</label>
+  <div className="relative">
+    <select
+      value={pais}
+      onChange={(e) => setPais(e.target.value)}
+      className="appearance-none w-full bg-zinc-800 text-white text-sm border-2 border-zinc-700 hover:border-white px-3 py-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-white transition duration-150"
+    >
+      <option value="">Selecciona un país</option>
+      {listaPaises.map((p) => (
+        <option key={p} value={p}>{p}</option>
+      ))}
+    </select>
+    <div className="pointer-events-none absolute inset-y-0 right-3 flex items-center text-gray-400">
+      <Icon icon="lucide:chevron-down" width={18} height={18} />
+    </div>
+  </div>
+</div>
+
+
+
+
               <Input label="Descripción" value={descripcion} onValueChange={setDescripcion} variant="bordered" className="w-full" classNames={{ inputWrapper: "bg-zinc-800 border-zinc-700", input: "text-white" }} />
             </>
           )}
