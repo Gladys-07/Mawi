@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button, Input, Card, CardBody } from "@heroui/react";
 import { Icon } from "@iconify/react";
 import { useNavigate } from "react-router-dom";
@@ -8,12 +8,32 @@ export default function RecuperarContrasenia() {
   const [codigo, setCodigo] = React.useState("");
   const [newPassword, setNewPassword] = React.useState("");
   const [confirmPassword, setConfirmPassword] = React.useState("");
-
+  const [OTP, setOTP] = useState(true);
+  const [errorMessage, setErrorMessage] = useState("");
   
+  const handleRecuperar = async () => {
+    // PASSWORD CHANGE LOGIC
+    //NEWPASSWORD ES LA CONTRASEÑA, Y SESSIONSTOREAGE EMAIL ES EL MAIL
+    if (!newPassword || !confirmPassword) {
+      setErrorMessage("Por favor, ingrese contraseña y confirmación de la misma.");
+      return;
+    }
+    try {
+      const response = await fetch("http://localhost:3000/CSoftware/api/cambioContra", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+          "username": sessionStorage.getItem("name"),
+          "password": newPassword
+        })
+      });
+      console.log("changed password successfully");
+      navigate("/success");
 
-  const handleRecuperar = () => {
-    // Aquí iría tu lógica para enviar correo
-    navigate("/success");
+    } catch(error) {
+      console.log("Error al conectar con el servidor");
+      setErrorMessage("Error de conexión con el servidor.");
+    }
   };
 
   return (
@@ -68,6 +88,12 @@ export default function RecuperarContrasenia() {
               label: "text-gray-400"
             }}
           />
+
+          {errorMessage && (
+            <div className="rounded-md bg-red-500/10 border border-red-500 text-red-400 text-sm p-2 text-center">
+              {errorMessage}
+            </div>
+          )}
 
           <Button 
             color="success" 

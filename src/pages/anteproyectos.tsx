@@ -205,10 +205,10 @@ export default function Anteproyectos() {
                 </div>
               </div>
               <div className="flex justify-end mt-6 gap-2">
-                <Button color="default" onClick={() => setShowForm(false)}>
+                <Button color="default" onPress={() => setShowForm(false)}>
                   Cancelar
                 </Button>
-                <Button color="success" onClick={handleCrear}>
+                <Button color="success" onPress={handleCrear}>
                   Guardar
                 </Button>
               </div>

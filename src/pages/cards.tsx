@@ -1,18 +1,24 @@
-import React from "react";
+import React, { useState } from "react";
 import { Card, Button } from "@heroui/react";
 import { Icon } from "@iconify/react";
 import { useNavigate } from "react-router-dom";
 
 export default function App() {
   const navigate = useNavigate();
+  const [loMenu, setloMenu] = useState(false)
+
+  const handleLogout = () => {
+    sessionStorage.clear();
+    navigate("/login");
+  }
 
   const handleCardClick = (ruta: string): void => {
     if (ruta === "Convocatorias") {
       navigate("/AsNewConv");
     } else if (ruta === "Biomo") {
-      navigate("/asistentebiomo"); // <-- CORREGIDO
+      navigate("/asistentebiomo");
     } else if (ruta === "Anteproyectos") {
-      navigate("/anteproyectos"); // <-- CORREGIDO
+      navigate("/anteproyectos");
     }
   };
 
@@ -25,11 +31,31 @@ export default function App() {
             <Icon icon="lucide:eye" className="text-zinc-900 w-4 h-4" />
           </div>
           <span className="font-medium">Mawi</span>
+
         </div>
-        <Button size="sm" variant="ghost" className="text-white" onPress={() => navigate("/login")}>
-          <Icon icon="lucide:user" className="text-white w-4 h-4" />
-          EcoRanger
-        </Button>
+        <div className="relative">
+          <Button size="sm" 
+                  variant="ghost" 
+                  className="text-white" 
+                  onPress={() => setloMenu((prev) => !prev)}> {/*It sets loMenu to the opposite of its previous value  */}
+            <Icon icon="lucide:user" className="text-white w-4 h-4" />
+            EcoRanger
+          </Button>
+          {loMenu && (
+            <div className="absolute right-0 mt-2 w-40 bg-zinc-900 shadow-lg z-50 rounded border border-white py-1 px-2">
+              <span className="block text-white w-full text-base text-center font-semibold mb-2 py-1"> 
+                {sessionStorage.getItem("name")}  
+              </span>
+              <Button size="sm" 
+                      variant="ghost" 
+                      className="text-white w-full text-left text-xs"
+                      onPress={handleLogout}>
+                        Logout 
+                      </Button>
+            </div>
+          )
+          }
+        </div>
         
       </header>
 

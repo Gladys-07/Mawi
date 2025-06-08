@@ -60,6 +60,8 @@ export default function Sidebar({ isAdmin = false }: SidebarProps) {
     },
   ];
 
+  console.log("Name: ", sessionStorage.getItem("name"))
+  console.log("Email: ", sessionStorage.getItem("userEmail"))
   return (
     <>
     {/* Button to open sidebar */}
@@ -84,13 +86,13 @@ export default function Sidebar({ isAdmin = false }: SidebarProps) {
         </div>
         
         <div className="mb-6 flex items-center gap-3 rounded-lg bg-zinc-800 p-3">
-          <Avatar
-            src="https://img.heroui.chat/image/avatar?w=200&h=200&u=1"
-            size="sm"
+          <Icon
+            icon="lucide:user"
+            className="text-white w-6 h-6"
           />
           <div>
-            <p className="text-sm font-medium text-white">Ana García</p>
-            <p className="text-xs text-gray-400">ana@example.com</p>
+            <p className="text-sm font-medium text-white">{sessionStorage.getItem("name")}</p>
+            <p className="text-xs text-gray-400">{sessionStorage.getItem("userEmail")}</p>
           </div>
         </div>
         
@@ -120,7 +122,7 @@ export default function Sidebar({ isAdmin = false }: SidebarProps) {
         <p className="mt-2 text-center text-sm text-gray-500 pb-2">
           <span 
             className="cursor-pointer hover:text-success-500"
-            onClick={() => navigate("/ayuda")}>
+            onClick={() => navigate("/soporte")}>
               ¿Necesitas ayuda? Contacta con nosotros
           </span>
         </p>

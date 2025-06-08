@@ -32,6 +32,7 @@ export default function Register() {
 
       if (res.isLogin) {
           const user = res.user;
+          sessionStorage.setItem("name", user.username);
           sessionStorage.setItem("userEmail", user.email);
           sessionStorage.setItem("userId", user.id);
           navigate("/cards");
@@ -44,9 +45,6 @@ export default function Register() {
       console.error("Error al conectar con el servidor:", error);
       setErrorMessage("Error de conexión con el servidor.");
     }
-
-    // Limpiar mensaje después de 3 segundos
-    //setTimeout(() => setErrorMessage(""), 10000);
   };
 
   return (
@@ -65,38 +63,38 @@ export default function Register() {
           <h2 className="text-center text-xl font-semibold">Iniciar sesión</h2>
 
           <Input
-  label="Correo electrónico"
-  placeholder=""
-  type="email"
-  value={email}
-  onValueChange={(val) => {
-    setEmail(val);
-    if (errorMessage) setErrorMessage("");
-  }}
-  variant="bordered"
-  classNames={{
-    inputWrapper: "bg-zinc-800 border-zinc-700",
-    input: "text-white",
-    label: "text-gray-400"
-  }}
-/>
+            label="Correo electrónico"
+            placeholder=""
+            type="email"
+            value={email}
+            onValueChange={(val) => {
+              setEmail(val);
+              if (errorMessage) setErrorMessage("");
+            }}
+            variant="bordered"
+            classNames={{
+              inputWrapper: "bg-zinc-800 border-zinc-700",
+              input: "text-white",
+              label: "text-gray-400"
+            }}
+          />
 
-<Input
-  label="Contraseña"
-  placeholder=""
-  type="password"
-  value={password}
-  onValueChange={(val) => {
-    setPassword(val);
-    if (errorMessage) setErrorMessage("");
-  }}
-  variant="bordered"
-  classNames={{
-    inputWrapper: "bg-zinc-800 border-zinc-700",
-    input: "text-white",
-    label: "text-gray-400"
-  }}
-/>
+          <Input
+            label="Contraseña"
+            placeholder=""
+            type="password"
+            value={password}
+            onValueChange={(val) => {
+              setPassword(val);
+              if (errorMessage) setErrorMessage("");
+            }}
+            variant="bordered"
+            classNames={{
+              inputWrapper: "bg-zinc-800 border-zinc-700",
+              input: "text-white",
+              label: "text-gray-400"
+            }}
+          />
 
 
           {/* Mensaje de error visible y estilizado */}
