@@ -53,7 +53,7 @@ const handleRecuperar = () => {
           <p className="mt-2 text-center text-sm text-gray-500">
             <span 
               className="cursor-pointer hover:text-success-500"
-              onClick={() => navigate("/ayuda")} //hacer apartado de soporte "ayuda"
+              onClick={() => navigate("/soporte")}
             >
               ¿Necesitas ayuda? Contacta con nosotros
             </span>

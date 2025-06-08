@@ -94,7 +94,7 @@ export default function Register() {
           <p className="mt-2 text-center text-sm text-gray-500">
             <span 
               className="cursor-pointer hover:text-success-500"
-              onClick={() => navigate("/login")}
+              onClick={() => navigate("/soporte")}
             >
               ¿Necesitas ayuda? Contacta con nosotros
             </span>

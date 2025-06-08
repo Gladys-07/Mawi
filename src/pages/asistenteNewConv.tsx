@@ -5,6 +5,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const Sidebar = ({ isOpen }: { isOpen: boolean }) => {
   const location = useLocation();
+  const navigate = useNavigate(); 
   const userId = sessionStorage.getItem("userId");
   const menuItems = [
     { title: "Inicio", icon: "lucide:home", path: "/cards" },
@@ -41,6 +42,7 @@ const Sidebar = ({ isOpen }: { isOpen: boolean }) => {
           color="default"
           className="justify-start w-full text-zinc-400"
           startContent={<Icon icon="lucide:help-circle" width={18} height={18} />}
+          onPress={() => navigate("/soporte")} 
         >
           Contacta con el soporte
         </Button>

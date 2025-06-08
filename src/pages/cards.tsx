@@ -81,7 +81,11 @@ export default function App() {
         </div>
 
         {/* Contact Button */}
-        <Button className="mt-8 bg-zinc-700 hover:bg-zinc-600 text-white" variant="flat">
+        <Button
+          className="mt-8 bg-zinc-700 hover:bg-zinc-600 text-white"
+          variant="flat"
+          onPress={() => navigate("/soporte")}
+        >
           Contacta con el soporte
         </Button>
       </main>

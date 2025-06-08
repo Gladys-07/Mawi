@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import { Navbar, Button, Input } from "@heroui/react";
 import { Icon } from "@iconify/react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import {getChatCompletion} from "../api/chat"
 
 // Sidebar Component
@@ -11,6 +11,7 @@ interface SidebarProps {
 
 const SidebarBiomo: React.FC<SidebarProps> = ({ isOpen }) => {
   const location = useLocation();
+  const navigate = useNavigate();
   const menuItems = [
     { title: "Inicio", icon: "lucide:home", path: "/cards" },
     { title: "Asistente de Mi Biomo", icon: "lucide:activity", path: "/asistentebiomo" },
@@ -57,6 +58,7 @@ const SidebarBiomo: React.FC<SidebarProps> = ({ isOpen }) => {
           color="default"
           className="justify-start w-full text-zinc-400"
           startContent={<Icon icon="lucide:help-circle" width={18} height={18} />}
+          onPress={() => navigate("/soporte")} 
         >
           Contacto con el soporte
         </Button>

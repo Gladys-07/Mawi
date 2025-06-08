@@ -18,6 +18,7 @@ import Trabajo from "./pages/trabajo";
 import Cards from "./pages/cards";
 import AsistenteBiomo from "./pages/asistentebiomo";
 import Anteproyectos from "./pages/anteproyectos";
+import Soporte from "./pages/soporte";
 
 export default function App() {
   return (
@@ -38,6 +39,7 @@ export default function App() {
       <Route path="/donde" element={<Donde/>} />
       <Route path="/trabajo" element={<Trabajo/>} />
       <Route path="/cards" element={<Cards/>} />
+      <Route path="/soporte" element={<Soporte />} />
       <Route path="/" element={<Navigate to="/login" replace />} />
     </Routes>
   );
