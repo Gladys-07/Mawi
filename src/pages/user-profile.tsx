@@ -4,15 +4,23 @@ import { Icon } from "@iconify/react";
 import Sidebar from "../components/sidebar";
 
 export default function UserProfile() {
+  const [sidebarOpen, setSidebarOpen] = React.useState(true);
   const [name, setName] = React.useState("Ana García");
   const [email, setEmail] = React.useState("ana@example.com");
   const [bio, setBio] = React.useState("Entusiasta del medio ambiente y la sostenibilidad");
 
   return (
     <div className="flex h-screen w-full bg-black">
-      <Sidebar />
+      <Sidebar isOpen={sidebarOpen} />
+      <div className={`fixed top-0 left-0 right-0 z-30 h-16 flex items-center border-b border-zinc-800 bg-zinc-900 px-6 gap-4 transition-all duration-300 ${sidebarOpen ? 'pl-64' : 'pl-0'}`}>
+  <Button isIconOnly variant="light" className="text-white" onPress={() => setSidebarOpen(!sidebarOpen)}>
+    <Icon icon={sidebarOpen ? "lucide:chevron-left" : "lucide:chevron-right"} width={20} height={20} />
+  </Button>
+  <h1 className="text-lg font-medium text-white">Perfil de Usuario</h1>
+</div>
+
       
-      <div className="flex-1 overflow-auto p-6">
+      <div className={`flex-1 overflow-auto pt-24 pb-20 px-6 transition-all duration-300 ${sidebarOpen ? 'ml-64' : 'ml-0'}`}>
         <h1 className="mb-6 text-2xl font-bold text-white ml-8 pl-4">Perfil de Usuario</h1>
         
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
