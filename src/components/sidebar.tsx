@@ -40,7 +40,8 @@ export default function Sidebar({ isAdmin = false, isOpen }: SidebarProps) {
         <h1 className="text-xl font-bold text-white">Mawi</h1>
       </div>
 
-      <div className="mb-6 flex items-center gap-3 rounded-lg bg-zinc-800 p-3">
+      <div className="mt-4 mb-4 flex items-center gap-3 rounded-lg bg-zinc-800 p-3">
+
         <Icon icon="lucide:user" className="text-white w-6 h-6" />
         <div>
           <p className="text-sm font-medium text-white">{sessionStorage.getItem("name")}</p>
