@@ -15,10 +15,11 @@ export default function Sidebar({ isAdmin = false, isOpen }: SidebarProps) {
   const isActive = (path: string) => location.pathname === path;
 
   const menuItems = [
+    { label: "Inicio", icon: "lucide:home", path: "/cards" },
     { label: "Dashboard", icon: "lucide:layout-dashboard", path: "/dashboard" },
-    { label: "Acciones", icon: "lucide:list-checks", path: "/actions" },
-    { label: "Estadísticas", icon: "lucide:bar-chart-2", path: "/stats" },
-    { label: "Comunidad", icon: "lucide:users", path: "/community" },
+    { label: "Asistente Mi Biomo", icon: "lucide:list-checks", path: "/asistentebiomo" },
+    //{ label: "Estadísticas", icon: "lucide:bar-chart-2", path: "/stats" },
+    { label: "Anteproyectos", icon: "lucide:search", path: "/anteproyectos" },
     { label: "Convocatorias", icon: "lucide:layout-dashboard", path: "/convoDash" },
     { label: "Nueva Convocatoria", icon: "lucide:plus-square", path: "/AsNewConv" },
     { label: "Configuración", icon: "lucide:settings", path: "/settings" },
