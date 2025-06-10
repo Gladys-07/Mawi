@@ -28,10 +28,18 @@ export default function ConvocatoriasDashboard() {
 
   useEffect(() => {
     const fetchConvocatorias = async () => {
+      console.log(sessionStorage.getItem("token"));
+      const token = sessionStorage.getItem("token");
+      const userId = sessionStorage.getItem("userId");
       try {
-        const userId = sessionStorage.getItem("userId");
         if (!userId) return;
-        const res = await fetch(`http://localhost:3000/CSoftware/api/getConvocatoriasByUser/${userId}`);
+        const res = await fetch(`http://localhost:3000/CSoftware/api/getConvocatoriasByUser/${userId}`,{
+          method: "GET",
+          headers: {
+            "Content-Type" : "application/json",
+            "authorization" : `Bearer ${token}`
+          }
+        });
         const data = await res.json();
         setConvocatorias(data.records);
       } catch (error) {
@@ -73,9 +81,14 @@ export default function ConvocatoriasDashboard() {
 
   const handleDelete = async () => {
     if (!deleteId) return;
+    const token = sessionStorage.getItem("token");
     try {
       const res = await fetch(`http://localhost:3000/CSoftware/api/deleteConvocatoria/${deleteId}`, {
         method: "DELETE",
+          headers: {
+            "Content-Type" : "application/json",
+            "authorization" : `Bearer ${token}`
+          }
       });
       const result = await res.json();
       if (result.status === "success") {
@@ -196,11 +209,14 @@ export default function ConvocatoriasDashboard() {
     alert("No hay cambios para guardar.");
     return;
   }
-
+  const token = sessionStorage.getItem("token");
   try {
     const res = await fetch(`http://localhost:3000/CSoftware/api/updateConvocatoria/${editConvocatoria.ID_convocatoria}`, {
       method: "PUT",
-      headers: { "Content-Type": "application/json" },
+      headers: { 
+        "Content-Type": "application/json",
+        "authorization":`Bearer ${token}`
+       },
       body: JSON.stringify(updatedFields),
     });
     const result = await res.json();
