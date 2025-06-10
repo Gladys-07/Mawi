@@ -23,8 +23,16 @@ export default function ConvocatoriasDashboard() {
 
   useEffect(() => {
     const fetchConvocatorias = async () => {
+      console.log(sessionStorage.getItem("token"));
+      const token = sessionStorage.getItem("token");
       try {
-        const res = await fetch("http://localhost:3000/CSoftware/api/getConvocatorias");
+        const res = await fetch("http://localhost:3000/CSoftware/api/getConvocatorias", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "authorization":"Bearer " + token ///AQUI CAMBIESTE LA AUTENTICACIÓOOON!!!
+          }
+        });
         const data = await res.json();
         setConvocatorias(data.records);
       } catch (error) {
