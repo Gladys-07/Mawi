@@ -163,18 +163,21 @@ export default function AsistenteNuevasConv() {
     <div className="flex flex-col md:flex-row h-screen w-full bg-black text-white overflow-hidden">
       <Sidebar isOpen={isOpen} />
       <div className="flex flex-1 flex-col overflow-auto">
-        <div className="flex items-center border-b border-zinc-800 bg-zinc-900 px-4 py-3 gap-2">
-          <Button isIconOnly variant="light" className="text-white" onPress={() => setIsOpen(!isOpen)}>
-            <Icon icon={isOpen ? "lucide:chevron-left" : "lucide:chevron-right"} width={20} height={20} />
-          </Button>
-          <h1 className="text-lg font-medium">Asistente de Nuevas Convocatorias</h1>
-          <div className="ml-auto flex items-center gap-2">
-            <span className="text-sm">EcoRanger</span>
-            <div className="w-8 h-8 rounded-full bg-zinc-700 flex items-center justify-center">
-              <Icon icon="lucide:user" width={20} height={20} />
-            </div>
-          </div>
-        </div>
+        <div className={`fixed top-0 left-0 right-0 z-30 h-16 flex items-center border-b border-zinc-800 bg-zinc-900 px-6 gap-4 transition-all duration-300 ${isOpen ? 'pl-64' : 'pl-0'}`}>
+  <Button isIconOnly variant="light" className="text-white ml-2" onPress={() => setIsOpen(!isOpen)}>
+    <Icon icon={isOpen ? "lucide:chevron-left" : "lucide:chevron-right"} width={20} height={20} />
+  </Button>
+  <h1 className="text-lg font-medium">Asistente de Nuevas Convocatorias</h1>
+  <div className="ml-auto flex items-center gap-2">
+    <span className="text-sm">
+      {`EcoRanger${sessionStorage.getItem("name") ? `: ${sessionStorage.getItem("name")}` : ""}`}
+    </span>
+    <div className="w-8 h-8 rounded-full bg-zinc-700 flex items-center justify-center">
+      <Icon icon="lucide:user" width={20} height={20} />
+    </div>
+  </div>
+</div>
+
 
         <div className="px-4 sm:px-8 mt-4">
           <div className="h-3 w-full rounded-full bg-zinc-700 overflow-hidden">
