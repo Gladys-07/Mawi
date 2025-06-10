@@ -13,11 +13,16 @@ export default function AdminDashboard() {
     status: number
 };
 
+console.log(sessionStorage.getItem("token"));
+const token = sessionStorage.getItem("token");
 const getUsers = async () => {
   try {
     const response = await fetch("http://localhost:3000/CSoftware/api/getUsers", {
       method: "GET",
-      headers: {"Content-Type": "application/json"},
+      headers: {"Content-Type": "application/json",
+                "authorization": "Bearer " + token
+      },
+      
     })
     
     const res = await response.json();

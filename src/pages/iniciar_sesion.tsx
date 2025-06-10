@@ -35,6 +35,7 @@ export default function Register() {
           sessionStorage.setItem("name", user.username);
           sessionStorage.setItem("userEmail", user.email);
           sessionStorage.setItem("userId", user.id);
+          sessionStorage.setItem("token", res.jwt);
           navigate("/cards");
       } else {
           setErrorMessage("Correo o contraseña incorrectos.");
