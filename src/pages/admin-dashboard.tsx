@@ -9,10 +9,12 @@ export default function AdminDashboard() {
    const [sttsUsers, setSttsUsers] = useState<statusUsers[]>([])
    const [records, setRecords] = useState<Record[]>([])
 
+  const colors = ['#1db954', '#3694FF', '#FFB547', '#FF6384', '#36A2EB', '#8E44AD'];
+
   //it's viable to use colors due to record being a known and LOW number of things
   type Record = {
     type: string,
-    amount: number,
+    total: number,
     color: string
   };
 
@@ -31,21 +33,29 @@ export default function AdminDashboard() {
     color: string
   }
 
-  // const getRecords = async () => {
-  //   const token = sessionStorage.getItem("token");
-  //   try {
-  //     const res = await fetch("", {
-  //       method: "GET",
-  //       headers: {
-  //         "Content-Type" : "application/json",
-  //         "authorization" : `Bearer ${token}`
-  //       }
-  //     });
-  //     const resRecordsData = await res.json(); //get the answer's json formatted
-  //   } catch(error) {
-  //     console.log("Error al traer Records segun type: ", error);
-  //   }
-  // };
+  const getRecordsByType = async () => {
+    const token = sessionStorage.getItem("token");
+    try {
+      const res = await fetch("http://localhost:3000/CSoftware/api/recordTypesNum", {
+        method: "GET",
+        headers: {
+          "Content-Type" : "application/json",
+          "authorization" : `Bearer ${token}`
+        }
+      });
+      const resRecordsData = await res.json(); //get the answer's json formatted
+      if(resRecordsData && resRecordsData.Result) {
+        const mappedRecords: Record[] = resRecordsData.Result.map((record: any, index : number) => ({
+          type: record.recordType,
+          total: record.total,
+          color: colors[index % colors.length]
+        }));
+        setRecords(mappedRecords);
+      }
+    } catch(error) {
+      console.log("Error al traer Records segun type: ", error);
+    }
+  };
 
   const getUsersFromStatus = async () => {
     const token = sessionStorage.getItem("token");
@@ -108,27 +118,12 @@ export default function AdminDashboard() {
     }
   };
 
+    //used for functions that alter states
   React.useEffect(() => {
     getUsers();
     getUsersFromStatus();
+    getRecordsByType();
   }, []); //no dependencies used
-
-
-  // Datos de ejemplo para las gráficas
-
-  const colors = ['#1db954', '#3694FF', '#FFB547'];
-
-  const areaData = [
-    { name: 'Ene', carbono: 400, agua: 240, energia: 240 },
-    { name: 'Feb', carbono: 300, agua: 139, energia: 221 },
-    { name: 'Mar', carbono: 200, agua: 980, energia: 229 },
-    { name: 'Abr', carbono: 278, agua: 390, energia: 200 },
-    { name: 'May', carbono: 189, agua: 480, energia: 218 },
-    { name: 'Jun', carbono: 239, agua: 380, energia: 250 },
-    { name: 'Jul', carbono: 349, agua: 430, energia: 210 },
-  ];
-
-
 
   return (
     <>
@@ -168,24 +163,20 @@ export default function AdminDashboard() {
               <Card className="bg-zinc-900 text-white">
                 <CardBody>
                   <h3 className="mb-4 text-lg font-medium">Biomos</h3>
-                  <div className="h-64">
-                    {/* create the endpoint to get the table that has type and quantity,
-                    save in state for records, call the function with a useEffect, and 
-                    use the info in a chart, pie or radar
-                     */}
-                    {/* <ResponsiveContainer width="100%" height="100%">
-                      <AreaChart
-                        data={areaData}
-                        margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
-                      >
-                        <XAxis dataKey="name" stroke="#71717a" />
-                        <Tooltip contentStyle={{ backgroundColor: '#27272a', border: 'none' }} />
-                        <Area type="monotone" dataKey="carbono" stackId="1" stroke="#1db954" fill="#1db95433" />
-                        <Area type="monotone" dataKey="agua" stackId="1" stroke="#3694FF" fill="#3694FF33" />
-                        <Area type="monotone" dataKey="energia" stackId="1" stroke="#FFB547" fill="#FFB54733" />
-                      </AreaChart>
-                    </ResponsiveContainer> */}
-                  </div>
+                  <ResponsiveContainer width="100%" height="100%">
+                    <RadarChart data={records} cx="50%" cy="50%" outerRadius="80%">
+                      <PolarGrid /> {/* shows the grid in the background of the chart */}
+                      <PolarAngleAxis dataKey="type"/> {/* shows the names of each axis */}
+                      <Radar name="Total" dataKey="total" stroke="#1db954" fill="#1db954" fillOpacity={0.6}/>
+                      <Tooltip 
+                        contentStyle={{ backgroundColor: "#18181b", border: "none", color: "#fff", fontSize: 12, padding: 8 }}
+                        formatter={(value: any, name: string) => [
+                          <span style={{ color: '#fff' }}>{value}</span>,
+                          <span style={{ color: '#fff' }}>{name}</span>
+                        ]}
+                      />
+                    </RadarChart>
+                  </ResponsiveContainer>
                 </CardBody>
               </Card>
             </div>
