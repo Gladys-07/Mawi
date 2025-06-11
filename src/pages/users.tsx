@@ -1,13 +1,14 @@
 import React from "react";
 import { Icon } from "@iconify/react";
 import { Button } from "@heroui/react";
-import { Navbar } from "@heroui/react";
-import {useLocation,useNavigate,Link } from "react-router-dom"
+import { useLocation, useNavigate, Link } from "react-router-dom";
 
+// Sidebar
 const Sidebar = ({ isOpen }: { isOpen: boolean }) => {
   const location = useLocation();
   const navigate = useNavigate(); 
   const userId = sessionStorage.getItem("userId");
+
   const menuItems = [
     { title: "Inicio", icon: "lucide:home", path: "/cards" },
     { title: "Asistente de Mi Biomo", icon: "lucide:activity", path: "/asistentebiomo" },
@@ -15,13 +16,14 @@ const Sidebar = ({ isOpen }: { isOpen: boolean }) => {
     { title: "Explorador de Anteproyectos", icon: "lucide:search", path: "/anteproyectos" },
     { title: "Informes, Métricas y Análisis", icon: "lucide:bar-chart-2", path: "/informes" },
   ];
+
   return (
     <div className={`flex flex-col bg-zinc-900 border-r border-zinc-800 transition-all duration-300 ${isOpen ? "w-64" : "w-0 overflow-hidden"}`}>
       <div className="flex items-center gap-2 p-4 border-b border-zinc-800">
         <div className="w-6 h-6 rounded-full bg-white flex items-center justify-center">
           <Icon icon="lucide:eye" className="text-zinc-900 w-4 h-4" />
         </div>
-        <span className="font-medium">Mawi</span>
+        <span className="font-medium text-white">Mawi</span>
       </div>
       <div className="flex-1 overflow-y-auto py-2">
         {menuItems.map((item, idx) => (
@@ -51,6 +53,8 @@ const Sidebar = ({ isOpen }: { isOpen: boolean }) => {
     </div>
   );
 };
+
+// Datos de ejemplo
 const ecoRangers = [
   {
     nombre: "Lucas",
@@ -84,52 +88,53 @@ const ecoRangers = [
   }
 ];
 
+// Vista principal
 export default function ViewEcoranger() {
   const [isOpen, setIsOpen] = React.useState(true);
 
- 
-        {/* Lista de EcoRangers */}
-        <div className="p-4 overflow-auto space-y-6">
-          {ecoRangers.map((ranger, index) => (
-            <div
-              key={index}
-              className="bg-green-700 rounded-2xl p-4 flex flex-col md:flex-row items-start md:items-center justify-between shadow-md border border-green-800"
-            >
-              {/* Izquierda: Foto y Datos */}
-              <div className="flex items-start md:items-center gap-4">
-                {ranger.foto && (
-                  <img
-                    src={ranger.foto}
-                    alt="Foto"
-                    className="w-20 h-20 rounded-full object-cover border border-white"
-                  />
-                )}
-                <div className="text-sm space-y-1">
-                  <p><strong>Labor:</strong> EcoRanger</p>
-                  <p><strong>Nombre:</strong> {ranger.nombre}</p>
-                  <p><strong>Apellidos:</strong> {ranger.apellidos}</p>
-                  <p><strong>País:</strong> {ranger.país}</p>
-                  <p><strong>Región:</strong> {ranger.región}</p>
-                  <p><strong>Ciudad:</strong> {ranger.ciudad}</p>
-                  <p><strong>Correo:</strong> {ranger.correo}</p>
-                  <p><strong>Número de contacto:</strong> {ranger.contacto}</p>
-                </div>
-              </div>
-
-              {/* Derecha: Botones */}
-              <div className="flex flex-col md:items-end gap-2 mt-4 md:mt-0">
-                <Button color="secondary" variant="shadow">
-                  Informes, Métricas y Análisis
-                </Button>
-                <Button color="success" variant="flat">
-                  Crear EcoRanger
-                </Button>
-                <Button color="primary" variant="flat">
-                  Editar EcoRanger
-                </Button>
+  return (
+    <div className="flex">
+      <Sidebar isOpen={isOpen} />
+      <div className="flex-1 p-4 overflow-auto space-y-6">
+        {ecoRangers.map((ranger, index) => (
+          <div
+            key={index}
+            className="bg-green-700 rounded-2xl p-4 flex flex-col md:flex-row items-start md:items-center justify-between shadow-md border border-green-800"
+          >
+            <div className="flex items-start md:items-center gap-4">
+              {ranger.foto && (
+                <img
+                  src={ranger.foto}
+                  alt="Foto"
+                  className="w-20 h-20 rounded-full object-cover border border-white"
+                />
+              )}
+              <div className="text-sm space-y-1 text-white">
+                <p><strong>Labor:</strong> EcoRanger</p>
+                <p><strong>Nombre:</strong> {ranger.nombre}</p>
+                <p><strong>Apellidos:</strong> {ranger.apellidos}</p>
+                <p><strong>País:</strong> {ranger.país}</p>
+                <p><strong>Región:</strong> {ranger.región}</p>
+                <p><strong>Ciudad:</strong> {ranger.ciudad}</p>
+                <p><strong>Correo:</strong> {ranger.correo}</p>
+                <p><strong>Número de contacto:</strong> {ranger.contacto}</p>
               </div>
             </div>
-          ))}
-        </div>
-    
+
+            <div className="flex flex-col md:items-end gap-2 mt-4 md:mt-0">
+              <Button color="secondary" variant="shadow">
+                Informes, Métricas y Análisis
+              </Button>
+              <Button color="success" variant="flat">
+                Crear EcoRanger
+              </Button>
+              <Button color="primary" variant="flat">
+                Editar EcoRanger
+              </Button>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
 }
