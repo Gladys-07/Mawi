@@ -42,6 +42,8 @@ export default function AsistenteBiomo() {
   {/* necessary for sidebar*/}
   const menuThings = isAdmin ? adminItems : userItems;
   console.log(`Is admin? ${sessionStorage.getItem("isAdmin")}`);
+  const userRole = sessionStorage.getItem("isAdmin") === "true" ? "Admin" : "EcoRanger";
+  console.log("Role ", userRole);
   return (
     <div className="flex h-screen w-full bg-black text-white">
       {/* Sidebar */}
@@ -55,7 +57,7 @@ export default function AsistenteBiomo() {
           <h1 className="text-lg font-medium">Asistente de mi Biomo</h1>
           <div className="ml-auto flex items-center gap-2">
             <span className="text-sm">
-              {`EcoRanger${sessionStorage.getItem("name") ? `: ${sessionStorage.getItem("name")}` : ""}`}
+              {`${userRole} ${sessionStorage.getItem("name") ? `: ${sessionStorage.getItem("name")}` : ""}`}
             </span>
             <div className="w-8 h-8 rounded-full bg-zinc-700 flex items-center justify-center">
               <Icon icon="lucide:user" width={20} height={20} />
