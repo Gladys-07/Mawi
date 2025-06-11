@@ -66,7 +66,7 @@ export default function AsistenteBiomo() {
         </div>
         
         {/* Chat Area */}
-        <div className="flex-1 overflow-auto p-4">
+        <div className="flex-1 overflow-auto p-4 pt-24">
           {/* CHAT MESSAGES GO HERE*/}
           <div className="flex flex-col gap-2" style={{ maxHeight: "100%", overflowY: "auto" }}>
             {/* Va mapenado cada mensaje en el historial del chat y acomoda el div segun si es de AI o de user */}
