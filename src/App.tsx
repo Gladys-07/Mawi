@@ -6,7 +6,7 @@ import Login from "./pages/login";
 import Register from "./pages/register";
 import Dashboard from "./pages/dashboard";
 import AdminDashboard from "./pages/admin-dashboard";
-import UserProfile from "./pages/user-profile";
+// import UserProfile from "./pages/user-profile";
 import SuccessPage from "./pages/success";
 import IniciarSesion from "./pages/iniciar_sesion";
 import RecuperarContrasenia from "./pages/recuperar_contrasenia";
@@ -29,7 +29,7 @@ export default function App() {
       <Route path="/success" element={<SuccessPage />} />
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/admin" element={<AdminDashboard />} />
-      <Route path="/profile" element={<UserProfile />} />
+      {/* <Route path="/profile" element={<UserProfile />} /> */}
       <Route path="/iniciar_sesion" element={<IniciarSesion />} />
       <Route path="/recuperar_contrasenia" element={<RecuperarContrasenia />} />
       <Route path="/cambio_contrasenia" element={<CambioContrasenia />} />

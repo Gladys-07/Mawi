@@ -1,8 +1,9 @@
 import React from "react";
 import { Button, Input, Card, CardBody } from "@heroui/react";
 import { Icon } from "@iconify/react";
-import { useNavigate } from "react-router-dom";
+import { Await, useNavigate } from "react-router-dom";
 import MawiOjo from "../assets/MawiOjo.png"; // Ajusta la ruta si tu imagen está en otra carpeta
+import { useState } from "react";
 
 export default function Register() {
   const navigate = useNavigate();
@@ -10,8 +11,31 @@ export default function Register() {
   const [password, setPassword] = React.useState("");
   const [errorMessage, setErrorMessage] = React.useState("");
   const [name, setName] = React.useState("");
+  const [role, setRole] = useState("3");
 
-  
+  const getUserRole = async (token : string) => {
+    try {
+      const response = await fetch(`http://localhost:3000/CSoftware/api/getRoleByEmail?email=${email}`, {
+        method: "GET",
+        headers: {
+          "Content-Type" : "application/json",
+          "authorization" : `Bearer ${token}`
+        }
+      });
+      const resUserRole = await response.json();
+      const specificRole = resUserRole.result;
+      if (specificRole.length > 0) {
+        return specificRole[0].rol;
+      } else {
+        setErrorMessage("No role found");
+        return null;
+      }
+    } catch(err) {
+      setErrorMessage("No role found, sorry");
+      return null;
+    }
+  }
+
   const handleLogin = async () => {
     if (!email || !password) {
       setErrorMessage("Por favor, ingresa correo y contraseña.");
@@ -36,7 +60,17 @@ export default function Register() {
           sessionStorage.setItem("userEmail", user.email);
           sessionStorage.setItem("userId", user.id);
           sessionStorage.setItem("token", res.jwt);
+
+          const token = res.jwt;
+          const role = await getUserRole(token);
+
+          console.log(role)
+          if (role == "2") {
+            navigate("/admin");
+          } else {
+            // Aqui va cuando checas si es admin o ecoranger y lo mandas para cards o adminDashboard segun su rol
           navigate("/cards");
+          }
       } else {
           setErrorMessage("Correo o contraseña incorrectos.");
       }
