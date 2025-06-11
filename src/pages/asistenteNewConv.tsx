@@ -125,6 +125,8 @@ export default function AsistenteNuevasConv() {
     }
   };
 
+  const userRole = sessionStorage.getItem("isAdmin") === "true" ? "Admin" : "EcoRanger";
+  console.log("Role ", userRole);
   return (
     <div className="flex flex-col md:flex-row h-screen w-full bg-black text-white overflow-hidden">
       <Sidebar isOpen={isOpen} menuItems={menuThings}/>
@@ -136,7 +138,7 @@ export default function AsistenteNuevasConv() {
           <h1 className="text-lg font-medium">Asistente de Nuevas Convocatorias</h1>
           <div className="ml-auto flex items-center gap-2">
             <span className="text-sm">
-              {`EcoRanger${sessionStorage.getItem("name") ? `: ${sessionStorage.getItem("name")}` : ""}`}
+              {`${userRole} ${sessionStorage.getItem("name") ? `: ${sessionStorage.getItem("name")}` : ""}`}
             </span>
             <div className="w-8 h-8 rounded-full bg-zinc-700 flex items-center justify-center">
               <Icon icon="lucide:user" width={20} height={20} />

@@ -42,33 +42,28 @@ export default function AsistenteBiomo() {
   {/* necessary for sidebar*/}
   const menuThings = isAdmin ? adminItems : userItems;
   console.log(`Is admin? ${sessionStorage.getItem("isAdmin")}`);
+  const userRole = sessionStorage.getItem("isAdmin") === "true" ? "Admin" : "EcoRanger";
+  console.log("Role ", userRole);
   return (
     <div className="flex h-screen w-full bg-black text-white">
       {/* Sidebar */}
       <Sidebar isOpen={isOpen} menuItems={menuThings}/>
       {/* Main Content */}
-      <div className="flex flex-1 flex-col">
-        {/* Header */}
-        <Navbar className="border-b border-zinc-800 bg-zinc-900">
-          <div className="flex items-center gap-2">
-            <Button 
-              isIconOnly 
-              variant="light" 
-              className="text-white" 
-              onPress={toggleSidebar}
-            >
-              {isOpen ? (
-                <Icon icon="lucide:chevron-left" width={20} height={20} />
-              ) : (
-                <Icon icon="lucide:chevron-right" width={20} height={20} />
-              )}
-            </Button>
-            <div>
-              <h1 className="text-lg font-medium">Asistente de Mi Biomo</h1>
-              <p className="text-xs text-zinc-400">Biomo.ID: 1234</p>
+      <div className="flex flex-1 flex-col overflow-auto">
+        <div className={`fixed top-0 left-0 right-0 z-30 h-16 flex items-center border-b border-zinc-800 bg-zinc-900 px-6 gap-4 transition-all duration-300 ${isOpen ? 'pl-64' : 'pl-0'}`}>
+          <Button isIconOnly variant="light" className="text-white ml-2" onPress={() => setIsOpen(!isOpen)}>
+            <Icon icon={isOpen ? "lucide:chevron-left" : "lucide:chevron-right"} width={20} height={20} />
+          </Button>
+          <h1 className="text-lg font-medium">Asistente de mi Biomo</h1>
+          <div className="ml-auto flex items-center gap-2">
+            <span className="text-sm">
+              {`${userRole} ${sessionStorage.getItem("name") ? `: ${sessionStorage.getItem("name")}` : ""}`}
+            </span>
+            <div className="w-8 h-8 rounded-full bg-zinc-700 flex items-center justify-center">
+              <Icon icon="lucide:user" width={20} height={20} />
             </div>
           </div>
-        </Navbar>
+        </div>
         
         {/* Chat Area */}
         <div className="flex-1 overflow-auto p-4">

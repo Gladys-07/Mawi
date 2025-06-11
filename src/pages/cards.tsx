@@ -22,6 +22,8 @@ export default function App() {
     }
   };
 
+  const userRole = sessionStorage.getItem("isAdmin") === "true" ? "Admin" : "EcoRanger";
+  console.log("Role: ", userRole);
   return (
     <div className="min-h-screen bg-zinc-900 text-white flex flex-col">
       {/* Header */}
@@ -39,7 +41,7 @@ export default function App() {
                   className="text-white" 
                   onPress={() => setloMenu((prev) => !prev)}> {/*It sets loMenu to the opposite of its previous value  */}
             <Icon icon="lucide:user" className="text-white w-4 h-4" />
-            EcoRanger
+            {userRole}
           </Button>
           {loMenu && (
             <div className="absolute right-0 mt-2 w-40 bg-zinc-900 shadow-lg z-50 rounded border border-white py-1 px-2">
