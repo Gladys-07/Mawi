@@ -3,18 +3,28 @@ import { Card, CardBody, Button, Progress } from "@heroui/react";
 import { Icon } from "@iconify/react";
 import { useNavigate } from "react-router-dom";
 import Sidebar from "../components/sidebar";
+import { userItems, adminItems } from "../constants";
 
 export default function Dashboard() {
   const navigate = useNavigate();
-  const [sidebarOpen, setSidebarOpen] = React.useState(true);
+  const [isOpen, setIsOpen] = React.useState(true);
+
+  {/* necessary for sidebar*/}
+  const toggleSidebar = () => { 
+    setIsOpen(!isOpen);
+  };
+  const isAdmin = sessionStorage.getItem("isAdmin") === "true";
+  {/* necessary for sidebar*/}
+  const menuThings = isAdmin ? adminItems : userItems;
+  console.log(`Is admin? ${sessionStorage.getItem("isAdmin")}`);
 
   return (
     <div className="flex h-screen w-full bg-black">
-      <Sidebar isOpen={sidebarOpen} />
+      <Sidebar isOpen={isOpen} menuItems={menuThings}/>
 
-      <div className={`fixed top-0 left-0 right-0 z-30 h-16 flex items-center border-b border-zinc-800 bg-zinc-900 px-6 gap-4 transition-all duration-300 ${sidebarOpen ? 'pl-64' : 'pl-0'}`}>
-        <Button isIconOnly variant="light" className="text-white" onPress={() => setSidebarOpen(!sidebarOpen)}>
-          <Icon icon={sidebarOpen ? "lucide:chevron-left" : "lucide:chevron-right"} width={20} height={20} />
+      <div className={`fixed top-0 left-0 right-0 z-30 h-16 flex items-center border-b border-zinc-800 bg-zinc-900 px-6 gap-4 transition-all duration-300 ${isOpen ? 'pl-64' : 'pl-0'}`}>
+        <Button isIconOnly variant="light" className="text-white" onPress={() => setIsOpen(!isOpen)}>
+          <Icon icon={isOpen ? "lucide:chevron-left" : "lucide:chevron-right"} width={20} height={20} />
         </Button>
         <h1 className="text-lg font-medium text-white">Dashboard</h1>
 
@@ -42,7 +52,7 @@ export default function Dashboard() {
 </div>
 
 
-      <div className={`flex-1 overflow-auto pt-24 pb-20 px-6 transition-all duration-300 ${sidebarOpen ? 'ml-64' : 'ml-0'}`}>
+      <div className={`flex-1 overflow-auto pt-24 pb-20 px-6 transition-all duration-300 ${isOpen ? 'pl-64' : 'pl-0'}`}>
         <div className="mb-6 flex justify-end">
 </div>
 
