@@ -124,7 +124,7 @@ export default function ViewEcoranger() {
             <div className="flex flex-col md:items-end gap-2 mt-4 md:mt-0">
              <Button
   className="bg-green-800 text-white hover:bg-green-700"
-  variant="shadow"
+  
 >
   Informes, Métricas y Análisis
 </Button>
