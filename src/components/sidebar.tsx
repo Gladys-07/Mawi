@@ -21,8 +21,8 @@ export default function Sidebar({ isOpen, menuItems}: SidebarProps ): React.Reac
   const userId = sessionStorage.getItem("userId");
   
   return (
-    <div className={`flex flex-col bg-zinc-900 border-r border-zinc-800 transition-all duration-300 ${isOpen ? "w-64" : "w-0 overflow-hidden"}`}>
-      <div className="flex items-center gap-2 p-4 border-b border-zinc-800">
+    <div className={`z-40 flex flex-col bg-zinc-900 border-r border-zinc-800 transition-all duration-300 ${isOpen ? "w-64" : "w-0 overflow-hidden"}`}>
+      <div className="flex items-center gap-2 p-4 border-b border-zinc-900">
         <div className="w-6 h-6 rounded-full bg-white flex items-center justify-center">
           <Icon icon="lucide:eye" className="text-zinc-900 w-4 h-4" />
         </div>
