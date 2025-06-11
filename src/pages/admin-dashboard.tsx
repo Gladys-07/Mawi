@@ -2,7 +2,10 @@ import React, { useState } from "react";
 import { Card, CardBody, Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Chip } from "@heroui/react";
 import { Icon } from "@iconify/react";
 import Sidebar from "../components/sidebar";
-import { PieChart, Pie, Cell, ResponsiveContainer, RadarChart, Radar, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Tooltip } from "recharts";
+import { PieChart, Pie, Cell, 
+  ResponsiveContainer, RadarChart, Radar, 
+  PolarGrid, PolarAngleAxis, Tooltip,
+BarChart, Bar, XAxis, YAxis } from "recharts";
 import { Button } from "@heroui/react";
 import { userItems, adminItems } from "../constants";
 // SOLO ENTRAS A ADMIN CUANDO isAdmin es true, alor que no sale de la BD, no es mmuy buena práctica o no se
@@ -180,7 +183,19 @@ export default function AdminDashboard() {
                           <Cell key={`cell-${index}`} fill={entry.color} />
                         ))}
                       </Pie>
-                      <Tooltip />
+                      <Tooltip 
+                        contentStyle={{
+                        backgroundColor: "#18181b",
+                        border: "none",
+                        color: "#fff",
+                        fontSize: 14,
+                        borderRadius: 8,
+                        boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
+                        padding: 12
+                      }}
+                      itemStyle={{
+                        color: "#fff"
+                      }}/>
                     </PieChart>
                   </ResponsiveContainer>
                 </div>
@@ -189,19 +204,30 @@ export default function AdminDashboard() {
             <Card className="bg-zinc-900 text-white">
               <CardBody>
                 <h3 className="mb-4 text-lg font-medium">Biomos</h3>
-                <ResponsiveContainer width="100%" height="100%">
-                  <RadarChart data={records} cx="50%" cy="50%" outerRadius="80%">
-                    <PolarGrid /> {/* shows the grid in the background of the chart */}
-                    <PolarAngleAxis dataKey="type"/> {/* shows the names of each axis */}
-                    <Radar name="Total" dataKey="total" stroke="#1db954" fill="#1db954" fillOpacity={0.6}/>
-                    <Tooltip 
-                      contentStyle={{ backgroundColor: "#18181b", border: "none", color: "#fff", fontSize: 12, padding: 8 }}
-                      formatter={(value: any, name: string) => [
-                        <span style={{ color: '#fff' }}>{value}</span>,
-                        <span style={{ color: '#fff' }}>{name}</span>
-                      ]}
+                <ResponsiveContainer width="100%" height="100%" className="pr-2">
+                  <BarChart data={records}>
+                    <XAxis dataKey="type"/>
+                    <YAxis />
+                    <Bar dataKey="total">
+                        {records.map((entry, index) => (
+                          <Cell key={`cell-${index}`} fill={entry.color}/>
+                        ))}
+                    </Bar>
+                    <Tooltip
+                      contentStyle={{
+                        backgroundColor: "#18181b",
+                        border: "none",
+                        color: "#fff",
+                        fontSize: 14,
+                        borderRadius: 8,
+                        boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
+                        padding: 12
+                      }}
+                      itemStyle={{
+                        color: "#fff"
+                      }}
                     />
-                  </RadarChart>
+                  </BarChart>
                 </ResponsiveContainer>
               </CardBody>
             </Card>
