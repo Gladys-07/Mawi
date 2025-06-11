@@ -1,70 +1,25 @@
 import React, { useState } from "react";
-import { Button, Input, Tabs, Tab } from "@heroui/react";
+import { Button, Input } from "@heroui/react";
 import { Icon } from "@iconify/react";
 import Sidebar from "../components/sidebar";
 import { userItems, adminItems } from "../constants";
 
-const AnteproyectoCard = ({ titulo, descripcion, fechaInicio, fechaFin, onUpload }: any) => (
-  <div className="bg-zinc-700 rounded-lg p-4 flex items-center justify-between mb-4">
-    <div>
-      <div className="font-semibold">{titulo}</div>
-      <div className="text-sm text-zinc-300">{descripcion}</div>
-      <div className="text-xs text-zinc-400 mt-2">
-        Fecha de creación: {fechaInicio} &nbsp; | &nbsp; Fecha límite: {fechaFin}
-      </div>
+const ConvocatoriaCard = ({ titulo, fechaCreacion, fechaLimite }: any) => (
+  <div className="bg-zinc-800 rounded-lg p-4 mb-4 border border-zinc-700">
+    <div className="font-semibold text-lg mb-2">{titulo}</div>
+    <div className="text-sm text-zinc-300 mb-1">Fecha de cuestión: {fechaCreacion}</div>
+    <div className="text-sm text-zinc-300">Fecha límite: {fechaLimite}</div>
+    <div className="mt-3 pt-3 border-t border-zinc-700 flex justify-end">
+      <Button color="primary" className="min-w-24">
+        Contactar
+      </Button>
     </div>
-    <Button isIconOnly color="success" className="min-w-12 h-12" onPress={onUpload}>
-      <Icon icon="lucide:file" width={24} height={24} />
-    </Button>
   </div>
 );
 
-export default function Anteproyectos() {
+export default function Mawi() {
   const [isOpen, setIsOpen] = useState(true);
-  const [showForm, setShowForm] = useState(false);
-  const [showFileModal, setShowFileModal] = useState(false);
-  const [archivosSubidos, setArchivosSubidos] = useState<{ file: File; url: string | null }[]>([]);
-  const [titulo, setTitulo] = useState("");
-  const [descripcion, setDescripcion] = useState("");
-  const [fechaInicio, setFechaInicio] = useState("");
-  const [fechaFin, setFechaFin] = useState("");
-  const [anteproyectos, setAnteproyectos] = useState<any[]>([]);
-
-  const handleCrear = () => {
-    const nuevo = {
-      titulo,
-      descripcion,
-      fechaInicio,
-      fechaFin,
-    };
-    setAnteproyectos([...anteproyectos, nuevo]);
-
-    // Limpiar formulario
-    setShowForm(false);
-    setTitulo("");
-    setDescripcion("");
-    setFechaInicio("");
-    setFechaFin("");
-  };
-
-  const handleArchivos = (files: File[]) => {
-    const validFiles = files.filter((file) =>
-      [
-        "application/pdf",
-        "application/msword",
-        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-      ].includes(file.type)
-    );
-    if (validFiles.length) {
-      const nuevos = validFiles.map((file) => ({
-        file,
-        url: file.type === "application/pdf" ? URL.createObjectURL(file) : null,
-      }));
-      setArchivosSubidos((prev) => [...prev, ...nuevos]);
-    } else {
-      alert("Solo se permiten archivos PDF o Word.");
-    }
-  };
+  const [nombreConvocatoria, setNombreConvocatoria] = useState("");
 
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
@@ -72,6 +27,20 @@ export default function Anteproyectos() {
 
   const isAdmin = sessionStorage.getItem("isAdmin") === "true";
   const menuThings = isAdmin ? adminItems : userItems;
+
+  // Datos de ejemplo basados en la imagen
+  const convocatorias = [
+    {
+      titulo: "Título Descripción",
+      fechaCreacion: "00/01/2020",
+      fechaLimite: "00/10/2020"
+    },
+    {
+      titulo: "Título Descripción",
+      fechaCreacion: "00/02/2020",
+      fechaLimite: "00/10/2020"
+    }
+  ];
 
   return (
     <div className="flex h-screen w-full bg-black text-white">
@@ -90,161 +59,50 @@ export default function Anteproyectos() {
             )}
           </Button>
           <div>
-            <h1 className="text-lg font-medium">Explorador de Anteproyectos</h1>
+            <h1 className="text-lg font-medium">Mawi</h1>
           </div>
         </div>
 
-        {/* Filtros y botón */}
-        <div className="flex items-center gap-2 p-4">
-          <Input
-            placeholder="Nombre de la Convocatoria"
-            variant="bordered"
-            classNames={{
-              base: "bg-zinc-800 rounded-md",
-              inputWrapper: "bg-zinc-800 border-zinc-700 hover:border-zinc-600 focus-within:border-zinc-500",
-            }}
-          />
-          <Button color="success" className="ml-2" onClick={() => setShowForm(true)}>
-            Crear Anteproyecto
-          </Button>
+        {/* Sección de navegación */}
+        <div className="flex border-b border-zinc-800 px-4 py-2">
+          <nav className="flex space-x-6">
+            <a href="#" className="text-green-400 border-b-2 border-green-400 pb-2">Inicio</a>
+            <a href="#" className="text-zinc-400 hover:text-white pb-2">Adistente de Mi Bienzo</a>
+            <a href="#" className="text-zinc-400 hover:text-white pb-2">Adistente de Nuevos Convocatorios</a>
+            <a href="#" className="text-zinc-400 hover:text-white pb-2">Adistente Explorador de Anteproyectos</a>
+            <a href="#" className="text-zinc-400 hover:text-white pb-2">Informes, Métricas y Análisis</a>
+          </nav>
         </div>
 
-        {/* Cards */}
-        <div className="flex-1 overflow-auto px-4">
-          {anteproyectos.map((a, idx) => (
-            <AnteproyectoCard key={idx} {...a} onUpload={() => setShowFileModal(true)} />
+        {/* Filtro y título */}
+        <div className="p-4 border-b border-zinc-800">
+          <h2 className="text-xl font-semibold mb-4">Nombre del Convocatoria</h2>
+          <div className="flex items-center gap-2">
+            <Input
+              placeholder="Bueno..."
+              variant="bordered"
+              value={nombreConvocatoria}
+              onChange={(e) => setNombreConvocatoria(e.target.value)}
+              classNames={{
+                base: "bg-zinc-800 rounded-md w-64",
+                inputWrapper: "bg-zinc-800 border-zinc-700 hover:border-zinc-600 focus-within:border-zinc-500",
+              }}
+            />
+          </div>
+        </div>
+
+        {/* Cards de convocatorias */}
+        <div className="flex-1 overflow-auto p-4">
+          {convocatorias.map((convocatoria, idx) => (
+            <ConvocatoriaCard key={idx} {...convocatoria} />
           ))}
         </div>
 
-        {/* Modal for creating anteproyecto */}
-        {showForm && (
-          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-            <div className="bg-zinc-800 p-6 rounded-lg w-full max-w-md shadow-xl">
-              <h2 className="text-xl font-semibold mb-4 text-white">Crear Anteproyecto</h2>
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-sm text-white mb-1">Título</label>
-                  <input
-                    type="text"
-                    value={titulo}
-                    onChange={(e) => setTitulo(e.target.value)}
-                    className="w-full p-2 rounded bg-zinc-700 text-white border border-zinc-600"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm text-white mb-1">Descripción</label>
-                  <textarea
-                    value={descripcion}
-                    onChange={(e) => setDescripcion(e.target.value)}
-                    className="w-full p-2 rounded bg-zinc-700 text-white border border-zinc-600"
-                  />
-                </div>
-                <div className="flex gap-2">
-                  <div className="flex-1">
-                    <label className="block text-sm text-white mb-1">Fecha de Inicio</label>
-                    <input
-                      type="date"
-                      value={fechaInicio}
-                      onChange={(e) => setFechaInicio(e.target.value)}
-                      className="w-full p-2 rounded bg-zinc-700 text-white border border-zinc-600"
-                    />
-                  </div>
-                  <div className="flex-1">
-                    <label className="block text-sm text-white mb-1">Fecha Final</label>
-                    <input
-                      type="date"
-                      value={fechaFin}
-                      onChange={(e) => setFechaFin(e.target.value)}
-                      className="w-full p-2 rounded bg-zinc-700 text-white border border-zinc-600"
-                    />
-                  </div>
-                </div>
-              </div>
-              <div className="flex justify-end mt-6 gap-2">
-                <Button color="default" onPress={() => setShowForm(false)}>
-                  Cancelar
-                </Button>
-                <Button color="success" onPress={handleCrear}>
-                  Guardar
-                </Button>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Modal for file upload */}
-        {showFileModal && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70">
-            <div className="bg-zinc-900 p-6 rounded-xl shadow-2xl w-full max-w-2xl text-white relative">
-              <button
-                className="absolute top-4 right-4 text-gray-400 hover:text-white"
-                onClick={() => setShowFileModal(false)}
-              >
-                <Icon icon="lucide:x" width={24} height={24} />
-              </button>
-              <h2 className="text-2xl font-bold mb-2">Sube tus documentos</h2>
-              <p className="mb-4 text-sm text-gray-400">
-                Acepta archivos PDF y Word. Puedes arrastrarlos o hacer clic para seleccionarlos.
-              </p>
-              <div
-                className="border-2 border-dashed border-gray-500 rounded-lg p-6 text-center cursor-pointer hover:border-green-400 transition-all"
-                onClick={() => document.getElementById("multiFileUpload")?.click()}
-                onDragOver={(e) => e.preventDefault()}
-                onDrop={(e) => {
-                  e.preventDefault();
-                  const files = Array.from(e.dataTransfer.files);
-                  handleArchivos(files);
-                }}
-              >
-                <Icon icon="lucide:upload-cloud" width={40} height={40} className="mx-auto mb-2 text-green-400" />
-                <p className="text-gray-300">
-                  Arrastra aquí tus archivos o haz clic para seleccionarlos
-                </p>
-                <input
-                  type="file"
-                  multiple
-                  accept=".pdf,.doc,.docx"
-                  id="multiFileUpload"
-                  style={{ display: "none" }}
-                  onChange={(e) => handleArchivos(Array.from(e.target.files || []))}
-                />
-              </div>
-              {archivosSubidos.length > 0 && (
-                <div className="mt-6 space-y-4 max-h-64 overflow-y-auto pr-2">
-                  {archivosSubidos.map((archivo, idx) => (
-                    <div key={idx} className="border border-zinc-700 p-4 rounded-lg relative bg-zinc-800">
-                      <p className="text-sm font-semibold text-green-400">{archivo.file.name}</p>
-                      <button
-                        className="absolute top-2 right-2 text-gray-400 hover:text-red-400"
-                        onClick={() =>
-                          setArchivosSubidos((prev) => prev.filter((_, i) => i !== idx))
-                        }
-                      >
-                        <Icon icon="lucide:trash" width={18} height={18} />
-                      </button>
-                      {archivo.file.type === "application/pdf" && archivo.url && (
-                        <iframe src={archivo.url} title={`Vista previa PDF ${idx}`} className="w-full h-40 mt-2 rounded-md" />
-                      )}
-                      {archivo.file.type.includes("word") && (
-                        <p className="text-sm text-gray-300 mt-2">
-                          📄 Documento Word (no se puede previsualizar)
-                        </p>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              )}
-              <div className="flex justify-end gap-2 mt-6">
-                <Button color="default" onPress={() => setShowFileModal(false)}>
-                  Cancelar
-                </Button>
-                <Button color="success" onPress={() => setShowFileModal(false)}>
-                  Subir Archivos
-                </Button>
-              </div>
-            </div>
-          </div>
-        )}
+        {/* Footer */}
+        <div className="border-t border-zinc-800 p-4 text-center text-sm text-zinc-400">
+          <p>Contacta con el agente.</p>
+          <p className="text-white mt-1">Cesar Nuevo Anteproyecto</p>
+        </div>
       </div>
     </div>
   );
