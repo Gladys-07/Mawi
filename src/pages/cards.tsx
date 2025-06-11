@@ -74,7 +74,7 @@ export default function App() {
         <Icon icon="lucide:settings" className="w-12 h-12 text-green-500 mb-4" />
         <h3 className="text-white font-medium mb-2">Asistente de Mi Biomo</h3>
         <p className="text-xs text-zinc-400">
-          El asistente te ayudará a conocer todos los datos sobre tu biomonitorización y te guiará en todo aquello que necesites saber, así como subir datos nuevos.
+          El asistente te ayudará a conocer todos los datos sobre tu biomonitorización y te guiará en todo aquello que necesites saber.
       </p>
   </Card>
 
