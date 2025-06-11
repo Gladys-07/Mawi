@@ -30,9 +30,13 @@ export default function Register() {
     const pais = sessionStorage.getItem("pais");
     const region = sessionStorage.getItem("provincia");
     const ciudad = sessionStorage.getItem("ciudad");
+    const userId = sessionStorage.getItem("userId"); // <--- Retrieve userId
 
     // Crear objeto para enviar al backend
+    
+    
     const usuario_perfil = {
+      ID_usuario: userId,
       nombre,
       apellidos,
       numeroContacto,

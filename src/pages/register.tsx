@@ -48,6 +48,8 @@ export default function Register() {
       // Manejo de códigos de estado HTTP
       if (response.status === 201) {
         // Usuario creado exitosamente
+        const data = await response.json();
+        sessionStorage.setItem("userId", data.userId); // <--- Store userId
         navigate("/donde");
       } else if (response.status === 400) {
         const errorData = await response.json();

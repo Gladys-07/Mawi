@@ -60,7 +60,7 @@ interface PaisAPI {
 
 export default function AsistenteNuevasConv() {
   const navigate = useNavigate();
-  const [listaPaises, setListaPaises] = useState<string[]>([]); // <== MOVER AQUÍ
+  const [listaPaises, setListaPaises] = useState<string[]>([]); 
   const [archivosSubidos, setArchivosSubidos] = useState<{ file: File; url: string | null }[]>([]);
   const [isOpen, setIsOpen] = useState(true);
   const [paso, setPaso] = useState(1);
