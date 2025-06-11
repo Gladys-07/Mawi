@@ -122,15 +122,25 @@ export default function ViewEcoranger() {
             </div>
 
             <div className="flex flex-col md:items-end gap-2 mt-4 md:mt-0">
-              <Button color="secondary" variant="shadow">
-                Informes, Métricas y Análisis
-              </Button>
-              <Button color="success" variant="flat">
-                Crear EcoRanger
-              </Button>
-              <Button color="primary" variant="flat">
-                Editar EcoRanger
-              </Button>
+             <Button
+  className="bg-green-800 text-white hover:bg-green-700"
+  variant="shadow"
+>
+  Informes, Métricas y Análisis
+</Button>
+<Button
+  className="bg-green-800 text-white hover:bg-green-700"
+  variant="flat"
+>
+  Crear EcoRanger
+</Button>
+<Button
+  className="bg-green-800 text-white hover:bg-green-700"
+  variant="flat"
+>
+  Editar EcoRanger
+</Button>
+
             </div>
           </div>
         ))}
