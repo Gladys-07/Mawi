@@ -19,6 +19,7 @@ import Cards from "./pages/cards";
 import AsistenteBiomo from "./pages/asistentebiomo";
 import Anteproyectos from "./pages/anteproyectos";
 import Soporte from "./pages/soporte";
+import Users from "./pages/users";
 
 export default function App() {
   return (
@@ -40,6 +41,7 @@ export default function App() {
       <Route path="/trabajo" element={<Trabajo/>} />
       <Route path="/cards" element={<Cards/>} />
       <Route path="/soporte" element={<Soporte />} />
+      <Route path="/users" element={<Users />} />
       <Route path="/" element={<Navigate to="/login" replace />} />
     </Routes>
   );

@@ -5,7 +5,7 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 
 interface SidebarProps {
   isAdmin?: boolean;
-  isOpen: boolean; // 👈 Solo recibimos el estado, no lo modificamos desde aquí
+  isOpen: boolean; // 
   menuItems: menuItem[]
 }
 
