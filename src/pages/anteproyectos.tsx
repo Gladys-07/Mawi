@@ -97,7 +97,7 @@ export default function Anteproyectos() {
         {/* Filtros y botón */}
         <div className="flex items-center gap-2 p-4">
           <Input
-            placeholder="Nombre del Convocatoria"
+            placeholder="Nombre de la Convocatoria"
             variant="bordered"
             classNames={{
               base: "bg-zinc-800 rounded-md",
