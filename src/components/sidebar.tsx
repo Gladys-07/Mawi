@@ -19,6 +19,11 @@ export default function Sidebar({ isOpen, menuItems}: SidebarProps ): React.Reac
   const location = useLocation();
   const navigate = useNavigate(); 
   const userId = sessionStorage.getItem("userId");
+
+  const handleLogout = () => {
+    sessionStorage.clear();
+    navigate("/login");
+  }
   
   return (
     <div className={`z-40 flex flex-col bg-zinc-900 border-r border-zinc-800 transition-all duration-300 ${isOpen ? "w-64" : "w-0 overflow-hidden"}`}>
@@ -42,6 +47,16 @@ export default function Sidebar({ isOpen, menuItems}: SidebarProps ): React.Reac
           </Link>
         ))}
       </div>
+      <div className="mt-auto p-3">
+        <Button
+          // variant="ghost"
+          className="justify-start w-full text-zinc-400 bg-zinc-800 border-zinc-800 hover:bg-zinc-700"
+          startContent={<Icon icon="lucide:log-out" width={18} height={18} />}
+          onPress={handleLogout} 
+        >
+          Log out 
+        </Button>
+      </div>
       <div className="mt-auto border-t border-zinc-800 p-3">
         <Button
           variant="flat"
@@ -56,4 +71,4 @@ export default function Sidebar({ isOpen, menuItems}: SidebarProps ): React.Reac
     </div>
   );
 };
-  
+
