@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 import { Button, Input, Tabs, Tab } from "@heroui/react";
 import { Icon } from "@iconify/react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { userItems, adminItems } from "../constants";
 import Sidebar from "../components/sidebar";
+import { userItems, adminItems } from "../constants";
 
-const AnteproyectoCard = ({ titulo, descripcion, fechaInicio, fechaFin }: any) => (
+const AnteproyectoCard = ({ titulo, descripcion, fechaInicio, fechaFin, onUpload }: any) => (
   <div className="bg-zinc-700 rounded-lg p-4 flex items-center justify-between mb-4">
     <div>
       <div className="font-semibold">{titulo}</div>
@@ -14,7 +13,7 @@ const AnteproyectoCard = ({ titulo, descripcion, fechaInicio, fechaFin }: any) =
         Fecha de creación: {fechaInicio} &nbsp; | &nbsp; Fecha límite: {fechaFin}
       </div>
     </div>
-    <Button isIconOnly color="success" className="min-w-12 h-12">
+    <Button isIconOnly color="success" className="min-w-12 h-12" onPress={onUpload}>
       <Icon icon="lucide:file" width={24} height={24} />
     </Button>
   </div>
@@ -22,16 +21,13 @@ const AnteproyectoCard = ({ titulo, descripcion, fechaInicio, fechaFin }: any) =
 
 export default function Anteproyectos() {
   const [isOpen, setIsOpen] = useState(true);
-  const [tab, setTab] = useState("abiertos");
-
-  // Estado para el formulario
   const [showForm, setShowForm] = useState(false);
+  const [showFileModal, setShowFileModal] = useState(false);
+  const [archivosSubidos, setArchivosSubidos] = useState<{ file: File; url: string | null }[]>([]);
   const [titulo, setTitulo] = useState("");
   const [descripcion, setDescripcion] = useState("");
   const [fechaInicio, setFechaInicio] = useState("");
   const [fechaFin, setFechaFin] = useState("");
-
-  // Anteproyectos creados
   const [anteproyectos, setAnteproyectos] = useState<any[]>([]);
 
   const handleCrear = () => {
@@ -51,25 +47,42 @@ export default function Anteproyectos() {
     setFechaFin("");
   };
 
-  const toggleSidebar = () => { 
+  const handleArchivos = (files: File[]) => {
+    const validFiles = files.filter((file) =>
+      [
+        "application/pdf",
+        "application/msword",
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      ].includes(file.type)
+    );
+    if (validFiles.length) {
+      const nuevos = validFiles.map((file) => ({
+        file,
+        url: file.type === "application/pdf" ? URL.createObjectURL(file) : null,
+      }));
+      setArchivosSubidos((prev) => [...prev, ...nuevos]);
+    } else {
+      alert("Solo se permiten archivos PDF o Word.");
+    }
+  };
+
+  const toggleSidebar = () => {
     setIsOpen(!isOpen);
   };
+
   const isAdmin = sessionStorage.getItem("isAdmin") === "true";
   const menuThings = isAdmin ? adminItems : userItems;
-  // console.log(`Is admin? ${sessionStorage.getItem("isAdmin")}`);
-  const userRole = sessionStorage.getItem("isAdmin") === "true" ? "Admin" : "EcoRanger";
-  console.log("Role ", userRole);
 
   return (
     <div className="flex h-screen w-full bg-black text-white">
       {/* Sidebar */}
-      <Sidebar isOpen={isOpen} menuItems={menuThings}/>
+      <Sidebar isOpen={isOpen} menuItems={menuThings} />
 
       {/* Main Content */}
       <div className="flex flex-1 flex-col">
         {/* Header */}
         <div className="flex items-center border-b border-zinc-800 bg-zinc-900 px-4 py-3 gap-2">
-          <Button isIconOnly variant="light" className="text-white" onPress={() => setIsOpen(!isOpen)}>
+          <Button isIconOnly variant="light" className="text-white" onPress={toggleSidebar}>
             {isOpen ? (
               <Icon icon="lucide:chevron-left" width={20} height={20} />
             ) : (
@@ -78,14 +91,6 @@ export default function Anteproyectos() {
           </Button>
           <div>
             <h1 className="text-lg font-medium">Explorador de Anteproyectos</h1>
-          </div>
-          <div className="ml-auto flex items-center gap-2">
-            <span className="text-sm">
-              {`${userRole} ${sessionStorage.getItem("name") ? `: ${sessionStorage.getItem("name")}` : ""}`}
-            </span>
-            <div className="w-8 h-8 rounded-full bg-zinc-700 flex items-center justify-center">
-              <Icon icon="lucide:user" width={20} height={20} />
-            </div>
           </div>
         </div>
 
@@ -104,28 +109,14 @@ export default function Anteproyectos() {
           </Button>
         </div>
 
-        <div className="px-4">
-          <Tabs
-            selectedKey={tab}
-            onSelectionChange={(key) => setTab(String(key))}
-            variant="underlined"
-            className="mb-4"
-          >
-            <Tab key="abiertos" title="Abiertos" />
-            <Tab key="cerrados" title="Cerrados" />
-          </Tabs>
-        </div>
-
         {/* Cards */}
         <div className="flex-1 overflow-auto px-4">
           {anteproyectos.map((a, idx) => (
-            <AnteproyectoCard key={idx} {...a} />
+            <AnteproyectoCard key={idx} {...a} onUpload={() => setShowFileModal(true)} />
           ))}
         </div>
 
-       
-
-        {/* Modal */}
+        {/* Modal for creating anteproyecto */}
         {showForm && (
           <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
             <div className="bg-zinc-800 p-6 rounded-lg w-full max-w-md shadow-xl">
@@ -175,6 +166,80 @@ export default function Anteproyectos() {
                 </Button>
                 <Button color="success" onPress={handleCrear}>
                   Guardar
+                </Button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Modal for file upload */}
+        {showFileModal && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70">
+            <div className="bg-zinc-900 p-6 rounded-xl shadow-2xl w-full max-w-2xl text-white relative">
+              <button
+                className="absolute top-4 right-4 text-gray-400 hover:text-white"
+                onClick={() => setShowFileModal(false)}
+              >
+                <Icon icon="lucide:x" width={24} height={24} />
+              </button>
+              <h2 className="text-2xl font-bold mb-2">Sube tus documentos</h2>
+              <p className="mb-4 text-sm text-gray-400">
+                Acepta archivos PDF y Word. Puedes arrastrarlos o hacer clic para seleccionarlos.
+              </p>
+              <div
+                className="border-2 border-dashed border-gray-500 rounded-lg p-6 text-center cursor-pointer hover:border-green-400 transition-all"
+                onClick={() => document.getElementById("multiFileUpload")?.click()}
+                onDragOver={(e) => e.preventDefault()}
+                onDrop={(e) => {
+                  e.preventDefault();
+                  const files = Array.from(e.dataTransfer.files);
+                  handleArchivos(files);
+                }}
+              >
+                <Icon icon="lucide:upload-cloud" width={40} height={40} className="mx-auto mb-2 text-green-400" />
+                <p className="text-gray-300">
+                  Arrastra aquí tus archivos o haz clic para seleccionarlos
+                </p>
+                <input
+                  type="file"
+                  multiple
+                  accept=".pdf,.doc,.docx"
+                  id="multiFileUpload"
+                  style={{ display: "none" }}
+                  onChange={(e) => handleArchivos(Array.from(e.target.files || []))}
+                />
+              </div>
+              {archivosSubidos.length > 0 && (
+                <div className="mt-6 space-y-4 max-h-64 overflow-y-auto pr-2">
+                  {archivosSubidos.map((archivo, idx) => (
+                    <div key={idx} className="border border-zinc-700 p-4 rounded-lg relative bg-zinc-800">
+                      <p className="text-sm font-semibold text-green-400">{archivo.file.name}</p>
+                      <button
+                        className="absolute top-2 right-2 text-gray-400 hover:text-red-400"
+                        onClick={() =>
+                          setArchivosSubidos((prev) => prev.filter((_, i) => i !== idx))
+                        }
+                      >
+                        <Icon icon="lucide:trash" width={18} height={18} />
+                      </button>
+                      {archivo.file.type === "application/pdf" && archivo.url && (
+                        <iframe src={archivo.url} title={`Vista previa PDF ${idx}`} className="w-full h-40 mt-2 rounded-md" />
+                      )}
+                      {archivo.file.type.includes("word") && (
+                        <p className="text-sm text-gray-300 mt-2">
+                          📄 Documento Word (no se puede previsualizar)
+                        </p>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )}
+              <div className="flex justify-end gap-2 mt-6">
+                <Button color="default" onPress={() => setShowFileModal(false)}>
+                  Cancelar
+                </Button>
+                <Button color="success" onPress={() => setShowFileModal(false)}>
+                  Subir Archivos
                 </Button>
               </div>
             </div>
