@@ -140,12 +140,11 @@ export default function AdminDashboard() {
   const userRole = sessionStorage.getItem("isAdmin") === "true" ? "Admin" : "EcoRanger";
   console.log("Role ", userRole);
   return (
-    <div className="flex h-screen w-full bg-black text-white overflow-hidden">
+    <div className="flex h-screen w-full bg-black text-white">
       <Sidebar isOpen={isOpen} menuItems={menuThings}/>
-      <div className="flex-1 flex flex-col">
-        {/* Header section */}
-        <div className="fixed top-0 left-0 right-0 z-30 h-16 flex items-center border-b border-zinc-800 bg-zinc-900 px-4 gap-4 transition-all duration-300">
-          <Button isIconOnly variant="light" className="text-white ml-2" onPress={toggleSidebar}>
+      <div className="flex-1 flex flex-col overflow-auto">
+        <div className={`fixed top-0 left-0 right-0 z-30 h-16 flex items-center border-b border-zinc-800 bg-zinc-900 px-6 gap-4 transition-all duration-300 ${isOpen ? 'pl-64' : 'pl-0'}`}>
+          <Button isIconOnly variant="light" className="text-white ml-2" onPress={() => setIsOpen(!isOpen)}>
             <Icon icon={isOpen ? "lucide:chevron-left" : "lucide:chevron-right"} width={20} height={20} />
           </Button>
           <div className="ml-auto flex items-center gap-2">

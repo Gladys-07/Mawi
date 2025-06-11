@@ -2,57 +2,8 @@ import React from "react";
 import { Icon } from "@iconify/react";
 import { Button } from "@heroui/react";
 import { useLocation, useNavigate, Link } from "react-router-dom";
-
-// Sidebar
-const Sidebar = ({ isOpen }: { isOpen: boolean }) => {
-  const location = useLocation();
-  const navigate = useNavigate(); 
-  const userId = sessionStorage.getItem("userId");
-
-  const menuItems = [
-    { title: "Inicio", icon: "lucide:home", path: "/cards" },
-    { title: "Asistente de Mi Biomo", icon: "lucide:activity", path: "/asistentebiomo" },
-    { title: "Nuevas Convocatorias", icon: "lucide:bell", path: "/AsNewConv" },
-    { title: "Explorador de Anteproyectos", icon: "lucide:search", path: "/anteproyectos" },
-    { title: "Informes, Métricas y Análisis", icon: "lucide:bar-chart-2", path: "/informes" },
-  ];
-
-  return (
-    <div className={`flex flex-col bg-zinc-900 border-r border-zinc-800 transition-all duration-300 ${isOpen ? "w-64" : "w-0 overflow-hidden"}`}>
-      <div className="flex items-center gap-2 p-4 border-b border-zinc-800">
-        <div className="w-6 h-6 rounded-full bg-white flex items-center justify-center">
-          <Icon icon="lucide:eye" className="text-zinc-900 w-4 h-4" />
-        </div>
-        <span className="font-medium text-white">Mawi</span>
-      </div>
-      <div className="flex-1 overflow-y-auto py-2">
-        {menuItems.map((item, idx) => (
-          <Link to={item.path} key={idx}>
-            <Button
-              variant="flat"
-              color={location.pathname === item.path ? "success" : "default"}
-              className={`justify-start w-full mb-1 ${location.pathname === item.path ? "bg-success-900/20 text-success" : "bg-transparent text-white"}`}
-              startContent={<Icon icon={item.icon} width={18} height={18} />}
-            >
-              {item.title}
-            </Button>
-          </Link>
-        ))}
-      </div>
-      <div className="mt-auto border-t border-zinc-800 p-3">
-        <Button
-          variant="flat"
-          color="default"
-          className="justify-start w-full text-zinc-400"
-          startContent={<Icon icon="lucide:help-circle" width={18} height={18} />}
-          onPress={() => navigate("/soporte")} 
-        >
-          Contacta con el soporte
-        </Button>
-      </div>
-    </div>
-  );
-};
+import { userItems, adminItems } from "../constants";
+import Sidebar from "../components/sidebar";
 
 // Datos de ejemplo
 const ecoRangers = [
@@ -91,11 +42,32 @@ const ecoRangers = [
 // Vista principal
 export default function ViewEcoranger() {
   const [isOpen, setIsOpen] = React.useState(true);
-
+  const isAdmin = sessionStorage.getItem("isAdmin") === "true";
+  const toggleSidebar = () => { 
+    setIsOpen(!isOpen);
+  };
+  const menuThings = isAdmin ? adminItems : userItems;
+  console.log(`Is admin? ${sessionStorage.getItem("isAdmin")}`);
+  const userRole = sessionStorage.getItem("isAdmin") === "true" ? "Admin" : "EcoRanger";
   return (
     <div className="flex">
-      <Sidebar isOpen={isOpen} />
-      <div className="flex-1 p-4 overflow-auto space-y-6">
+      <Sidebar isOpen={isOpen} menuItems={menuThings}/>
+      <div className="flex flex-1 flex-col overflow-auto">
+      <div className={`fixed top-0 left-0 right-0 z-30 h-16 flex items-center border-b border-zinc-800 bg-zinc-900 px-6 gap-4 transition-all duration-300 ${isOpen ? 'pl-64' : 'pl-0'}`}>
+        <Button isIconOnly variant="light" className="text-white ml-2" onPress={() => setIsOpen(!isOpen)}>
+          <Icon icon={isOpen ? "lucide:chevron-left" : "lucide:chevron-right"} width={20} height={20} />
+        </Button>
+        <h1 className="text-lg font-medium text-white">Usuarios en plataforma</h1>
+        <div className="ml-auto flex items-center gap-2">
+          <span className="text-sm text-white">
+            {`${userRole} ${sessionStorage.getItem("name") ? `: ${sessionStorage.getItem("name")}` : ""}`}
+          </span>
+          <div className="w-8 h-8 rounded-full bg-zinc-700 flex items-center justify-center">
+            <Icon icon="lucide:user" width={20} height={20} />
+          </div>
+        </div>
+      </div>
+      <div className="flex-1 p-4 overflow-auto space-y-6 pt-20">
         {ecoRangers.map((ranger, index) => (
           <div
             key={index}
@@ -134,6 +106,7 @@ export default function ViewEcoranger() {
             </div>
           </div>
         ))}
+      </div>
       </div>
     </div>
   );
