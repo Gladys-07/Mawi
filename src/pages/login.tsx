@@ -16,26 +16,23 @@ export default function Login() {
   return (
     <div className="relative flex h-screen w-full items-center justify-center overflow-hidden bg-black">
       {/* Animated background */}
-      <div className="absolute inset-0 z-0">
-        <motion.div 
-          className="absolute -inset-[100px] opacity-30 blur-[80px]"
-          animate={{
-            background: [
-              "radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.1) 0%, rgba(0, 0, 0, 0) 70%)",
-              "radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.15) 0%, rgba(0, 0, 0, 0) 70%)",
-              "radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.12) 0%, rgba(0, 0, 0, 0) 70%)",
-              "radial-gradient(circle at 20% 80%, rgba(255, 255, 255, 0.1) 0%, rgba(0, 0, 0, 0) 70%)",
-              "radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.15) 0%, rgba(0, 0, 0, 0) 70%)",
-              "radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.1) 0%, rgba(0, 0, 0, 0) 70%)",
-            ]
-          }}
-          transition={{
-            duration: 15,
-            repeat: Infinity,
-            repeatType: "reverse",
-            ease: "linear"
-          }}
-        />
+   <div className="absolute inset-0 z-0">
+  <motion.div
+    className="absolute -inset-[90px] blur-[90px] opacity-60"
+    animate={{
+      background: [
+        "radial-gradient(circle at 30% 30%, rgba(0,255,180,0.7) 0%, rgba(0,0,0,0) 30%)",
+        "radial-gradient(circle at 50% 50%, rgba(0, 255, 60, 0.73) 0%, rgba(0,0,0,0) 30%)",
+        "radial-gradient(circle at 50% 50%, rgba(152, 232, 189, 0.6) 0%, rgba(0,0,0,0) 30%)",
+      ],
+    }}
+    transition={{
+      duration: 12,
+      repeat: Infinity,
+      repeatType: "mirror",
+      ease: "easeInOut"
+    }}
+         />
         
         <motion.div 
           className="absolute top-1/4 left-1/4 h-[300px] w-[300px] rounded-full bg-success-500/10 blur-[100px]"
