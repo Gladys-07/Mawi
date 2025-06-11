@@ -24,12 +24,17 @@ export default function RecuperarContrasenia() {
         method: "POST",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify({
-          "username": sessionStorage.getItem("name"),
+          "email": sessionStorage.getItem("provEmail"),
           "password": newPassword
         })
       });
-      console.log("changed password successfully");
-      navigate("/success");
+      const resChangePass = await response.json();
+      if(resChangePass.total === "0") {
+        setErrorMessage("No se pudo cambiar la contraseña");
+      } else {
+        console.log("changed password successfully");
+        navigate("/success");
+      }
 
     } catch(error) {
       console.log("Error al conectar con el servidor");

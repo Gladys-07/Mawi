@@ -144,7 +144,7 @@ export default function Register() {
               className="cursor-pointer hover:text-success-500"
               onClick={() => navigate("/recuperar_contrasenia")}
             >
-              ¿Has olvidado tu constraseña?
+              ¿Has olvidado tu contraseña?
             </span>
           </p>
           

@@ -12,11 +12,10 @@ export default function RecuperarContrasenia() {
     // Aquí iría tu lógica para enviar correo
    // navigate("/success");
  
-const handleRecuperar = () => {
-  sessionStorage.setItem("name", userName);
-  navigate("/cambio_contrasenia");
-};
-
+  const handleRecuperar = () => {
+    sessionStorage.setItem("provEmail", email);
+    navigate("/cambio_contrasenia");
+  };
 
 
   return (
@@ -29,20 +28,6 @@ const handleRecuperar = () => {
           </div>
 
           <h2 className="text-center text-xl font-semibold">Recuperar contraseña</h2>
-
-          <Input
-            label="Nombre de usuario"
-            placeholder=""
-            type="text"
-            value={userName}
-            onValueChange={setUserName}
-            variant="bordered"
-            classNames={{
-              inputWrapper: "bg-zinc-800 border-zinc-700",
-              input: "text-white",
-              label: "text-gray-400"
-            }}
-          />
           <Input
             label="Correo electrónico"
             placeholder=""

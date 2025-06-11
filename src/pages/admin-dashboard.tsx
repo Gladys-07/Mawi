@@ -135,9 +135,6 @@ export default function AdminDashboard() {
     getRecordsByType();
   }, []); //no dependencies used
 
-  const toggleSidebar = () => {
-    setIsOpen(!isOpen);
-  };
   const isAdmin = sessionStorage.getItem("isAdmin") === "true";
   const menuThings = isAdmin ? adminItems : userItems;
   const userRole = sessionStorage.getItem("isAdmin") === "true" ? "Admin" : "EcoRanger";

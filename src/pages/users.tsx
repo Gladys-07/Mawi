@@ -43,14 +43,12 @@ const ecoRangers = [
 export default function ViewEcoranger() {
   const [isOpen, setIsOpen] = React.useState(true);
   const isAdmin = sessionStorage.getItem("isAdmin") === "true";
-  const toggleSidebar = () => { 
-    setIsOpen(!isOpen);
-  };
+ 
   const menuThings = isAdmin ? adminItems : userItems;
   console.log(`Is admin? ${sessionStorage.getItem("isAdmin")}`);
   const userRole = sessionStorage.getItem("isAdmin") === "true" ? "Admin" : "EcoRanger";
   return (
-    <div className="flex">
+    <div className="flex text-white">
       <Sidebar isOpen={isOpen} menuItems={menuThings}/>
       <div className="flex flex-1 flex-col overflow-auto">
       <div className={`fixed top-0 left-0 right-0 z-30 h-16 flex items-center border-b border-zinc-800 bg-zinc-900 px-6 gap-4 transition-all duration-300 ${isOpen ? 'pl-64' : 'pl-0'}`}>
