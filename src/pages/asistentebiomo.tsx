@@ -120,17 +120,7 @@ export default function AsistenteBiomo() {
           </div>
         </div>
         
-        {/* Footer */}
-        <div className="flex justify-end border-t border-zinc-800 p-2">
-          <Button 
-            color="success" 
-            variant="flat" 
-            size="sm"
-            startContent={<Icon icon="lucide:download" width={16} height={16} />}
-          >
-            Salvar Datos
-          </Button>
-        </div>
+        
       </div>
     </div>
   );

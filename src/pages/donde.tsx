@@ -9,8 +9,25 @@ export default function Register() {
   const [pais, setPais] = React.useState("");
   const [provincia, setProvincia] = React.useState("");
   const [ciudad, setCiudad] = React.useState("");
+  const [error, setError] = React.useState("");
 
   const handleRegister = () => {
+    // Validación: Verificar que todos los campos estén llenos
+    if (!telefono || !pais || !provincia || !ciudad) {
+      setError("Por favor, completa todos los campos antes de continuar.");
+      return;
+    }
+
+    // Limpiar el mensaje de error si todo está correcto
+    setError("");
+
+    // Guardar los datos en sessionStorage
+    sessionStorage.setItem("telefono", telefono);
+    sessionStorage.setItem("pais", pais);
+    sessionStorage.setItem("provincia", provincia);
+    sessionStorage.setItem("ciudad", ciudad);
+
+    // Navegar a la siguiente página
     navigate("/trabajo");
   };
 
@@ -22,10 +39,12 @@ export default function Register() {
             <Icon icon="lucide:eye" className="mr-3 h-6 w-6 text-white" />
             <h1 className="text-2xl font-bold text-white">Mawi</h1>
           </div>
-          
+
           <h2 className="text-center text-xl font-semibold">¿De dónde eres?</h2>
-          <h4 className= "text-center text-x1 font-semibold"> Completa tu usuario agregando esta información </h4> 
-          
+          <h4 className="text-center text-x1 font-semibold">
+            Completa tu usuario agregando esta información
+          </h4>
+
           <Input
             label="Prefijo + Número telefónico"
             placeholder=""
@@ -35,10 +54,10 @@ export default function Register() {
             classNames={{
               inputWrapper: "bg-zinc-800 border-zinc-700",
               input: "text-white",
-              label: "text-gray-400"
+              label: "text-gray-400",
             }}
           />
-          
+
           <Input
             label="País"
             placeholder=""
@@ -49,7 +68,7 @@ export default function Register() {
             classNames={{
               inputWrapper: "bg-zinc-800 border-zinc-700",
               input: "text-white",
-              label: "text-gray-400"
+              label: "text-gray-400",
             }}
           />
 
@@ -63,10 +82,10 @@ export default function Register() {
             classNames={{
               inputWrapper: "bg-zinc-800 border-zinc-700",
               input: "text-white",
-              label: "text-gray-400"
+              label: "text-gray-400",
             }}
           />
-          
+
           <Input
             label="Ciudad"
             placeholder=""
@@ -77,22 +96,19 @@ export default function Register() {
             classNames={{
               inputWrapper: "bg-zinc-800 border-zinc-700",
               input: "text-white",
-              label: "text-gray-400"
+              label: "text-gray-400",
             }}
           />
 
-           
-          
-          <Button 
-            color="success" 
-            className="mt-2 w-full"
-            onPress={handleRegister}
-          >
+          {/* Mostrar mensaje de error si hay campos vacíos */}
+          {error && <p className="text-sm text-red-500 text-center">{error}</p>}
+
+          <Button color="success" className="mt-2 w-full" onPress={handleRegister}>
             Siguiente
           </Button>
-          
+
           <p className="mt-2 text-center text-sm text-gray-500">
-            <span 
+            <span
               className="cursor-pointer hover:text-success-500"
               onClick={() => navigate("/soporte")}
             >
