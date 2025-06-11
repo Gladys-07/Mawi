@@ -3,6 +3,7 @@ import Sidebar from "../components/sidebar";
 import { Button } from "@heroui/react";
 import { Icon } from "@iconify/react";
 import { motion, AnimatePresence } from "framer-motion";
+import { userItems, adminItems } from "../constants";
 
 type Convocatoria = {
   ID_convocatoria: number;
@@ -25,6 +26,7 @@ export default function ConvocatoriasDashboard() {
   const [deleteId, setDeleteId] = useState<number | null>(null);
   const [originalConvocatoria, setOriginalConvocatoria] = useState<Convocatoria | null>(null);
   const [listaPaises, setListaPaises] = useState<string[]>([]);
+  const [isOpen, setIsOpen] = React.useState(true);
 
   useEffect(() => {
     const fetchConvocatorias = async () => {
@@ -108,11 +110,18 @@ export default function ConvocatoriasDashboard() {
       const k = key as keyof Convocatoria;
       return editConvocatoria[k] !== originalConvocatoria[k];
     });
+     console.log(sessionStorage.getItem("name"));
+
+  const toggleSidebar = () => { 
+    setIsOpen(!isOpen);
+  };   
+  const isAdmin = sessionStorage.getItem("isAdmin") === "true";
+  const menuThings = isAdmin ? adminItems : userItems;
+  console.log(`Is admin? ${sessionStorage.getItem("isAdmin")}`);
 
   return (
     <div className="flex flex-col md:flex-row h-screen w-full bg-black text-white overflow-hidden">
-      <Sidebar isOpen={sidebarOpen} />
-      <div className="flex flex-col md:flex-row h-screen w-full bg-black text-white overflow-hidden">
+        <Sidebar isOpen={isOpen} menuItems={menuThings}/>      <div className="flex flex-col md:flex-row h-screen w-full bg-black text-white overflow-hidden">
         {/* Encabezado */}
         <div className={`fixed top-0 left-0 right-0 z-30 h-16 flex items-center border-b border-zinc-800 bg-zinc-900 px-6 gap-4 transition-all duration-300 ${sidebarOpen ? 'pl-64' : 'pl-0'}`}>
           <Button isIconOnly variant="light" className="text-white ml-2" onPress={() => setSidebarOpen(!sidebarOpen)}>
@@ -348,7 +357,7 @@ export default function ConvocatoriasDashboard() {
                         <Button
                           type="button"
                           className="bg-zinc-700 hover:bg-zinc-600 text-white rounded-xl"
-                          onClick={() => {
+                          onPress={() => {
                             setEditConvocatoria(null);
                             setOriginalConvocatoria(null);
                           }}

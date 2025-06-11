@@ -2,78 +2,19 @@ import React, {useState} from "react";
 import { Navbar, Button, Input } from "@heroui/react";
 import { Icon } from "@iconify/react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import {getChatCompletion} from "../api/chat"
-
-// Sidebar Component
-interface SidebarProps {
-  isOpen: boolean;
-}
-
-const SidebarBiomo: React.FC<SidebarProps> = ({ isOpen }) => {
-  const location = useLocation();
-  const navigate = useNavigate();
-  const menuItems = [
-    { title: "Inicio", icon: "lucide:home", path: "/cards" },
-    { title: "Asistente de Mi Biomo", icon: "lucide:activity", path: "/asistentebiomo" },
-    { title: "Nuevas Convocatorias", icon: "lucide:bell", path: "/AsNewConv" },
-    { title: "Explorador de Anteproyectos", icon: "lucide:search", path: "/anteproyectos" },
-    { title: "Informes, Métricas y Análisis", icon: "lucide:bar-chart-2", path: "/informes" },
-  ];
-
-  return (
-    <div 
-      className={`flex flex-col bg-zinc-900 border-r border-zinc-800 transition-all duration-300 ${
-        isOpen ? "w-64" : "w-0 overflow-hidden"
-      }`}
-    >
-      {/* Logo Area */}
-      <div className="flex items-center gap-2 p-4 border-b border-zinc-800">
-        <div className="w-6 h-6 rounded-full bg-white flex items-center justify-center">
-          <Icon icon="lucide:eye" className="text-zinc-900 w-4 h-4" />
-        </div>
-        <span className="font-medium">Mawi</span>
-      </div>
-      
-      {/* Menu Items */}
-      <div className="flex-1 overflow-y-auto py-2">
-        {menuItems.map((item, index) => (
-          <Link to={item.path} key={index}>
-            <Button
-              variant="flat"
-              color={location.pathname === item.path ? "success" : "default"}
-              className={`justify-start w-full mb-1 ${location.pathname === item.path ? "bg-success-900/20 text-success" : "bg-transparent text-white"
-              }`}
-              startContent={<Icon icon={item.icon} width={18} height={18} />}
-            >
-              {item.title}
-            </Button>
-          </Link>
-        ))}
-      </div>
-      
-      {/* Footer */}
-      <div className="mt-auto border-t border-zinc-800 p-3">
-        <Button
-          variant="flat"
-          color="default"
-          className="justify-start w-full text-zinc-400"
-          startContent={<Icon icon="lucide:help-circle" width={18} height={18} />}
-          onPress={() => navigate("/soporte")} 
-        >
-          Contacto con el soporte
-        </Button>
-      </div>
-    </div>
-  );
-};
+import {getChatCompletion} from "../api/chat";
+import Sidebar from "../components/sidebar";
+import { userItems, adminItems } from "../constants";
 
 // Main Application
 export default function AsistenteBiomo() {
+  {/* necessary for sidebar*/}
   const [isOpen, setIsOpen] = React.useState(true);
   //<>state type (an array of objects in this case) ([]) initial state value, an empty array.
   const [chatHistory, setChatHistory] = useState<{sender: "user" | "AI", message: string}[]>([]);
   const [userInput, setUserInput] = useState("");
   const [loading, setLoading] = useState(false);
+
   
   //API USE ---------------------------------------
   async function sendMessage() {
@@ -92,15 +33,19 @@ export default function AsistenteBiomo() {
     setLoading(false);
   }
   
-  const toggleSidebar = () => {
+  {/* necessary for sidebar*/}
+  const toggleSidebar = () => { 
     setIsOpen(!isOpen);
   };
 
+  const isAdmin = sessionStorage.getItem("isAdmin") === "true";
+  {/* necessary for sidebar*/}
+  const menuThings = isAdmin ? adminItems : userItems;
+  console.log(`Is admin? ${sessionStorage.getItem("isAdmin")}`);
   return (
     <div className="flex h-screen w-full bg-black text-white">
       {/* Sidebar */}
-      <SidebarBiomo isOpen={isOpen} />
-      
+      <Sidebar isOpen={isOpen} menuItems={menuThings}/>
       {/* Main Content */}
       <div className="flex flex-1 flex-col">
         {/* Header */}

@@ -1,88 +1,59 @@
 import React from "react";
 import { Button, Avatar } from "@heroui/react";
 import { Icon } from "@iconify/react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 
 interface SidebarProps {
   isAdmin?: boolean;
   isOpen: boolean; // 👈 Solo recibimos el estado, no lo modificamos desde aquí
+  menuItems: menuItem[]
 }
 
-export default function Sidebar({ isAdmin = false, isOpen }: SidebarProps) {
-  const navigate = useNavigate();
+interface menuItem {
+  title : string,
+  icon : string,
+  path : string
+}
+
+export default function Sidebar({ isOpen, menuItems}: SidebarProps ): React.ReactElement {
   const location = useLocation();
-
-  const isActive = (path: string) => location.pathname === path;
-
-  const menuItems = [
-    { label: "Inicio", icon: "lucide:home", path: "/cards" },
-    { label: "Dashboard", icon: "lucide:layout-dashboard", path: "/dashboard" },
-    { label: "Asistente Mi Biomo", icon: "lucide:list-checks", path: "/asistentebiomo" },
-    //{ label: "Estadísticas", icon: "lucide:bar-chart-2", path: "/stats" },
-    { label: "Anteproyectos", icon: "lucide:search", path: "/anteproyectos" },
-    { label: "Convocatorias", icon: "lucide:layout-dashboard", path: "/convoDash" },
-    { label: "Nueva Convocatoria", icon: "lucide:plus-square", path: "/AsNewConv" },
-    { label: "Configuración", icon: "lucide:settings", path: "/settings" },
-  ];
-
-  const adminItems = [
-    { label: "Panel Admin", icon: "lucide:shield", path: "/admin" },
-    { label: "Usuarios", icon: "lucide:users", path: "/admin/users" },
-    { label: "Reportes", icon: "lucide:file-text", path: "/admin/reports" },
-  ];
-
-  console.log("Name: ", sessionStorage.getItem("name"));
-  console.log("Email: ", sessionStorage.getItem("userEmail"));
-
+  const navigate = useNavigate(); 
+  const userId = sessionStorage.getItem("userId");
+  
   return (
-    <div className={`fixed top-0 left-0 h-full z-40 bg-zinc-900 transition-transform duration-300 ease-in-out w-64 flex flex-col p-4 ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}>
-      <div className="mb-6 flex items-center">
-        <Icon icon="lucide:eye" className="mr-2 h-6 w-6 text-white" />
-        <h1 className="text-xl font-bold text-white">Mawi</h1>
-      </div>
-
-      <div className="mt-4 mb-4 flex items-center gap-3 rounded-lg bg-zinc-800 p-3">
-
-        <Icon icon="lucide:user" className="text-white w-6 h-6" />
-        <div>
-          <p className="text-sm font-medium text-white">{sessionStorage.getItem("name")}</p>
-          <p className="text-xs text-gray-400">{sessionStorage.getItem("userEmail")}</p>
+    <div className={`flex flex-col bg-zinc-900 border-r border-zinc-800 transition-all duration-300 ${isOpen ? "w-64" : "w-0 overflow-hidden"}`}>
+      <div className="flex items-center gap-2 p-4 border-b border-zinc-800">
+        <div className="w-6 h-6 rounded-full bg-white flex items-center justify-center">
+          <Icon icon="lucide:eye" className="text-zinc-900 w-4 h-4" />
         </div>
+        <span className="font-medium">Mawi</span>
       </div>
-
-      <div className="flex-1 space-y-1">
-        {(isAdmin ? [...adminItems, ...menuItems] : menuItems).map((item) => (
-          <Button
-            key={item.path}
-            variant="flat"
-            color={isActive(item.path) ? "success" : "default"}
-            className={`justify-start w-full text-white text-left whitespace-normal ${isActive(item.path) ? 'bg-zinc-100/20' : ''}`}
-            startContent={<Icon icon={item.icon} className="h-5 w-5" />}
-            onPress={() => navigate(item.path)}
-          >
-            {item.label}
-          </Button>
+      <div className="flex-1 overflow-y-auto py-2">
+        {menuItems.map((item, idx) => (
+          <Link to={item.path} key={idx}>
+            <Button
+              variant="flat"
+              color={location.pathname === item.path ? "success" : "default"}
+              className={`justify-start w-full mb-1 ${location.pathname === item.path ? "bg-success-900/20 text-success" : "bg-transparent text-white"}`}
+              startContent={<Icon icon={item.icon} width={18} height={18} />}
+            >
+              {item.title}
+            </Button>
+          </Link>
         ))}
       </div>
-
-      <Button
-        variant="flat"
-        color="danger"
-        className="mt-6 justify-start w-full"
-        startContent={<Icon icon="lucide:log-out" className="h-5 w-5" />}
-        onPress={() => navigate("/login")}
-      >
-        Cerrar sesión
-      </Button>
-
-      <p className="mt-2 text-center text-sm text-gray-500 pb-2">
-        <span
-          className="cursor-pointer hover:text-success-500"
-          onClick={() => navigate("/soporte")}
+      <div className="mt-auto border-t border-zinc-800 p-3">
+        <Button
+          variant="flat"
+          color="default"
+          className="justify-start w-full text-zinc-400"
+          startContent={<Icon icon="lucide:help-circle" width={18} height={18} />}
+          onPress={() => navigate("/soporte")} 
         >
-          ¿Necesitas ayuda? Contacta con nosotros
-        </span>
-      </p>
+          Contacta con el soporte
+        </Button>
+      </div>
     </div>
   );
-}
+};
+  

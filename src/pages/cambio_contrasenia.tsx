@@ -10,6 +10,7 @@ export default function RecuperarContrasenia() {
   const [confirmPassword, setConfirmPassword] = React.useState("");
   const [OTP, setOTP] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
+  const [passMatch, setPassMatch] = useState(false);
   
   const handleRecuperar = async () => {
     // PASSWORD CHANGE LOGIC
@@ -35,6 +36,10 @@ export default function RecuperarContrasenia() {
       setErrorMessage("Error de conexión con el servidor.");
     }
   };
+
+  React.useEffect(() => {
+    setPassMatch(newPassword === confirmPassword);
+  }, [newPassword, confirmPassword]);
 
   return (
     <div className="flex h-screen w-full items-center justify-center bg-black">
@@ -99,9 +104,15 @@ export default function RecuperarContrasenia() {
             color="success" 
             className="mt-2 w-full"
             onPress={handleRecuperar}
+            disabled={!passMatch} //deshabilita el botón si passMatch es falso, solo es true si las contras coinciden
           >
             Guardar
           </Button>
+          {!passMatch && newPassword && confirmPassword && (
+            <div className="rounded-md bg-red-500/10 border border-red-500 text-red-400 text-sm p-2 text-center">
+              Las contraseñas no coinciden.
+            </div>
+          )}
 
           <p className="mt-2 text-center text-sm text-gray-500">
             <span 
