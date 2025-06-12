@@ -36,21 +36,6 @@ type anteView = {
   fechaLimite: string
 }
 
-// carta de anteproyectos
-const ConvocatoriaCard = ({ titulo, descripcion, fechaInicial, fechaLimite }: anteView) => (
-  <div className="bg-zinc-800 rounded-lg p-4 mb-4 border border-zinc-700">
-    <div className="font-semibold text-lg mb-2">{titulo}</div>
-    <div className="font-normal text-lg mb-2">{descripcion}</div>
-    <div className="text-sm text-zinc-300 mb-1">Fecha de cuestión: {fechaInicial}</div>
-    <div className="text-sm text-zinc-300">Fecha límite: {fechaLimite}</div>
-    <div className="mt-3 pt-3 border-t border-zinc-700 flex justify-end">
-      <Button color="success" className="min-w-24">
-        <Icon icon="mdi:file-document-outline" width={18} />
-      </Button>
-    </div>
-  </div>
-);
-
 /**
  * saca los anterpoyectos de la BD para que no desaparescan en cada logout
  * sacalos segun su userId, que en anteproyectos es creadosPor
@@ -61,7 +46,54 @@ export default function Mawi() {
   //list to save all the convocatorias name fetch for a certain user
   const [convNamesList, setConvNamesList] = useState<string[]>([]); 
   const [chosenConv, setChosenConv] = useState("");
-  const [anteList, setAnteList] = useState<anteView[]>([])
+  const [anteList, setAnteList] = useState<anteView[]>([]);
+
+  const handleDeleteAnte = async ({titulo, fechaInicial} : {titulo : string, fechaInicial : string}) => {
+    try {
+      console.log("titulo: ", titulo);
+      console.log("fechaInicio: ", fechaInicial);
+      const fechaFormatted = fechaInicial.replace('T', ' ').split('.')[0];
+      console.log("formateada: ", fechaFormatted);
+      const response = await fetch("http://localhost:3000/CSoftware/api/deleteAnteproyectoEspecifico", {
+        method: "DELETE",
+        headers: {
+          "Content-Type" : "application/json",
+          "authorization" : `Bearer ${sessionStorage.getItem("token")}`
+        },
+        body: JSON.stringify({
+          title: titulo,
+          fechaCreacion: fechaFormatted
+        })
+      });
+      const responseData = await response.json();
+      if(responseData.result === 0){
+        console.error("Couldn't delete an anteproyecto");
+        return;
+      }
+      await fetchUserAntes()
+    } catch(error) {
+      console.log("Failed to delete specific anteproyecto ", error);
+    }
+  }
+
+  // carta de anteproyectos
+  const ConvocatoriaCard = ({ titulo, descripcion, fechaInicial, fechaLimite }: anteView) => (
+    <div className="bg-zinc-800 rounded-lg p-4 mb-4 border border-zinc-700">
+      <div className="font-semibold text-lg mb-2">{titulo}</div>
+      <div className="font-normal text-lg mb-2">{descripcion}</div>
+      <div className="text-sm text-zinc-300 mb-1">Fecha de cuestión: {fechaInicial}</div>
+      <div className="text-sm text-zinc-300">Fecha límite: {fechaLimite}</div>
+      
+      <div className="mt-3 pt-3 border-t border-zinc-700 flex justify-end">
+        <Button color="danger" className="min-w-24 mr-4" onPress={() => handleDeleteAnte({ titulo, fechaInicial })}>
+          <Icon icon="mdi:trash" width={18} />
+        </Button>
+        <Button color="success" className="min-w-24">
+          <Icon icon="mdi:file-document-outline" width={18} />
+        </Button>
+      </div>
+    </div>
+  );
 
   const fetchUserAntes = async () => {
     const userAntes = await fetch(`http://localhost:3000/CSoftware/api/getAnteproyectoByUser?userId=${sessionStorage.getItem("userId")}`, {
