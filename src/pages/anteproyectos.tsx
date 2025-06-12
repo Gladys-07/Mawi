@@ -18,19 +18,30 @@ type Convocatoria = {
   fechaCreacion: string;
 };
 
-//used for project preview in front
+//Type used to save antepproyectos in DB
+type anteproyecto = {
+  ID_convocatoria: number,
+  titulo : string,
+  descripcion : string,
+  fechaLimite : string,
+  creadoPor : number,
+  status : string
+}
+
+//Type used for project preview in front
 type anteView = {
   titulo: string;
   descripcion: string;
-  fechaCreacion: string;
+  fechaInicial: string;
   fechaLimite: string
 }
 
 // carta de anteproyectos
-const ConvocatoriaCard = ({ titulo, fechaCreacion, fechaLimite }: any) => (
+const ConvocatoriaCard = ({ titulo, descripcion, fechaInicial, fechaLimite }: anteView) => (
   <div className="bg-zinc-800 rounded-lg p-4 mb-4 border border-zinc-700">
     <div className="font-semibold text-lg mb-2">{titulo}</div>
-    <div className="text-sm text-zinc-300 mb-1">Fecha de cuestión: {fechaCreacion}</div>
+    <div className="font-normal text-lg mb-2">{descripcion}</div>
+    <div className="text-sm text-zinc-300 mb-1">Fecha de cuestión: {fechaInicial}</div>
     <div className="text-sm text-zinc-300">Fecha límite: {fechaLimite}</div>
     <div className="mt-3 pt-3 border-t border-zinc-700 flex justify-end">
       <Button color="success" className="min-w-24">
@@ -46,10 +57,27 @@ const ConvocatoriaCard = ({ titulo, fechaCreacion, fechaLimite }: any) => (
  */
 export default function Mawi() {
   const [isOpen, setIsOpen] = useState(true);
-  const [nombreConvocatoria, setNombreConvocatoria] = useState("");
+  // const [nombreConvocatoria, setNombreConvocatoria] = useState("");
   //list to save all the convocatorias name fetch for a certain user
   const [convNamesList, setConvNamesList] = useState<string[]>([]); 
   const [chosenConv, setChosenConv] = useState("");
+  const [anteList, setAnteList] = useState<anteView[]>([])
+
+  const fetchUserAntes = async () => {
+    const userAntes = await fetch(`http://localhost:3000/CSoftware/api/getAnteproyectoByUser?userId=${sessionStorage.getItem("userId")}`, {
+      method: "GET",
+      headers: {
+        "Content-Type" : "application/json",
+        "authorization" : `Bearer ${sessionStorage.getItem("token")}`
+      }
+    });
+    const userAnteData = await userAntes.json();
+    const onlyUserAntes : anteView[] = userAnteData.result;
+    setAnteList(onlyUserAntes);
+  };
+  useEffect(() => {
+    fetchUserAntes();
+  }, []);
 
   useEffect(() => {
     const getUserConvs = async () => {
@@ -74,27 +102,62 @@ export default function Mawi() {
     getUserConvs();
   }, []);
 
-  const toggleSidebar = () => {
-    setIsOpen(!isOpen);
-  };
+  const saveNewAnte = async (anteproyecto : anteproyecto) => {
+    try {
+      const saveProject = await fetch("http://localhost:3000/CSoftware/api/newAnteproyecto", {
+        method: "POST",
+        headers:{
+          "Content-Type" : "application/json",
+          "authorization" : `Bearer ${sessionStorage.getItem("token")}`
+        },
+        body: JSON.stringify(anteproyecto)
+      });
+      const success = await saveProject.json();
+      console.log(success.message);
+    } catch(error) {
+      console.error("Failed to save new project in DB ", error);
+    }
+  }
+
+  /**
+   * Get's the convocatoria based on its name and uses
+   * the convo info to create a new anteproyecto
+   */
+  const handleNewAnte = async () => {
+    try {
+      //fetch de datos de convocatoria con cierto nombre
+      const response = await fetch(`http://localhost:3000/CSoftware/api/getConvoByName?convoName=${chosenConv}`, {
+        method: "GET",
+        headers: {
+          "Content-Type" : "application/json",
+          "authorization" : `Bearer ${sessionStorage.getItem("token")}`
+        }
+      });
+      const responseData = await response.json();
+      const convInfoForAnte = responseData.result[0];
+      //create new anteproyecto from selected convocatoria
+      const newAnte : anteproyecto = {
+        ID_convocatoria: convInfoForAnte.idConvo,
+        titulo : convInfoForAnte.nombreConvo,
+        descripcion : convInfoForAnte.descripcion,
+        fechaLimite : convInfoForAnte.fechaLimite,
+        creadoPor : convInfoForAnte.creadoPor,
+        status : convInfoForAnte.statusConvo
+      }
+      await saveNewAnte(newAnte);
+      await fetchUserAntes();
+      console.log("Se creo un ante proyecto despues de buscar la convo")
+    }catch(error) {
+      console.error("Error al cargar convo por nombre, ", error);
+    }
+    setChosenConv("opciones");
+  }
 
   const isAdmin = sessionStorage.getItem("isAdmin") === "true";
   const menuThings = isAdmin ? adminItems : userItems;
 
-  // Datos de ejemplo basados en la imagen
-  const anteproyectos = [
-    {
-      titulo: "Título Descripción",
-      fechaCreacion: "00/01/2025",
-      fechaLimite: "00/10/2025"
-    },
-    {
-      titulo: "Título Descripción",
-      fechaCreacion: "00/02/2025",
-      fechaLimite: "00/10/2025"
-    }
-  ];
   const userRole = sessionStorage.getItem("isAdmin") === "true" ? "Admin" : "EcoRanger";
+  console.log("chosenconv: ", chosenConv);
   return (
     <div className="flex h-screen w-full bg-black text-white">
       {/* Sidebar */}
@@ -123,13 +186,13 @@ export default function Mawi() {
         <div className="p-4 border-b border-zinc-800 mt-16">
           <h2 className="text-xl font-semibold mb-4">Selección de Convocatoria</h2>
           <div className="flex flex-col gap-1 w-full">
-            <div className="relative">
+            <div className="relative w-full md:w-1/4">
               <select
                 value={chosenConv}
                 onChange={(e) => setChosenConv(e.target.value)}
-                className="appearance-none w-full md:w-1/4 bg-zinc-800 text-white text-sm border-2 border-zinc-700 hover:border-white px-3 py-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-white transition duration-150"
+                className="appearance-none w-full bg-zinc-800 text-white text-sm border-2 border-zinc-700 hover:border-white px-3 py-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-white transition duration-150"
               >
-                <option value="">Elija una convocatoria</option>
+                <option value="">Opciones</option>
                 {convNamesList.map((conv) => (
                   <option key={conv} value={conv}>{conv}</option>
                 ))}
@@ -139,11 +202,16 @@ export default function Mawi() {
               </div>
             </div>
           </div>
+          {chosenConv !== "" && (<div className="mt-3 pt-3 flex justify-start">
+            <Button color="success" className="min-w-24" onPress={handleNewAnte}>
+              Crear nuevo anteproyecto
+            </Button>
+          </div>)}
         </div>
 
         {/* Cards de convocatorias */}
         <div className="flex-1 overflow-auto p-4">
-          {anteproyectos.map((ante, idx) => (
+          {anteList.map((ante, idx) => (
             <ConvocatoriaCard key={idx} {...ante} /> //no se si esto estaría bien para ubicarlas
           ))}
         </div>
