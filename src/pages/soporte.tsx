@@ -50,9 +50,31 @@ const Soporte: React.FC = () => {
           boxShadow: '0 4px 32px rgba(0,0,0,0.25)',
           display: 'flex',
           flexDirection: 'column',
-          gap: 16
+          gap: 16,
+          position: 'relative'
         }}
       >
+        {/* Botón cerrar en la esquina superior derecha */}
+        <button
+          type="button"
+          onClick={() => navigate(-1)}
+          style={{
+            position: 'absolute',
+            top: 18,
+            right: 18,
+            background: 'transparent',
+            color: '#fff',
+            border: 'none',
+            fontSize: 26,
+            fontWeight: 700,
+            cursor: 'pointer',
+            zIndex: 10
+          }}
+          aria-label="Cerrar"
+          title="Cerrar"
+        >
+          ×
+        </button>
         <h1 style={{
           textAlign: 'center',
           color: '#fff',
@@ -213,16 +235,9 @@ const Soporte: React.FC = () => {
                 fontWeight: 600,
                 cursor: 'pointer'
               }}
-              onClick={() => {
-                const userId = sessionStorage.getItem("userId"); // o el nombre que uses
-                if (userId) {
-                  navigate('/cards');
-                } else {
-                  navigate('/login'); // o la ruta de tu login
-                }
-              }}
+              onClick={() => navigate(-1)}
             >
-              Ir al inicio
+              Cerrar
             </button>
           </div>
         </div>
