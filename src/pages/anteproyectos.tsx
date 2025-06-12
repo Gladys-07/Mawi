@@ -10,8 +10,8 @@ const ConvocatoriaCard = ({ titulo, fechaCreacion, fechaLimite }: any) => (
     <div className="text-sm text-zinc-300 mb-1">Fecha de cuestión: {fechaCreacion}</div>
     <div className="text-sm text-zinc-300">Fecha límite: {fechaLimite}</div>
     <div className="mt-3 pt-3 border-t border-zinc-700 flex justify-end">
-      <Button color="primary" className="min-w-24">
-        Contactar
+      <Button color="success" className="min-w-24">
+        <Icon icon="mdi:file-document-outline" width={18} />
       </Button>
     </div>
   </div>
@@ -32,13 +32,13 @@ export default function Mawi() {
   const convocatorias = [
     {
       titulo: "Título Descripción",
-      fechaCreacion: "00/01/2020",
-      fechaLimite: "00/10/2020"
+      fechaCreacion: "00/01/2025",
+      fechaLimite: "00/10/2025"
     },
     {
       titulo: "Título Descripción",
-      fechaCreacion: "00/02/2020",
-      fechaLimite: "00/10/2020"
+      fechaCreacion: "00/02/2025",
+      fechaLimite: "00/10/2025"
     }
   ];
 
@@ -59,27 +59,17 @@ export default function Mawi() {
             )}
           </Button>
           <div>
-            <h1 className="text-lg font-medium">Mawi</h1>
+            <h1 className="text-lg font-medium">Explorador de Anteproyectos</h1>
           </div>
         </div>
 
-        {/* Sección de navegación */}
-        <div className="flex border-b border-zinc-800 px-4 py-2">
-          <nav className="flex space-x-6">
-            <a href="#" className="text-green-400 border-b-2 border-green-400 pb-2">Inicio</a>
-            <a href="#" className="text-zinc-400 hover:text-white pb-2">Adistente de Mi Bienzo</a>
-            <a href="#" className="text-zinc-400 hover:text-white pb-2">Adistente de Nuevos Convocatorios</a>
-            <a href="#" className="text-zinc-400 hover:text-white pb-2">Adistente Explorador de Anteproyectos</a>
-            <a href="#" className="text-zinc-400 hover:text-white pb-2">Informes, Métricas y Análisis</a>
-          </nav>
-        </div>
 
         {/* Filtro y título */}
         <div className="p-4 border-b border-zinc-800">
-          <h2 className="text-xl font-semibold mb-4">Nombre del Convocatoria</h2>
+          <h2 className="text-xl font-semibold mb-4">Nombre de la Convocatoria</h2>
           <div className="flex items-center gap-2">
             <Input
-              placeholder="Bueno..."
+              placeholder="Escribe..."
               variant="bordered"
               value={nombreConvocatoria}
               onChange={(e) => setNombreConvocatoria(e.target.value)}
@@ -94,15 +84,11 @@ export default function Mawi() {
         {/* Cards de convocatorias */}
         <div className="flex-1 overflow-auto p-4">
           {convocatorias.map((convocatoria, idx) => (
-            <ConvocatoriaCard key={idx} {...convocatoria} />
+            <ConvocatoriaCard key={idx} {...convocatoria} /> //no se si esto estaría bien para ubicarlas
           ))}
         </div>
 
-        {/* Footer */}
-        <div className="border-t border-zinc-800 p-4 text-center text-sm text-zinc-400">
-          <p>Contacta con el agente.</p>
-          <p className="text-white mt-1">Cesar Nuevo Anteproyecto</p>
-        </div>
+        
       </div>
     </div>
   );
