@@ -112,9 +112,6 @@ export default function ConvocatoriasDashboard() {
     });
      console.log(sessionStorage.getItem("name"));
 
-  const toggleSidebar = () => { 
-    setIsOpen(!isOpen);
-  };   
   const isAdmin = sessionStorage.getItem("isAdmin") === "true";
   const menuThings = isAdmin ? adminItems : userItems;
   console.log(`Is admin? ${sessionStorage.getItem("isAdmin")}`);

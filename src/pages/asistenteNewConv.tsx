@@ -167,23 +167,23 @@ export default function AsistenteNuevasConv() {
               <Input label="Región" value={region} onValueChange={setRegion} variant="bordered" className="w-full" classNames={{ inputWrapper: "bg-zinc-800 border-zinc-700", input: "text-white" }} />
               <Input label="Organización" value={organizacion} onValueChange={setOrganizacion} variant="bordered" className="w-full" classNames={{ inputWrapper: "bg-zinc-800 border-zinc-700", input: "text-white" }} />
               <div className="flex flex-col gap-1 w-full">
-  <label className="text-sm text-gray-400 font-medium">País</label>
-  <div className="relative">
-    <select
-      value={pais}
-      onChange={(e) => setPais(e.target.value)}
-      className="appearance-none w-full bg-zinc-800 text-white text-sm border-2 border-zinc-700 hover:border-white px-3 py-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-white transition duration-150"
-    >
-      <option value="">Selecciona un país</option>
-      {listaPaises.map((p) => (
-        <option key={p} value={p}>{p}</option>
-      ))}
-    </select>
-    <div className="pointer-events-none absolute inset-y-0 right-3 flex items-center text-gray-400">
-      <Icon icon="lucide:chevron-down" width={18} height={18} />
-    </div>
-  </div>
-</div>
+                <label className="text-sm text-gray-400 font-medium">País</label>
+                <div className="relative">
+                  <select
+                    value={pais}
+                    onChange={(e) => setPais(e.target.value)}
+                    className="appearance-none w-full bg-zinc-800 text-white text-sm border-2 border-zinc-700 hover:border-white px-3 py-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-white transition duration-150"
+                  >
+                    <option value="">Selecciona un país</option>
+                    {listaPaises.map((p) => (
+                      <option key={p} value={p}>{p}</option>
+                    ))}
+                  </select>
+                  <div className="pointer-events-none absolute inset-y-0 right-3 flex items-center text-gray-400">
+                    <Icon icon="lucide:chevron-down" width={18} height={18} />
+                  </div>
+                </div>
+              </div>
 
 
 
