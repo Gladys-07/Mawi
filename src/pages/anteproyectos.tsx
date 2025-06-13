@@ -54,7 +54,7 @@ export default function Mawi() {
       console.log("fechaInicio: ", fechaInicial);
       const fechaFormatted = fechaInicial.replace('T', ' ').split('.')[0];
       console.log("formateada: ", fechaFormatted);
-      const response = await fetch("http://localhost:3000/CSoftware/api/deleteAnteproyectoEspecifico", {
+      const response = await fetch("https://ludusdev-backend-1.onrender.com/CSoftware/api/deleteAnteproyectoEspecifico", {
         method: "DELETE",
         headers: {
           "Content-Type" : "application/json",
@@ -96,7 +96,7 @@ export default function Mawi() {
   );
 
   const fetchUserAntes = async () => {
-    const userAntes = await fetch(`http://localhost:3000/CSoftware/api/getAnteproyectoByUser?userId=${sessionStorage.getItem("userId")}`, {
+    const userAntes = await fetch(`https://ludusdev-backend-1.onrender.com/CSoftware/api/getAnteproyectoByUser?userId=${sessionStorage.getItem("userId")}`, {
       method: "GET",
       headers: {
         "Content-Type" : "application/json",
@@ -114,7 +114,7 @@ export default function Mawi() {
   useEffect(() => {
     const getUserConvs = async () => {
       try {
-        const userConvs = await fetch(`http://localhost:3000/CSoftware/api/getConvocatoriasByUser/${sessionStorage.getItem("userId")}`, {
+        const userConvs = await fetch(`https://ludusdev-backend-1.onrender.com/CSoftware/api/getConvocatoriasByUser/${sessionStorage.getItem("userId")}`, {
           method: "GET",
           headers: {
             "Content-Type" : "application/json",
@@ -136,7 +136,7 @@ export default function Mawi() {
 
   const saveNewAnte = async (anteproyecto : anteproyecto) => {
     try {
-      const saveProject = await fetch("http://localhost:3000/CSoftware/api/newAnteproyecto", {
+      const saveProject = await fetch("https://ludusdev-backend-1.onrender.com/CSoftware/api/newAnteproyecto", {
         method: "POST",
         headers:{
           "Content-Type" : "application/json",
@@ -158,7 +158,7 @@ export default function Mawi() {
   const handleNewAnte = async () => {
     try {
       //fetch de datos de convocatoria con cierto nombre
-      const response = await fetch(`http://localhost:3000/CSoftware/api/getConvoByName?convoName=${chosenConv}`, {
+      const response = await fetch(`https://ludusdev-backend-1.onrender.com/CSoftware/api/getConvoByName?convoName=${chosenConv}`, {
         method: "GET",
         headers: {
           "Content-Type" : "application/json",

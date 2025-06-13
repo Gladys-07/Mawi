@@ -46,7 +46,7 @@ export default function AdminDashboard() {
   const getRecordsByType = async () => {
     const token = sessionStorage.getItem("token");
     try {
-      const res = await fetch("http://localhost:3000/CSoftware/api/recordTypesNum", {
+      const res = await fetch("https://ludusdev-backend-1.onrender.com/CSoftware/api/recordTypesNum", {
         method: "GET",
         headers: {
           "Content-Type" : "application/json",
@@ -71,7 +71,7 @@ export default function AdminDashboard() {
     const token = sessionStorage.getItem("token");
     try {
       //active
-      const resActive = await fetch("http://localhost:3000/CSoftware/api/getStatusUsers?status=1", {
+      const resActive = await fetch("https://ludusdev-backend-1.onrender.com/CSoftware/api/getStatusUsers?status=1", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -81,7 +81,7 @@ export default function AdminDashboard() {
       const dataActive = await resActive.json();
 
       //inactive
-      const resInactive = await fetch("http://localhost:3000/CSoftware/api/getStatusUsers?status=2", {
+      const resInactive = await fetch("https://ludusdev-backend-1.onrender.com/CSoftware/api/getStatusUsers?status=2", {
         method: "GET",
         headers: {
           "Content-Type" : "application/json",
@@ -104,7 +104,7 @@ export default function AdminDashboard() {
   const token = sessionStorage.getItem("token");
   const getUsers = async () => {
     try {
-      const response = await fetch("http://localhost:3000/CSoftware/api/getUsers", {
+      const response = await fetch("https://ludusdev-backend-1.onrender.com/CSoftware/api/getUsers", {
         method: "GET",
         headers: {"Content-Type": "application/json",
                   "authorization": "Bearer " + token

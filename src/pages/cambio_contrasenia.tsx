@@ -20,7 +20,7 @@ export default function RecuperarContrasenia() {
       return;
     }
     try {
-      const response = await fetch("http://localhost:3000/CSoftware/api/cambioContra", {
+      const response = await fetch("https://ludusdev-backend-1.onrender.com/CSoftware/api/cambioContra", {
         method: "POST",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify({

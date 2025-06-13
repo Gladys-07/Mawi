@@ -37,7 +37,7 @@ export default function Register() {
     };
 
     try {
-      const response = await fetch("http://localhost:3000/CSoftware/api/newUser", {
+      const response = await fetch("https://ludusdev-backend-1.onrender.com/CSoftware/api/newUser", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

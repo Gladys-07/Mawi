@@ -19,7 +19,7 @@ const Soporte: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:3000/CSoftware/api/soporte', form);
+      await axios.post('https://ludusdev-backend-1.onrender.com/CSoftware/api/soporte', form);
       setShowModal(true);
     } catch (error) {
       alert('Error al enviar la solicitud. Intenta de nuevo.');

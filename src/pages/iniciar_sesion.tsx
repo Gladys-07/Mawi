@@ -15,7 +15,7 @@ export default function Register() {
 
   const getUserRole = async (token : string) => {
     try {
-      const response = await fetch(`http://localhost:3000/CSoftware/api/getRoleByEmail?email=${email}`, {
+      const response = await fetch(`https://ludusdev-backend-1.onrender.com/CSoftware/api/getRoleByEmail?email=${email}`, {
         method: "GET",
         headers: {
           "Content-Type" : "application/json",
@@ -43,7 +43,7 @@ export default function Register() {
     }
 
     try {
-      const response = await fetch("http://localhost:3000/CSoftware/api/loginByEmail", {
+      const response = await fetch("https://ludusdev-backend-1.onrender.com/CSoftware/api/loginByEmail", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

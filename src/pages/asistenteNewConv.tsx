@@ -77,7 +77,7 @@ export default function AsistenteNuevasConv() {
     const token = sessionStorage.getItem("token");
 
     try {
-      const response = await fetch("http://localhost:3000/CSoftware/api/newConvocatoria", {
+      const response = await fetch("https://ludusdev-backend-1.onrender.com/CSoftware/api/newConvocatoria", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -138,7 +138,7 @@ export default function AsistenteNuevasConv() {
 
       try {
         const response = await fetch(
-          `http://localhost:3000/CSoftware/api/uploadDocumentoConvocatoria/${id_convocatoria}`,
+          `https://ludusdev-backend-1.onrender.com/CSoftware/api/uploadDocumentoConvocatoria/${id_convocatoria}`,
           {
             method: "POST",
             headers: {

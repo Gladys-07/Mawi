@@ -35,7 +35,7 @@ export default function ConvocatoriasDashboard() {
       const userId = sessionStorage.getItem("userId");
       try {
         if (!userId) return;
-        const res = await fetch(`http://localhost:3000/CSoftware/api/getConvocatoriasByUser/${userId}`,{
+        const res = await fetch(`https://ludusdev-backend-1.onrender.com/CSoftware/api/getConvocatoriasByUser/${userId}`,{
           method: "GET",
           headers: {
             "Content-Type" : "application/json",
@@ -85,7 +85,7 @@ export default function ConvocatoriasDashboard() {
     if (!deleteId) return;
     const token = sessionStorage.getItem("token");
     try {
-      const res = await fetch(`http://localhost:3000/CSoftware/api/deleteConvocatoria/${deleteId}`, {
+      const res = await fetch(`https://ludusdev-backend-1.onrender.com/CSoftware/api/deleteConvocatoria/${deleteId}`, {
         method: "DELETE",
           headers: {
             "Content-Type" : "application/json",
@@ -221,7 +221,7 @@ export default function ConvocatoriasDashboard() {
   }
   const token = sessionStorage.getItem("token");
   try {
-    const res = await fetch(`http://localhost:3000/CSoftware/api/updateConvocatoria/${editConvocatoria.ID_convocatoria}`, {
+    const res = await fetch(`https://ludusdev-backend-1.onrender.com/CSoftware/api/updateConvocatoria/${editConvocatoria.ID_convocatoria}`, {
       method: "PUT",
       headers: { 
         "Content-Type": "application/json",
@@ -423,7 +423,7 @@ export default function ConvocatoriasDashboard() {
                   onPress={() => {
                     const token = sessionStorage.getItem("token");
                     window.open(
-                      `http://localhost:3000/CSoftware/api/descargarDocumentoConvocatoria/${convocatoria.ID_convocatoria}`,
+                      `https://ludusdev-backend-1.onrender.com/CSoftware/api/descargarDocumentoConvocatoria/${convocatoria.ID_convocatoria}`,
                       "_blank"
                     );
                   }}
