@@ -106,6 +106,24 @@ export default function App() {
              Interactúa con todas aquellas convocatorias abiertas y formula anteproyectos.
             </p>
           </Card>
+
+          {/* Card 4 */}
+<div className="col-span-1 md:col-span-3 flex justify-center">
+  <Card
+    isPressable
+    isHoverable
+    onPress={() => window.open("https://angelaaguirre.itch.io/awaqcapacitaciones", "_blank")}
+    className="bg-zinc-800 hover:bg-zinc-600 border-none p-6 flex flex-col items-center text-center transition-colors"
+  >
+    <Icon icon="lucide:gamepad" className="w-12 h-12 text-green-500 mb-4" />
+    <h3 className="text-white font-medium mb-2">Awaq Capacitaciones</h3>
+    <p className="text-xs text-zinc-400">
+      Accede a las capacitaciones interactivas y recursos disponibles en la plataforma Awaq.
+    </p>
+  </Card>
+</div>
+
+
         </div>
 
         {/* Contact Button */}
