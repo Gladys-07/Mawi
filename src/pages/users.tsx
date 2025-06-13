@@ -51,7 +51,7 @@ export default function ViewEcoranger() {
   const userRole = sessionStorage.getItem("isAdmin") === "true" ? "Admin" : "EcoRanger";
   
   return (
-    <div className="flex bg-zinc-900 min-h-screen">
+    <div className="flex bg-zinc-900 min-h-screen text-white">
         <Sidebar isOpen={isOpen} menuItems={menuThings}/>
       <div className="flex flex-1 flex-col overflow-auto">
         <div className={`fixed top-0 left-0 right-0 z-30 h-16 flex items-center border-b border-zinc-800 bg-zinc-900 px-6 gap-4 transition-all duration-300 ${isOpen ? 'pl-64' : 'pl-0'}`}>
