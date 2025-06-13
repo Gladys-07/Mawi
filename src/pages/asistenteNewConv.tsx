@@ -178,7 +178,7 @@ export default function AsistenteNuevasConv() {
           <Button isIconOnly variant="light" className="text-white ml-2" onPress={() => setIsOpen(!isOpen)}>
             <Icon icon={isOpen ? "lucide:chevron-left" : "lucide:chevron-right"} width={20} height={20} />
           </Button>
-          <h1 className="text-lg font-medium">Asistente de Nuevas Convocatorias</h1>
+          <h1 className="text-lg font-medium">Nuevas Convocatorias</h1>
           <div className="ml-auto flex items-center gap-2">
             <span className="text-sm">
               {`${userRole} ${sessionStorage.getItem("name") ? `: ${sessionStorage.getItem("name")}` : ""}`}
@@ -197,7 +197,7 @@ export default function AsistenteNuevasConv() {
         </div>
 
         <div className="flex flex-col gap-4 w-full max-w-2xl px-4 sm:px-6 md:px-8 mx-auto mt-8 pb-8">
-          <h1 className="text-2xl font-bold mt-4 text-center md:text-left">Asistente de Nuevas Convocatorias</h1>
+          <h1 className="text-2xl font-bold mt-4 text-center md:text-left">Nuevas Convocatorias</h1>
 
           {paso === 1 ? (
             <>
