@@ -72,39 +72,39 @@ export default function AsistenteNuevasConv() {
       pais,
       descripcion,
       creadoPor,
-      archivos: archivosSubidos.map((archivo) => ({
-        nombre: archivo.file.name,
-        tipo: archivo.file.type,
-      })),
     };
 
     console.log(JSON.stringify(datosConvocatoria, null, 2));
     console.log("token: ", sessionStorage.getItem("token"));
     const token = sessionStorage.getItem("token");
+
     try {
-    const response = await fetch("http://localhost:3000/CSoftware/api/newConvocatoria", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "authorization":"Bearer " + token
-      },
-      body: JSON.stringify(datosConvocatoria),
-    });
+      const response = await fetch("http://localhost:3000/CSoftware/api/newConvocatoria", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "authorization": "Bearer " + token,
+        },
+        body: JSON.stringify(datosConvocatoria),
+      });
 
-    const resultado = await response.json();
-    console.log("Respuesta del servidor:", resultado);
+      const resultado = await response.json();
+      console.log("Respuesta del servidor:", resultado);
 
-    if (response.ok) {
-      setPaso(3);
-      setMostrarPopupGuardar(true);
-    } else {
-      alert("Error al guardar la convocatoria.");
+      if (response.ok) {
+        // Guardar el ID de la convocatoria en sessionStorage
+        sessionStorage.setItem("id_convocatoria", resultado.gen_id);
+
+        // Avanzar al paso 3 para adjuntar documentos
+        setPaso(3);
+      } else {
+        alert("Error al guardar la convocatoria.");
+      }
+    } catch (error) {
+      console.error("Error al conectar con el backend:", error);
+      alert("Error de conexión con el servidor.");
     }
-  } catch (error) {
-    console.error("Error al conectar con el backend:", error);
-    alert("Error de conexión con el servidor.");
-  }
-};
+  };
 
   const handleArchivos = (files: File[]) => {
     const validFiles = files.filter((file) =>
@@ -133,6 +133,7 @@ export default function AsistenteNuevasConv() {
     }
 
     const token = sessionStorage.getItem("token");
+    let archivosSubidosExitosamente = 0;
 
     for (const archivo of archivosSubidos) {
       const formData = new FormData();
@@ -154,6 +155,7 @@ export default function AsistenteNuevasConv() {
         if (response.ok) {
           const resultado = await response.json();
           console.log("Documento subido exitosamente:", resultado);
+          archivosSubidosExitosamente++;
           alert(`Documento "${archivo.file.name}" subido correctamente.`);
         } else {
           alert(`Error al subir el documento "${archivo.file.name}".`);
@@ -162,6 +164,14 @@ export default function AsistenteNuevasConv() {
         console.error("Error al conectar con el backend:", error);
         alert("Error de conexión al subir el documento.");
       }
+    }
+
+    // Mostrar alerta y redirigir solo si se subió al menos un archivo
+    if (archivosSubidosExitosamente > 0) {
+      alert("¡Datos guardados exitosamente!");
+      navigate("/convoDash");
+    } else {
+      alert("No se subieron archivos. Por favor, intenta nuevamente.");
     }
 
     // Limpiar archivos subidos después de la subida
@@ -241,14 +251,6 @@ export default function AsistenteNuevasConv() {
       <Button
         size="md"
         className="w-full sm:w-1/2"
-        color="default"
-        onPress={() => setMostrarModal(true)}
-      >
-        Subir Datos
-      </Button>
-      <Button
-        size="md"
-        className="w-full sm:w-1/2"
         color="success"
         onPress={handleSiguiente}
       >
@@ -276,6 +278,22 @@ export default function AsistenteNuevasConv() {
     </>
   )}
 </div>
+
+{/* Mostrar botón para subir documentos solo después de guardar la convocatoria */}
+{paso === 3 && (
+  <div>
+    <h2 className="text-xl font-bold mb-4">Sube tus documentos</h2>
+    <Button
+      size="md"
+      className="w-full"
+      color="default"
+      onPress={() => setMostrarModal(true)}
+    >
+      Subir Documentos
+    </Button>
+  </div>
+)}
+
 {mostrarModal && (
   <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70">
     <div className="bg-zinc-900 p-6 rounded-xl shadow-2xl w-full max-w-2xl text-white relative">
@@ -380,8 +398,15 @@ export default function AsistenteNuevasConv() {
   <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70">
     <div className="bg-zinc-800 p-8 rounded-xl shadow-xl w-full max-w-lg text-white text-center">
       <h2 className="text-2xl font-bold mb-4">¡Datos guardados exitosamente!</h2>
-      <p className="text-sm text-gray-300 mb-6">Gracias por registrar la convocatoria. Puedes revisar la convocatoria en la siguiente pestaña.</p>
-      <Button color="success" onPress={() => navigate("/convoDash")}>VIEW ON DASHBOARD</Button>
+      <p className="text-sm text-gray-300 mb-6">
+        Gracias por registrar la convocatoria. Por favor, adjunta los documentos antes de finalizar.
+      </p>
+      <Button
+        color="default"
+        onPress={() => setMostrarPopupGuardar(false)}
+      >
+        Adjuntar Documentos
+      </Button>
     </div>
   </div>
 )}

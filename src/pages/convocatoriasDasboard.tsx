@@ -387,27 +387,25 @@ export default function ConvocatoriasDashboard() {
             {convocatorias.map((convocatoria) => (
               <div key={convocatoria.ID_convocatoria} className="relative bg-zinc-800 p-6 rounded-xl shadow-lg">
                 <div className="absolute top-7 right-5">
-  <button
-    onClick={() => {
-      setEditConvocatoria(convocatoria);
-      setOriginalConvocatoria(convocatoria);
-    }}
-    className="text-zinc-500 hover:text-blue-400"
-  >
-    <Icon icon="lucide:pencil" width={14} height={15} />
-  </button>
-</div>
-
-
+                  <button
+                    onClick={() => {
+                      setEditConvocatoria(convocatoria);
+                      setOriginalConvocatoria(convocatoria);
+                    }}
+                    className="text-zinc-500 hover:text-blue-400"
+                  >
+                    <Icon icon="lucide:pencil" width={14} height={15} />
+                  </button>
+                </div>
                 <h2 className="text-xl font-semibold mb-2">{convocatoria.nombreConvocatoria}</h2>
                 <p className="text-sm text-zinc-400 mb-1">Organización: {convocatoria.organizacion}</p>
                 <p className="text-sm text-zinc-400 mb-1">Cierre: {new Date(convocatoria.fechaCierre).toLocaleDateString()}</p>
                 <p className="text-sm text-zinc-400 mb-1">Región: {convocatoria.region} ({convocatoria.pais})</p>
-                <p className="text-sm text-zinc-400 mb-2"> Status:{" "}
+                <p className="text-sm text-zinc-400 mb-2">Status:{" "}
                   <span className={convocatoria.status === "activo" ? "text-green-400" : "text-red-400"}>
                     {convocatoria.status}
-                    </span>
-                    </p>
+                  </span>
+                </p>
                 <p className="text-sm text-zinc-300 mb-2">{convocatoria.descripcion}</p>
                 <a
                   href={convocatoria.sitioWeb.startsWith("http") ? convocatoria.sitioWeb : "https://" + convocatoria.sitioWeb}
@@ -417,6 +415,21 @@ export default function ConvocatoriasDashboard() {
                 >
                   Ir al sitio →
                 </a>
+                {/* Botón para descargar documento */}
+                <Button
+                  size="sm"
+                  color="success"
+                  className="mt-4"
+                  onPress={() => {
+                    const token = sessionStorage.getItem("token");
+                    window.open(
+                      `http://localhost:3000/CSoftware/api/descargarDocumentoConvocatoria/${convocatoria.ID_convocatoria}`,
+                      "_blank"
+                    );
+                  }}
+                >
+                  Descargar Documento
+                </Button>
               </div>
             ))}
           </div>
