@@ -74,8 +74,6 @@ export default function AsistenteNuevasConv() {
       creadoPor,
     };
 
-    console.log(JSON.stringify(datosConvocatoria, null, 2));
-    console.log("token: ", sessionStorage.getItem("token"));
     const token = sessionStorage.getItem("token");
 
     try {
@@ -83,20 +81,19 @@ export default function AsistenteNuevasConv() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "authorization": "Bearer " + token,
+          "authorization": `Bearer ${token}`,
         },
         body: JSON.stringify(datosConvocatoria),
       });
 
       const resultado = await response.json();
-      console.log("Respuesta del servidor:", resultado);
 
       if (response.ok) {
         // Guardar el ID de la convocatoria en sessionStorage
         sessionStorage.setItem("id_convocatoria", resultado.gen_id);
 
-        // Avanzar al paso 3 para adjuntar documentos
-        setPaso(3);
+        // Mostrar la ventana emergente de confirmación
+        setMostrarPopupGuardar(true);
       } else {
         alert("Error al guardar la convocatoria.");
       }
@@ -133,7 +130,6 @@ export default function AsistenteNuevasConv() {
     }
 
     const token = sessionStorage.getItem("token");
-    let archivosSubidosExitosamente = 0;
 
     for (const archivo of archivosSubidos) {
       const formData = new FormData();
@@ -155,7 +151,6 @@ export default function AsistenteNuevasConv() {
         if (response.ok) {
           const resultado = await response.json();
           console.log("Documento subido exitosamente:", resultado);
-          archivosSubidosExitosamente++;
           alert(`Documento "${archivo.file.name}" subido correctamente.`);
         } else {
           alert(`Error al subir el documento "${archivo.file.name}".`);
@@ -164,14 +159,6 @@ export default function AsistenteNuevasConv() {
         console.error("Error al conectar con el backend:", error);
         alert("Error de conexión al subir el documento.");
       }
-    }
-
-    // Mostrar alerta y redirigir solo si se subió al menos un archivo
-    if (archivosSubidosExitosamente > 0) {
-      alert("¡Datos guardados exitosamente!");
-      navigate("/convoDash");
-    } else {
-      alert("No se subieron archivos. Por favor, intenta nuevamente.");
     }
 
     // Limpiar archivos subidos después de la subida
@@ -188,7 +175,7 @@ export default function AsistenteNuevasConv() {
           <Button isIconOnly variant="light" className="text-white ml-2" onPress={() => setIsOpen(!isOpen)}>
             <Icon icon={isOpen ? "lucide:chevron-left" : "lucide:chevron-right"} width={20} height={20} />
           </Button>
-          <h1 className="text-lg font-medium">Nuevas Convocatorias</h1>
+          <h1 className="text-lg font-medium">Asistente de Nuevas Convocatorias</h1>
           <div className="ml-auto flex items-center gap-2">
             <span className="text-sm">
               {`${userRole} ${sessionStorage.getItem("name") ? `: ${sessionStorage.getItem("name")}` : ""}`}
@@ -207,18 +194,38 @@ export default function AsistenteNuevasConv() {
         </div>
 
         <div className="flex flex-col gap-4 w-full max-w-2xl px-4 sm:px-6 md:px-8 mx-auto mt-8 pb-8">
-          <h1 className="text-2xl font-bold mt-4 text-center md:text-left">Nuevas Convocatorias</h1>
+          <h1 className="text-2xl font-bold mt-4 text-center md:text-left">Asistente de Nuevas Convocatorias</h1>
 
           {paso === 1 ? (
             <>
-              <Input label="Nombre de la convocatoria" type="text" value={nombreConvocatoria} onValueChange={setNombre} variant="bordered" className="w-full" classNames={{ inputWrapper: "bg-zinc-800 border-zinc-700", input: "text-white" }} />
+              <Input label="Nombre del anteproyecto" type="text" value={nombreConvocatoria} onValueChange={setNombre} variant="bordered" className="w-full" classNames={{ inputWrapper: "bg-zinc-800 border-zinc-700", input: "text-white" }} />
               <Input label="Fecha de cierre" type="date" value={fechaCierre} onValueChange={setFecha} variant="bordered" className="w-full" classNames={{ inputWrapper: "bg-zinc-800 border-zinc-700", input: "text-white" }} />
               <Input label="Sitio Web" type="text" value={sitioWeb} onValueChange={setSitio} variant="bordered" className="w-full" classNames={{ inputWrapper: "bg-zinc-800 border-zinc-700", input: "text-white" }} />
             </>
           ) : (
             <>
-              <Input label="Región" value={region} onValueChange={setRegion} variant="bordered" className="w-full" classNames={{ inputWrapper: "bg-zinc-800 border-zinc-700", input: "text-white" }} />
-              <Input label="Organización" value={organizacion} onValueChange={setOrganizacion} variant="bordered" className="w-full" classNames={{ inputWrapper: "bg-zinc-800 border-zinc-700", input: "text-white" }} />
+              <Input
+                label="Región"
+                value={region}
+                onValueChange={setRegion}
+                variant="bordered"
+                className="w-full"
+                classNames={{
+                  inputWrapper: "bg-zinc-800 border-zinc-700",
+                  input: "text-white",
+                }}
+              />
+              <Input
+                label="Organización"
+                value={organizacion}
+                onValueChange={setOrganizacion}
+                variant="bordered"
+                className="w-full"
+                classNames={{
+                  inputWrapper: "bg-zinc-800 border-zinc-700",
+                  input: "text-white",
+                }}
+              />
               <div className="flex flex-col gap-1 w-full">
                 <label className="text-sm text-gray-400 font-medium">País</label>
                 <div className="relative">
@@ -229,7 +236,9 @@ export default function AsistenteNuevasConv() {
                   >
                     <option value="">Selecciona un país</option>
                     {listaPaises.map((p) => (
-                      <option key={p} value={p}>{p}</option>
+                      <option key={p} value={p}>
+                        {p}
+                      </option>
                     ))}
                   </select>
                   <div className="pointer-events-none absolute inset-y-0 right-3 flex items-center text-gray-400">
@@ -237,11 +246,30 @@ export default function AsistenteNuevasConv() {
                   </div>
                 </div>
               </div>
+              <Input
+                label="Descripción"
+                value={descripcion}
+                onValueChange={setDescripcion}
+                variant="bordered"
+                className="w-full"
+                classNames={{
+                  inputWrapper: "bg-zinc-800 border-zinc-700",
+                  input: "text-white",
+                }}
+              />
 
-
-
-
-              <Input label="Descripción" value={descripcion} onValueChange={setDescripcion} variant="bordered" className="w-full" classNames={{ inputWrapper: "bg-zinc-800 border-zinc-700", input: "text-white" }} />
+              {/* Botón para subir archivo */}
+              <div className="mt-4">
+                <h2 className="text-lg font-bold mb-2">Sube un archivo (opcional)</h2>
+                <Button
+                  size="md"
+                  className="w-full"
+                  color="default"
+                  onPress={() => setMostrarModal(true)}
+                >
+                  Subir Archivo
+                </Button>
+              </div>
             </>
           )}
 
@@ -282,7 +310,7 @@ export default function AsistenteNuevasConv() {
 {/* Mostrar botón para subir documentos solo después de guardar la convocatoria */}
 {paso === 3 && (
   <div>
-    <h2 className="text-xl font-bold mb-4">Sube tus documentos</h2>
+    <h2 className="text-xl font-bold mb-4">Sube tus documentos (opcional)</h2>
     <Button
       size="md"
       className="w-full"
@@ -356,18 +384,6 @@ export default function AsistenteNuevasConv() {
               >
                 <Icon icon="lucide:trash" width={18} height={18} />
               </button>
-              {archivo.file.type === "application/pdf" && archivo.url && (
-                <iframe
-                  src={archivo.url}
-                  title={`Vista previa PDF ${idx}`}
-                  className="w-full h-40 mt-2 rounded-md"
-                />
-              )}
-              {archivo.file.type.includes("word") && (
-                <p className="text-sm text-gray-300 mt-2">
-                  📄 Documento Word (no se puede previsualizar)
-                </p>
-              )}
             </div>
           ))}
         </div>
@@ -399,13 +415,10 @@ export default function AsistenteNuevasConv() {
     <div className="bg-zinc-800 p-8 rounded-xl shadow-xl w-full max-w-lg text-white text-center">
       <h2 className="text-2xl font-bold mb-4">¡Datos guardados exitosamente!</h2>
       <p className="text-sm text-gray-300 mb-6">
-        Gracias por registrar la convocatoria. Por favor, adjunta los documentos antes de finalizar.
+        Gracias por registrar la convocatoria. Puedes revisar la convocatoria en la siguiente pestaña.
       </p>
-      <Button
-        color="default"
-        onPress={() => setMostrarPopupGuardar(false)}
-      >
-        Adjuntar Documentos
+      <Button color="success" onPress={() => navigate("/convoDash")}>
+        VIEW ON DASHBOARD
       </Button>
     </div>
   </div>
