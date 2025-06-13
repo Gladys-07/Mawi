@@ -201,7 +201,7 @@ export default function AsistenteNuevasConv() {
 
           {paso === 1 ? (
             <>
-              <Input label="Nombre del anteproyecto" type="text" value={nombreConvocatoria} onValueChange={setNombre} variant="bordered" className="w-full" classNames={{ inputWrapper: "bg-zinc-800 border-zinc-700", input: "text-white" }} />
+              <Input label="Nombre de la convocatoria" type="text" value={nombreConvocatoria} onValueChange={setNombre} variant="bordered" className="w-full" classNames={{ inputWrapper: "bg-zinc-800 border-zinc-700", input: "text-white" }} />
               <Input label="Fecha de cierre" type="date" value={fechaCierre} onValueChange={setFecha} variant="bordered" className="w-full" classNames={{ inputWrapper: "bg-zinc-800 border-zinc-700", input: "text-white" }} />
               <Input label="Sitio Web" type="text" value={sitioWeb} onValueChange={setSitio} variant="bordered" className="w-full" classNames={{ inputWrapper: "bg-zinc-800 border-zinc-700", input: "text-white" }} />
             </>
