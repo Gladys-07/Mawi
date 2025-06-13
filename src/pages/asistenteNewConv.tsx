@@ -125,6 +125,49 @@ export default function AsistenteNuevasConv() {
     }
   };
 
+  const handleSubirDocumentos = async () => {
+    const id_convocatoria = sessionStorage.getItem("id_convocatoria");
+    if (!id_convocatoria) {
+      alert("Primero debes guardar la convocatoria antes de subir documentos.");
+      return;
+    }
+
+    const token = sessionStorage.getItem("token");
+
+    for (const archivo of archivosSubidos) {
+      const formData = new FormData();
+      formData.append("file", archivo.file);
+      formData.append("subidoPor", sessionStorage.getItem("userId") || "0");
+
+      try {
+        const response = await fetch(
+          `http://localhost:3000/CSoftware/api/uploadDocumentoConvocatoria/${id_convocatoria}`,
+          {
+            method: "POST",
+            headers: {
+              authorization: `Bearer ${token}`,
+            },
+            body: formData,
+          }
+        );
+
+        if (response.ok) {
+          const resultado = await response.json();
+          console.log("Documento subido exitosamente:", resultado);
+          alert(`Documento "${archivo.file.name}" subido correctamente.`);
+        } else {
+          alert(`Error al subir el documento "${archivo.file.name}".`);
+        }
+      } catch (error) {
+        console.error("Error al conectar con el backend:", error);
+        alert("Error de conexión al subir el documento.");
+      }
+    }
+
+    // Limpiar archivos subidos después de la subida
+    setArchivosSubidos([]);
+  };
+
   const userRole = sessionStorage.getItem("isAdmin") === "true" ? "Admin" : "EcoRanger";
   console.log("Role ", userRole);
   return (
@@ -244,14 +287,11 @@ export default function AsistenteNuevasConv() {
       </button>
       <h2 className="text-2xl font-bold mb-2">Sube tus documentos</h2>
       <p className="mb-4 text-sm text-gray-400">
-        Acepta archivos PDF y Word. Puedes arrastrarlos o hacer clic para
-        seleccionarlos.
+        Acepta archivos PDF y Word. Puedes arrastrarlos o hacer clic para seleccionarlos.
       </p>
       <div
         className="border-2 border-dashed border-gray-500 rounded-lg p-6 text-center cursor-pointer hover:border-green-400 transition-all"
-        onClick={() =>
-          document.getElementById("multiFileUpload")?.click()
-        }
+        onClick={() => document.getElementById("multiFileUpload")?.click()}
         onDragOver={(e) => e.preventDefault()}
         onDrop={(e) => {
           e.preventDefault();
@@ -274,9 +314,7 @@ export default function AsistenteNuevasConv() {
           accept=".pdf,.doc,.docx"
           id="multiFileUpload"
           style={{ display: "none" }}
-          onChange={(e) =>
-            handleArchivos(Array.from(e.target.files || []))
-          }
+          onChange={(e) => handleArchivos(Array.from(e.target.files || []))}
         />
       </div>
 
@@ -300,14 +338,13 @@ export default function AsistenteNuevasConv() {
               >
                 <Icon icon="lucide:trash" width={18} height={18} />
               </button>
-              {archivo.file.type === "application/pdf" &&
-                archivo.url && (
-                  <iframe
-                    src={archivo.url}
-                    title={`Vista previa PDF ${idx}`}
-                    className="w-full h-40 mt-2 rounded-md"
-                  />
-                )}
+              {archivo.file.type === "application/pdf" && archivo.url && (
+                <iframe
+                  src={archivo.url}
+                  title={`Vista previa PDF ${idx}`}
+                  className="w-full h-40 mt-2 rounded-md"
+                />
+              )}
               {archivo.file.type.includes("word") && (
                 <p className="text-sm text-gray-300 mt-2">
                   📄 Documento Word (no se puede previsualizar)
@@ -329,10 +366,7 @@ export default function AsistenteNuevasConv() {
         </Button>
         <Button
           color="success"
-          onPress={() => {
-            console.log("Archivos cargados:", archivosSubidos);
-            setMostrarModal(false);
-          }}
+          onPress={handleSubirDocumentos}
         >
           Subir Archivos
         </Button>
