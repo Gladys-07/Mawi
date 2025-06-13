@@ -147,7 +147,7 @@ export default function AsistenteNuevasConv() {
         </div>
 
 
-        <div className="px-4 sm:px-8 mt-4">
+        <div className="px-4 sm:px-8 mt-20">
           <div className="h-3 w-full rounded-full bg-zinc-700 overflow-hidden">
             <div className={`h-full transition-all duration-500 rounded-full ${paso === 1 ? "w-0" : paso === 2 ? "w-1/2 bg-green-500" : "w-full bg-green-500"}`} />
           </div>
